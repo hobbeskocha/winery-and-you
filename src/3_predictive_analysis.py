@@ -1,0 +1,525 @@
+# ---
+# jupyter:
+#   jupytext:
+#     text_representation:
+#       extension: .py
+#       format_name: light
+#       format_version: '1.5'
+#       jupytext_version: 1.16.1
+#   kernelspec:
+#     display_name: Python 3 (ipykernel)
+#     language: python
+#     name: python3
+# ---
+
+# ## Import libraries and config Pandas display
+
+# +
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+import sklearn 
+from sklearn.preprocessing import LabelEncoder
+from sklearn.impute import KNNImputer
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score
+from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import confusion_matrix
+import xgboost as xg
+from sklearn.linear_model import LinearRegression, LogisticRegression
+
+from sklearn.metrics import mean_squared_error, r2_score, roc_curve, auc
+# -
+
+pd.options.display.max_columns = 25
+pd.options.display.max_rows = 100
+
+# ## Import datasets
+
+winery = pd.read_csv("../data/Winery_Data_Clean.csv")
+winery.head()
+
+customer = pd.read_csv("../data/Winery_Customer.csv")
+customer.head()
+
+customer.dtypes
+
+# ## Predictive Models
+
+# ### Binary Classification
+
+# #### Random Forest
+
+# ##### Email Subscription
+
+y = customer.loc[:, "EmailSubscr"].values
+X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
+
+# +
+### TODO: manually define categorical encoding
+
+label_encoder = LabelEncoder()
+x_categorical = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
+
+x_numerical = X.select_dtypes(exclude=['object', 'bool']).values
+
+x = pd.concat([pd.DataFrame(x_numerical), x_categorical], axis='columns').values
+
+X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+
+
+# +
+regressor = RandomForestRegressor(random_state=0)
+regressor.fit(X_train, Y_train)
+
+predictions = regressor.predict(X_test)
+r2 = r2_score(Y_test, predictions)
+
+feature_importances = regressor.feature_importances_
+
+for feature, importance in zip(["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]
+                               , feature_importances):
+    print(f"{feature}:{importance:.4f}")
+
+accuracy = accuracy_score(Y_test, np.round(predictions))
+precision = precision_score(Y_test, np.round(predictions))
+recall = recall_score(Y_test, np.round(predictions))
+f1score = f1_score(Y_test, np.round(predictions))
+
+print()
+print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
+# -
+
+# ##### WinemakerCall Subscription
+
+y = customer.loc[:, "WinemakerCallSubscr"].values 
+X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
+
+# +
+### TODO: print categorical encoding
+
+label_encoder = LabelEncoder()
+x_categorical = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
+
+x_numerical = X.select_dtypes(exclude=['object', 'bool']).values
+
+x = pd.concat([pd.DataFrame(x_numerical), x_categorical], axis='columns').values
+
+X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+
+
+# +
+regressor = RandomForestRegressor(random_state=0)
+regressor.fit(X_train, Y_train)
+
+predictions = regressor.predict(X_test)
+r2 = r2_score(Y_test, predictions)
+
+feature_importances = regressor.feature_importances_
+
+for feature, importance in zip(["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]
+                               , feature_importances):
+    print(f"{feature}: {importance:.4f}")
+
+accuracy = accuracy_score(Y_test, np.round(predictions))
+precision = precision_score(Y_test, np.round(predictions))
+recall = recall_score(Y_test, np.round(predictions))
+f1score = f1_score(Y_test, np.round(predictions))
+
+print()
+print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
+# -
+
+# ##### Newsletter Subscription
+
+y = customer.loc[:, "NewsletterSubscr"].values 
+X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
+
+# +
+### TODO: print categorical encoding
+
+label_encoder = LabelEncoder()
+x_categorical = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
+
+x_numerical = X.select_dtypes(exclude=['object', 'bool']).values
+
+x = pd.concat([pd.DataFrame(x_numerical), x_categorical], axis='columns').values
+
+X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+
+
+# +
+regressor = RandomForestRegressor(random_state=0)
+regressor.fit(X_train, Y_train)
+
+predictions = regressor.predict(X_test)
+r2 = r2_score(Y_test, predictions)
+
+feature_importances = regressor.feature_importances_
+
+for feature, importance in zip(["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]
+                               , feature_importances):
+    print(f"{feature}: {importance:.4f}")
+
+accuracy = accuracy_score(Y_test, np.round(predictions))
+precision = precision_score(Y_test, np.round(predictions))
+recall = recall_score(Y_test, np.round(predictions))
+f1score = f1_score(Y_test, np.round(predictions))
+
+print()
+print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
+# -
+
+# #### Logistic Regression
+
+# ##### Email Subscription
+
+y = customer.loc[:, "EmailSubscr"].values
+X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
+
+# +
+label_encoder = LabelEncoder()
+x_cat = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
+x_num = X.select_dtypes(exclude=['object', 'bool'])
+
+X_concat = pd.concat([pd.DataFrame(x_num), pd.DataFrame(x_cat)], axis='columns')
+
+# +
+X_train, X_test, y_train, y_test = train_test_split(X_concat, y, test_size=0.2, random_state=0)
+
+scaler = StandardScaler()
+X_train["OrderVolume"] = scaler.fit_transform(X_train[["OrderVolume"]])
+X_train["SaleAmount"] = scaler.fit_transform(X_train[["SaleAmount"]])
+
+X_test["OrderVolume"] = scaler.fit_transform(X_test[["OrderVolume"]])
+X_test["SaleAmount"] = scaler.fit_transform(X_test[["SaleAmount"]])
+# -
+
+logistic_email = LogisticRegression()
+logistic_email.fit(X_train, y_train)
+
+# +
+predictions = logistic_email.predict(X_test)
+
+accuracy = accuracy_score(y_test, predictions)
+precision = precision_score(y_test, predictions)
+recall = recall_score(y_test, predictions)
+f1score = f1_score(y_test, predictions)
+
+print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
+# -
+
+cm = confusion_matrix(y_test, predictions)
+plt.figure(figsize=(10, 6))
+sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix of Email Subscr')
+plt.show()
+
+y_prob = logistic_email.predict_proba(X_test)[:, 1]
+fpr, tpr, thresholds = roc_curve(y_test, y_prob)
+roc_auc = auc(fpr, tpr)
+
+plt.figure(figsize=(8, 6))
+plt.plot(fpr, tpr, color='darkorange', lw=2,
+         label=f'ROC Curve (AUC = {roc_auc:.2f})')
+plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--', label='Random')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver Operating Characteristic (ROC) Curve\nAccuracy: {:.2f}%'.format(
+    accuracy * 100))
+plt.legend(loc="lower right")
+plt.show()
+
+# ##### WinemakerCall Susbcription
+
+y = customer.loc[:, "WinemakerCallSubscr"].values
+X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
+
+# +
+label_encoder = LabelEncoder()
+x_cat = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
+x_num = X.select_dtypes(exclude=['object', 'bool'])
+
+X_concat = pd.concat([pd.DataFrame(x_num), pd.DataFrame(x_cat)], axis='columns')
+
+# +
+X_train, X_test, y_train, y_test = train_test_split(X_concat, y, test_size=0.2, random_state=0)
+
+scaler = StandardScaler()
+X_train["OrderVolume"] = scaler.fit_transform(X_train[["OrderVolume"]])
+X_train["SaleAmount"] = scaler.fit_transform(X_train[["SaleAmount"]])
+
+X_test["OrderVolume"] = scaler.fit_transform(X_test[["OrderVolume"]])
+X_test["SaleAmount"] = scaler.fit_transform(X_test[["SaleAmount"]])
+# -
+
+logistic_winemaker = LogisticRegression()
+logistic_winemaker.fit(X_train, y_train)
+
+# +
+predictions = logistic_winemaker.predict(X_test)
+
+accuracy = accuracy_score(y_test, predictions)
+precision = precision_score(y_test, predictions)
+recall = recall_score(y_test, predictions)
+f1score = f1_score(y_test, predictions)
+
+print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
+# -
+
+cm = confusion_matrix(y_test, predictions)
+plt.figure(figsize=(10, 6))
+sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix of Winemaker Subscr')
+plt.show()
+
+y_prob = logistic_winemaker.predict_proba(X_test)[:, 1]
+fpr, tpr, thresholds = roc_curve(y_test, y_prob)
+roc_auc = auc(fpr, tpr)
+
+plt.figure(figsize=(8, 6))
+plt.plot(fpr, tpr, color='darkorange', lw=2,
+         label=f'ROC Curve (AUC = {roc_auc:.2f})')
+plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--', label='Random')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver Operating Characteristic (ROC) Curve\nAccuracy: {:.2f}%'.format(
+    accuracy * 100))
+plt.legend(loc="lower right")
+plt.show()
+
+# ##### Newsletter Subscription
+
+y = customer.loc[:, "NewsletterSubscr"].values
+X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
+
+# +
+label_encoder = LabelEncoder()
+x_cat = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
+x_num = X.select_dtypes(exclude=['object', 'bool'])
+
+X_concat = pd.concat([pd.DataFrame(x_num), pd.DataFrame(x_cat)], axis='columns')
+
+# +
+X_train, X_test, y_train, y_test = train_test_split(X_concat, y, test_size=0.2, random_state=0)
+
+scaler = StandardScaler()
+X_train["OrderVolume"] = scaler.fit_transform(X_train[["OrderVolume"]])
+X_train["SaleAmount"] = scaler.fit_transform(X_train[["SaleAmount"]])
+
+X_test["OrderVolume"] = scaler.fit_transform(X_test[["OrderVolume"]])
+X_test["SaleAmount"] = scaler.fit_transform(X_test[["SaleAmount"]])
+# -
+
+logistic_newsletter = LogisticRegression()
+logistic_newsletter.fit(X_train, y_train)
+
+# +
+predictions = logistic_newsletter.predict(X_test)
+
+accuracy = accuracy_score(y_test, predictions)
+precision = precision_score(y_test, predictions)
+recall = recall_score(y_test, predictions)
+f1score = f1_score(y_test, predictions)
+
+print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
+# -
+
+cm = confusion_matrix(y_test, predictions)
+plt.figure(figsize=(10, 6))
+sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix of Winemaker Subscr')
+plt.show()
+
+y_prob = logistic_newsletter.predict_proba(X_test)[:, 1]
+fpr, tpr, thresholds = roc_curve(y_test, y_prob)
+roc_auc = auc(fpr, tpr)
+
+plt.figure(figsize=(8, 6))
+plt.plot(fpr, tpr, color='darkorange', lw=2,
+         label=f'ROC Curve (AUC = {roc_auc:.2f})')
+plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--', label='Random')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver Operating Characteristic (ROC) Curve\nAccuracy: {:.2f}%'.format(
+    accuracy * 100))
+plt.legend(loc="lower right")
+plt.show()
+
+# ### Multinomial Classification
+
+# #### KNN
+
+customer["CustomerSegment"].value_counts()
+
+# +
+y = customer.loc[:, "CustomerSegment"].values
+X = customer.loc[:, ["OrderVolume", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
+
+label_encoder = LabelEncoder()
+X["Region"] = label_encoder.fit_transform(X["Region"])
+
+# +
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size= 0.2, random_state = 0)
+
+k = int(np.round(np.sqrt(len(X_train))))
+knn = KNeighborsClassifier(n_neighbors = k).fit(X_train, y_train)
+
+knn_predictions = knn.predict(X_test)
+cm = confusion_matrix(y_test, knn_predictions)
+
+plt.figure(figsize=(10, 8))
+sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix')
+plt.show()
+
+print(k)
+
+# +
+accuracy = accuracy_score(y_test, knn_predictions)
+precision = precision_score(y_test, knn_predictions, average='weighted')
+recall = recall_score(y_test, knn_predictions, average='weighted')
+f1 = f1_score(y_test, knn_predictions, average='weighted')
+
+print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
+# -
+
+# #### Random Forest
+
+# +
+y = customer.loc[:, "CustomerSegment"]
+X = customer.loc[:, ["OrderVolume", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
+
+label_encoder = LabelEncoder()
+X["Region"] = label_encoder.fit_transform(X["Region"])
+y = label_encoder.fit_transform(y)
+# -
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size= 0.2, random_state = 0)
+
+# +
+regressor = RandomForestClassifier(n_estimators=50, random_state=0)
+regressor.fit(X_train, y_train)
+
+predictions = regressor.predict(X_test)
+
+feature_importances = regressor.feature_importances_
+for feature, importance in zip(["OrderVolume", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]
+                               , feature_importances):
+    print(f"{feature}: {importance:.4f}")
+
+accuracy = accuracy_score(y_test, np.round(predictions))
+precision = precision_score(y_test, np.round(predictions), average="weighted")
+recall = recall_score(y_test, np.round(predictions), average="weighted")
+f1score = f1_score(y_test, np.round(predictions), average="weighted")
+
+print()
+print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
+# -
+
+# ### Regression TODO: cleanup
+
+# #### XGBoost
+
+winery.columns
+
+# +
+y = winery.loc[:, "SaleAmount"].values
+X = winery.loc[:, ["Channel", "Region", "CustomerSegment", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
+
+label_encoder = LabelEncoder()
+X["Channel"] = label_encoder.fit_transform(X["Channel"])
+X["CustomerSegment"] = label_encoder.fit_transform(X["CustomerSegment"])
+X["Region"] = label_encoder.fit_transform(X["Region"])
+
+X.dtypes
+
+
+# +
+train_X, test_X, train_y, test_y = train_test_split(X, y, 
+                      test_size = 0.2, random_state = 0) 
+  
+# Instantiation 
+xgb_r = xg.XGBRegressor(objective ='reg:squarederror', 
+                  n_estimators = 10, seed = 0) 
+  
+# Fitting the model 
+xgb_r.fit(train_X, train_y) 
+  
+# Predict the model 
+pred = xgb_r.predict(test_X) 
+  
+# RMSE Computation 
+rmse = np.sqrt(mean_squared_error(test_y, pred)) 
+print("RMSE : % f" %(rmse)) 
+# -
+
+sns.scatterplot(x = y_test, y = pred)
+plt.xlabel('Actual Values')
+plt.ylabel('Predicted Values')
+plt.title('Scatter Plot of Actual vs. Predicted Values')
+plt.grid(True)
+plt.show()
+
+# #### Simple Linear
+
+# +
+y = winery.loc[:, "SaleAmount"].values
+X = winery.loc[:, ["Channel", "Region", "CustomerSegment", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
+
+label_encoder = LabelEncoder()
+X["Channel"] = label_encoder.fit_transform(X["Channel"])
+encoding_channel = {label: encoded_label for encoded_label, label in enumerate(label_encoder.classes_)}
+
+
+X["CustomerSegment"] = label_encoder.fit_transform(X["CustomerSegment"])
+encoding_segment = {label: encoded_label for encoded_label, label in enumerate(label_encoder.classes_)}
+
+
+X["Region"] = label_encoder.fit_transform(X["Region"])
+encoding_region = {label: encoded_label for encoded_label, label in enumerate(label_encoder.classes_)}
+
+# -
+
+print(encoding_channel)
+print(encoding_region)
+print(encoding_segment)
+
+# +
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state=0)
+
+simple_regr = LinearRegression()
+simple_regr.fit(X_train, y_train)
+
+
+# +
+simple_pred = simple_regr.predict(X_test) 
+  
+# RMSE Computation 
+rmse = np.sqrt(mean_squared_error(y_test, simple_pred)) 
+print("RMSE : % f" %(rmse))
+# -
+
+sns.scatterplot(x = y_test, y = simple_pred)
+plt.xlabel('Actual Values')
+plt.ylabel('Predicted Values')
+plt.title('Scatter Plot of Actual vs. Predicted Values')
+plt.grid(True)
+plt.show()
+
+y_test.mean()
+# np.median(y_test)
+# np.ptp(y_test, axis=0)
