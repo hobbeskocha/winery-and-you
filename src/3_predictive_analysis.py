@@ -30,10 +30,9 @@ from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import confusion_matrix
-import xgboost as xg
-from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.linear_model import LogisticRegression
 
-from sklearn.metrics import mean_squared_error, r2_score, roc_curve, auc
+from sklearn.metrics import r2_score, roc_curve, auc
 # -
 
 pd.options.display.max_columns = 25
@@ -41,10 +40,12 @@ pd.options.display.max_rows = 100
 
 # ## Import datasets
 
-winery = pd.read_csv("../data/Winery_Data_Clean.csv")
+winery = pd.read_csv("../data/Winery_Data_Clean.csv", dtype={"Zipcode": object, })
 winery.head()
 
-customer = pd.read_csv("../data/Winery_Customer.csv")
+winery.dtypes
+
+customer = pd.read_csv("../data/Winery_Customer.csv", dtype={"ZipCode": object})
 customer.head()
 
 customer.dtypes
@@ -57,18 +58,18 @@ customer.dtypes
 
 # ##### Email Subscription
 
-y = customer.loc[:, "EmailSubscr"].values
+y = customer.loc[:, "EmailSubscr"]
 X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
 
 # +
-### TODO: manually define categorical encoding
+### TODO: introduce dummies rather than label encoding
 
 label_encoder = LabelEncoder()
 x_categorical = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
 
-x_numerical = X.select_dtypes(exclude=['object', 'bool']).values
+x_numerical = X.select_dtypes(exclude=['object', 'bool'])
 
-x = pd.concat([pd.DataFrame(x_numerical), x_categorical], axis='columns').values
+x = pd.concat([pd.DataFrame(x_numerical), x_categorical], axis='columns')
 
 X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.2, random_state=0)
 
@@ -97,18 +98,18 @@ print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
 
 # ##### WinemakerCall Subscription
 
-y = customer.loc[:, "WinemakerCallSubscr"].values 
+y = customer.loc[:, "WinemakerCallSubscr"]
 X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
 
 # +
-### TODO: print categorical encoding
+### TODO: introduce dummies rather than label encoding
 
 label_encoder = LabelEncoder()
 x_categorical = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
 
-x_numerical = X.select_dtypes(exclude=['object', 'bool']).values
+x_numerical = X.select_dtypes(exclude=['object', 'bool'])
 
-x = pd.concat([pd.DataFrame(x_numerical), x_categorical], axis='columns').values
+x = pd.concat([pd.DataFrame(x_numerical), x_categorical], axis='columns')
 
 X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.2, random_state=0)
 
@@ -137,18 +138,18 @@ print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
 
 # ##### Newsletter Subscription
 
-y = customer.loc[:, "NewsletterSubscr"].values 
+y = customer.loc[:, "NewsletterSubscr"]
 X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
 
 # +
-### TODO: print categorical encoding
+### TODO: introduce dummies rather than label encoding
 
 label_encoder = LabelEncoder()
 x_categorical = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
 
-x_numerical = X.select_dtypes(exclude=['object', 'bool']).values
+x_numerical = X.select_dtypes(exclude=['object', 'bool'])
 
-x = pd.concat([pd.DataFrame(x_numerical), x_categorical], axis='columns').values
+x = pd.concat([pd.DataFrame(x_numerical), x_categorical], axis='columns')
 
 X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.2, random_state=0)
 
@@ -179,10 +180,12 @@ print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
 
 # ##### Email Subscription
 
-y = customer.loc[:, "EmailSubscr"].values
+y = customer.loc[:, "EmailSubscr"]
 X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
 
 # +
+### TODO: introduce dummies rather than label encoding
+
 label_encoder = LabelEncoder()
 x_cat = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
 x_num = X.select_dtypes(exclude=['object', 'bool'])
@@ -196,6 +199,7 @@ scaler = StandardScaler()
 X_train["OrderVolume"] = scaler.fit_transform(X_train[["OrderVolume"]])
 X_train["SaleAmount"] = scaler.fit_transform(X_train[["SaleAmount"]])
 
+# TODO: fit_transform on train data => transform on test
 X_test["OrderVolume"] = scaler.fit_transform(X_test[["OrderVolume"]])
 X_test["SaleAmount"] = scaler.fit_transform(X_test[["SaleAmount"]])
 # -
@@ -239,10 +243,12 @@ plt.show()
 
 # ##### WinemakerCall Susbcription
 
-y = customer.loc[:, "WinemakerCallSubscr"].values
+y = customer.loc[:, "WinemakerCallSubscr"]
 X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
 
 # +
+### TODO: introduce dummies rather than label encoding
+
 label_encoder = LabelEncoder()
 x_cat = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
 x_num = X.select_dtypes(exclude=['object', 'bool'])
@@ -256,6 +262,7 @@ scaler = StandardScaler()
 X_train["OrderVolume"] = scaler.fit_transform(X_train[["OrderVolume"]])
 X_train["SaleAmount"] = scaler.fit_transform(X_train[["SaleAmount"]])
 
+# TODO: fit_transform on train data => transform on test
 X_test["OrderVolume"] = scaler.fit_transform(X_test[["OrderVolume"]])
 X_test["SaleAmount"] = scaler.fit_transform(X_test[["SaleAmount"]])
 # -
@@ -299,10 +306,12 @@ plt.show()
 
 # ##### Newsletter Subscription
 
-y = customer.loc[:, "NewsletterSubscr"].values
+y = customer.loc[:, "NewsletterSubscr"]
 X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
 
 # +
+### TODO: introduce dummies rather than label encoding
+
 label_encoder = LabelEncoder()
 x_cat = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
 x_num = X.select_dtypes(exclude=['object', 'bool'])
@@ -316,6 +325,7 @@ scaler = StandardScaler()
 X_train["OrderVolume"] = scaler.fit_transform(X_train[["OrderVolume"]])
 X_train["SaleAmount"] = scaler.fit_transform(X_train[["SaleAmount"]])
 
+# TODO: fit_transform on train data => transform on test
 X_test["OrderVolume"] = scaler.fit_transform(X_test[["OrderVolume"]])
 X_test["SaleAmount"] = scaler.fit_transform(X_test[["SaleAmount"]])
 # -
@@ -364,9 +374,10 @@ plt.show()
 customer["CustomerSegment"].value_counts()
 
 # +
-y = customer.loc[:, "CustomerSegment"].values
+y = customer.loc[:, "CustomerSegment"]
 X = customer.loc[:, ["OrderVolume", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
 
+# TODO: use dummies
 label_encoder = LabelEncoder()
 X["Region"] = label_encoder.fit_transform(X["Region"])
 
@@ -403,6 +414,7 @@ print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
 y = customer.loc[:, "CustomerSegment"]
 X = customer.loc[:, ["OrderVolume", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
 
+# TODO: use dummies
 label_encoder = LabelEncoder()
 X["Region"] = label_encoder.fit_transform(X["Region"])
 y = label_encoder.fit_transform(y)
@@ -428,98 +440,3 @@ f1score = f1_score(y_test, np.round(predictions), average="weighted")
 
 print()
 print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
-# -
-
-# ### Regression TODO: cleanup
-
-# #### XGBoost
-
-winery.columns
-
-# +
-y = winery.loc[:, "SaleAmount"].values
-X = winery.loc[:, ["Channel", "Region", "CustomerSegment", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
-
-label_encoder = LabelEncoder()
-X["Channel"] = label_encoder.fit_transform(X["Channel"])
-X["CustomerSegment"] = label_encoder.fit_transform(X["CustomerSegment"])
-X["Region"] = label_encoder.fit_transform(X["Region"])
-
-X.dtypes
-
-
-# +
-train_X, test_X, train_y, test_y = train_test_split(X, y, 
-                      test_size = 0.2, random_state = 0) 
-  
-# Instantiation 
-xgb_r = xg.XGBRegressor(objective ='reg:squarederror', 
-                  n_estimators = 10, seed = 0) 
-  
-# Fitting the model 
-xgb_r.fit(train_X, train_y) 
-  
-# Predict the model 
-pred = xgb_r.predict(test_X) 
-  
-# RMSE Computation 
-rmse = np.sqrt(mean_squared_error(test_y, pred)) 
-print("RMSE : % f" %(rmse)) 
-# -
-
-sns.scatterplot(x = y_test, y = pred)
-plt.xlabel('Actual Values')
-plt.ylabel('Predicted Values')
-plt.title('Scatter Plot of Actual vs. Predicted Values')
-plt.grid(True)
-plt.show()
-
-# #### Simple Linear
-
-# +
-y = winery.loc[:, "SaleAmount"].values
-X = winery.loc[:, ["Channel", "Region", "CustomerSegment", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
-
-label_encoder = LabelEncoder()
-X["Channel"] = label_encoder.fit_transform(X["Channel"])
-encoding_channel = {label: encoded_label for encoded_label, label in enumerate(label_encoder.classes_)}
-
-
-X["CustomerSegment"] = label_encoder.fit_transform(X["CustomerSegment"])
-encoding_segment = {label: encoded_label for encoded_label, label in enumerate(label_encoder.classes_)}
-
-
-X["Region"] = label_encoder.fit_transform(X["Region"])
-encoding_region = {label: encoded_label for encoded_label, label in enumerate(label_encoder.classes_)}
-
-# -
-
-print(encoding_channel)
-print(encoding_region)
-print(encoding_segment)
-
-# +
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state=0)
-
-simple_regr = LinearRegression()
-simple_regr.fit(X_train, y_train)
-
-
-# +
-simple_pred = simple_regr.predict(X_test) 
-  
-# RMSE Computation 
-rmse = np.sqrt(mean_squared_error(y_test, simple_pred)) 
-print("RMSE : % f" %(rmse))
-# -
-
-sns.scatterplot(x = y_test, y = simple_pred)
-plt.xlabel('Actual Values')
-plt.ylabel('Predicted Values')
-plt.title('Scatter Plot of Actual vs. Predicted Values')
-plt.grid(True)
-plt.show()
-
-y_test.mean()
-# np.median(y_test)
-# np.ptp(y_test, axis=0)
