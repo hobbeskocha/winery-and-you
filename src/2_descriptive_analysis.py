@@ -25,10 +25,28 @@ pd.options.display.max_rows = 100
 # ## Import datasets from data cleaning process
 
 winery = pd.read_csv("../data/Winery_Data_Clean.csv")
-winery.head()
+winery.dtypes
+
+# +
+winery["Date"] = pd.to_datetime(winery["Date"], format="%Y-%m-%d")
+winery = winery.astype({"CustomerID": object,
+                        "OrderID": object})
+categorical_columns = ["CustomerSegment", "State", "ZipCode", "Division", "Region", "Channel"]
+winery[categorical_columns] = winery[categorical_columns].astype("category")
+
+winery.dtypes
+# -
 
 customer = pd.read_csv("../data/Winery_Customer.csv")
-customer.head()
+customer.dtypes
+
+# +
+customer = customer.astype({"CustomerID": object})
+categorical_columns = ["CustomerSegment", "State", "ZipCode", "Division", "Region"]
+customer[categorical_columns] = customer[categorical_columns].astype("category")
+
+customer.dtypes
+# -
 
 sns.set_palette("colorblind")
 

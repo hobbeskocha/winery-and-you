@@ -120,6 +120,8 @@ winery = winery[sales_condition]
 print("Number of rows after removing negative sales:", len(winery))
 # -
 
+print(winery.describe()[["SaleAmount", "EmailSales", "NewsletterSales", "TastingRoomSales", "WinemakerCallSales"]], "\n")
+
 # ### Transformation
 
 # #### Map states to division
