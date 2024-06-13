@@ -41,140 +41,32 @@ pd.options.display.max_rows = 100
 # ## Import datasets
 
 winery = pd.read_csv("../data/Winery_Data_Clean.csv", dtype={"Zipcode": object, })
-winery.head()
-
 winery.dtypes
 
-customer = pd.read_csv("../data/Winery_Customer.csv", dtype={"ZipCode": object})
-customer.head()
+# +
+winery["Date"] = pd.to_datetime(winery["Date"], format="%Y-%m-%d")
+winery = winery.astype({"CustomerID": object,
+                        "OrderID": object})
+categorical_columns = ["CustomerSegment", "State", "ZipCode", "Division", "Region", "Channel"]
+winery[categorical_columns] = winery[categorical_columns].astype("category")
+
+winery.dtypes
+# -
+
+customer = pd.read_csv("../data/Winery_Customer.csv")
+customer.dtypes
+
+# +
+customer = customer.astype({"CustomerID": object})
+categorical_columns = ["CustomerSegment", "State", "ZipCode", "Division", "Region"]
+customer[categorical_columns] = customer[categorical_columns].astype("category")
 
 customer.dtypes
+# -
 
 # ## Predictive Models
 
 # ### Binary Classification
-
-# #### Random Forest
-
-# ##### Email Subscription
-
-y = customer.loc[:, "EmailSubscr"]
-X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
-
-# +
-### TODO: introduce dummies rather than label encoding
-
-label_encoder = LabelEncoder()
-x_categorical = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
-
-x_numerical = X.select_dtypes(exclude=['object', 'bool'])
-
-x = pd.concat([pd.DataFrame(x_numerical), x_categorical], axis='columns')
-
-X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.2, random_state=0)
-
-
-# +
-regressor = RandomForestRegressor(random_state=0)
-regressor.fit(X_train, Y_train)
-
-predictions = regressor.predict(X_test)
-r2 = r2_score(Y_test, predictions)
-
-feature_importances = regressor.feature_importances_
-
-for feature, importance in zip(["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]
-                               , feature_importances):
-    print(f"{feature}:{importance:.4f}")
-
-accuracy = accuracy_score(Y_test, np.round(predictions))
-precision = precision_score(Y_test, np.round(predictions))
-recall = recall_score(Y_test, np.round(predictions))
-f1score = f1_score(Y_test, np.round(predictions))
-
-print()
-print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
-# -
-
-# ##### WinemakerCall Subscription
-
-y = customer.loc[:, "WinemakerCallSubscr"]
-X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
-
-# +
-### TODO: introduce dummies rather than label encoding
-
-label_encoder = LabelEncoder()
-x_categorical = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
-
-x_numerical = X.select_dtypes(exclude=['object', 'bool'])
-
-x = pd.concat([pd.DataFrame(x_numerical), x_categorical], axis='columns')
-
-X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.2, random_state=0)
-
-
-# +
-regressor = RandomForestRegressor(random_state=0)
-regressor.fit(X_train, Y_train)
-
-predictions = regressor.predict(X_test)
-r2 = r2_score(Y_test, predictions)
-
-feature_importances = regressor.feature_importances_
-
-for feature, importance in zip(["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]
-                               , feature_importances):
-    print(f"{feature}: {importance:.4f}")
-
-accuracy = accuracy_score(Y_test, np.round(predictions))
-precision = precision_score(Y_test, np.round(predictions))
-recall = recall_score(Y_test, np.round(predictions))
-f1score = f1_score(Y_test, np.round(predictions))
-
-print()
-print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
-# -
-
-# ##### Newsletter Subscription
-
-y = customer.loc[:, "NewsletterSubscr"]
-X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
-
-# +
-### TODO: introduce dummies rather than label encoding
-
-label_encoder = LabelEncoder()
-x_categorical = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
-
-x_numerical = X.select_dtypes(exclude=['object', 'bool'])
-
-x = pd.concat([pd.DataFrame(x_numerical), x_categorical], axis='columns')
-
-X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.2, random_state=0)
-
-
-# +
-regressor = RandomForestRegressor(random_state=0)
-regressor.fit(X_train, Y_train)
-
-predictions = regressor.predict(X_test)
-r2 = r2_score(Y_test, predictions)
-
-feature_importances = regressor.feature_importances_
-
-for feature, importance in zip(["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]
-                               , feature_importances):
-    print(f"{feature}: {importance:.4f}")
-
-accuracy = accuracy_score(Y_test, np.round(predictions))
-precision = precision_score(Y_test, np.round(predictions))
-recall = recall_score(Y_test, np.round(predictions))
-f1score = f1_score(Y_test, np.round(predictions))
-
-print()
-print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
-# -
 
 # #### Logistic Regression
 
@@ -366,6 +258,108 @@ plt.title('Receiver Operating Characteristic (ROC) Curve\nAccuracy: {:.2f}%'.for
     accuracy * 100))
 plt.legend(loc="lower right")
 plt.show()
+
+# #### Random Forest
+
+# ##### Email Subscription
+
+y = customer.loc[:, "EmailSubscr"]
+X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
+
+X = pd.get_dummies(X, columns=["CustomerSegment", "Division"], drop_first=True)
+X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+
+# +
+classifier_email = RandomForestClassifier(random_state=0)
+classifier_email.fit(X_train, Y_train)
+
+predictions_email = classifier_email.predict(X_test)
+feature_importances_email = classifier_email.feature_importances_
+
+print("Feature Importance")
+for feature, importance in zip(X.columns, feature_importances_email):
+    print(f"{feature}: {importance:.4f}")
+
+accuracy = accuracy_score(Y_test, np.round(predictions_email))
+precision = precision_score(Y_test, np.round(predictions_email))
+recall = recall_score(Y_test, np.round(predictions_email))
+f1score = f1_score(Y_test, np.round(predictions_email))
+
+print("\nModel Metrics")
+print("Accuracy", accuracy, "\n",
+    "Precision", precision, "\n",
+    "Recall", recall, "\n",
+    "F1-Score", f1score)
+# -
+
+# ##### WinemakerCall Subscription
+
+y = customer.loc[:, "WinemakerCallSubscr"]
+X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
+
+# +
+X = pd.get_dummies(X, columns=["CustomerSegment", "Division"], drop_first=True)
+
+X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+
+# +
+classifier_winemaker = RandomForestClassifier(random_state=0)
+classifier_winemaker.fit(X_train, Y_train)
+
+predictions_winemaker = classifier_winemaker.predict(X_test)
+feature_importances_winemaker = classifier_winemaker.feature_importances_
+
+print("Feature Importance")
+for feature, importance in zip(X.columns, feature_importances_winemaker):
+    print(f"{feature}: {importance:.4f}")
+
+accuracy = accuracy_score(Y_test, np.round(predictions_winemaker))
+precision = precision_score(Y_test, np.round(predictions_winemaker))
+recall = recall_score(Y_test, np.round(predictions_winemaker))
+f1score = f1_score(Y_test, np.round(predictions_winemaker))
+
+print("\nModel Metrics")
+print("Accuracy", accuracy, "\n",
+    "Precision", precision, "\n",
+    "Recall", recall, "\n",
+    "F1-Score", f1score)
+# -
+
+# ##### Newsletter Subscription
+
+y = customer.loc[:, "NewsletterSubscr"]
+X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
+
+# +
+X = pd.get_dummies(X, columns=["CustomerSegment", "Division"], drop_first=True)
+
+X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+
+# +
+classifier_newsletter = RandomForestClassifier(random_state=0)
+classifier_newsletter.fit(X_train, Y_train)
+
+predictions_newsletter = classifier_newsletter.predict(X_test)
+feature_importances_newsletter = classifier_newsletter.feature_importances_
+
+print("Feature Importance")
+for feature, importance in zip(X.columns, feature_importances_newsletter):
+    print(f"{feature}: {importance:.4f}")
+
+accuracy = accuracy_score(Y_test, np.round(predictions_newsletter))
+precision = precision_score(Y_test, np.round(predictions_newsletter))
+recall = recall_score(Y_test, np.round(predictions_newsletter))
+f1score = f1_score(Y_test, np.round(predictions_newsletter))
+
+print("\nModel Metrics")
+print("Accuracy", accuracy, "\n",
+    "Precision", precision, "\n",
+    "Recall", recall, "\n",
+    "F1-Score", f1score)
+# -
 
 # ### Multinomial Classification
 
