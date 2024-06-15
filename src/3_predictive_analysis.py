@@ -20,23 +20,24 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-import sklearn 
-from sklearn.preprocessing import LabelEncoder
+from sklearn import set_config
 from sklearn.impute import KNNImputer
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score
-from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score, confusion_matrix, roc_curve, auc
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import cross_val_score
-from sklearn.metrics import confusion_matrix
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import cross_val_score
 
-from sklearn.metrics import r2_score, roc_curve, auc
+import statsmodels.api as sm
 # -
 
 pd.options.display.max_columns = 25
 pd.options.display.max_rows = 100
+set_config(transform_output = "pandas")
 
 # ## Import datasets
 
@@ -73,44 +74,51 @@ customer.dtypes
 # ##### Email Subscription
 
 y = customer.loc[:, "EmailSubscr"]
-X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
+X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
 
 # +
-### TODO: introduce dummies rather than label encoding
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
-label_encoder = LabelEncoder()
-x_cat = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
-x_num = X.select_dtypes(exclude=['object', 'bool'])
+number_features = list(X.select_dtypes(include=["int", "float"]).columns)
+category_features = list(X.select_dtypes(include=["category", "bool"]).columns)
 
-X_concat = pd.concat([pd.DataFrame(x_num), pd.DataFrame(x_cat)], axis='columns')
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("num", StandardScaler(), number_features),
+        ("cat", OneHotEncoder(drop="first", sparse_output=False), category_features)
+    ])
+
+pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
+pipeline.fit(X_train)
+X_train_transform = pipeline.transform(X_train)
+X_test_transform = pipeline.transform(X_test)
+
+X_train_transform = sm.add_constant(X_train_transform)
+X_test_transform = sm.add_constant(X_test_transform)
 
 # +
-X_train, X_test, y_train, y_test = train_test_split(X_concat, y, test_size=0.2, random_state=0)
+# logistic_email = LogisticRegression(fit_intercept=False)
+# logistic_email.fit(X_train_transform, y_train)
 
-scaler = StandardScaler()
-X_train["OrderVolume"] = scaler.fit_transform(X_train[["OrderVolume"]])
-X_train["SaleAmount"] = scaler.fit_transform(X_train[["SaleAmount"]])
-
-# TODO: fit_transform on train data => transform on test
-X_test["OrderVolume"] = scaler.fit_transform(X_test[["OrderVolume"]])
-X_test["SaleAmount"] = scaler.fit_transform(X_test[["SaleAmount"]])
+# logistic_email.coef_
 # -
 
-logistic_email = LogisticRegression()
-logistic_email.fit(X_train, y_train)
+log_email = sm.Logit(y_train, X_train_transform).fit()
+log_email.summary()
 
 # +
-predictions = logistic_email.predict(X_test)
+predictions_email = log_email.predict(X_test_transform)
+predictions_email = np.round(predictions_email)
 
-accuracy = accuracy_score(y_test, predictions)
-precision = precision_score(y_test, predictions)
-recall = recall_score(y_test, predictions)
-f1score = f1_score(y_test, predictions)
+accuracy = accuracy_score(y_test, predictions_email)
+precision = precision_score(y_test, predictions_email)
+recall = recall_score(y_test, predictions_email)
+f1score = f1_score(y_test, predictions_email)
 
 print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
 # -
 
-cm = confusion_matrix(y_test, predictions)
+cm = confusion_matrix(y_test, predictions_email)
 plt.figure(figsize=(10, 6))
 sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
 plt.xlabel('Predicted')
@@ -118,7 +126,7 @@ plt.ylabel('Actual')
 plt.title('Confusion Matrix of Email Subscr')
 plt.show()
 
-y_prob = logistic_email.predict_proba(X_test)[:, 1]
+y_prob = log_email.predict(X_test_transform)
 fpr, tpr, thresholds = roc_curve(y_test, y_prob)
 roc_auc = auc(fpr, tpr)
 
@@ -133,47 +141,52 @@ plt.title('Receiver Operating Characteristic (ROC) Curve\nAccuracy: {:.2f}%'.for
 plt.legend(loc="lower right")
 plt.show()
 
-# ##### WinemakerCall Susbcription
+# ##### WinemakerCall Subscription
 
 y = customer.loc[:, "WinemakerCallSubscr"]
-X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
+X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
 
 # +
-### TODO: introduce dummies rather than label encoding
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
-label_encoder = LabelEncoder()
-x_cat = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
-x_num = X.select_dtypes(exclude=['object', 'bool'])
+number_features = list(X.select_dtypes(include=["int", "float"]).columns)
+category_features = list(X.select_dtypes(include=["category", "bool"]).columns)
 
-X_concat = pd.concat([pd.DataFrame(x_num), pd.DataFrame(x_cat)], axis='columns')
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("num", StandardScaler(), number_features),
+        ("cat", OneHotEncoder(drop="first", sparse_output=False), category_features)
+    ])
+
+pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
+pipeline.fit(X_train)
+X_train_transform = pipeline.transform(X_train)
+X_test_transform = pipeline.transform(X_test)
+
+X_train_transform = sm.add_constant(X_train_transform)
+X_test_transform = sm.add_constant(X_test_transform)
 
 # +
-X_train, X_test, y_train, y_test = train_test_split(X_concat, y, test_size=0.2, random_state=0)
-
-scaler = StandardScaler()
-X_train["OrderVolume"] = scaler.fit_transform(X_train[["OrderVolume"]])
-X_train["SaleAmount"] = scaler.fit_transform(X_train[["SaleAmount"]])
-
-# TODO: fit_transform on train data => transform on test
-X_test["OrderVolume"] = scaler.fit_transform(X_test[["OrderVolume"]])
-X_test["SaleAmount"] = scaler.fit_transform(X_test[["SaleAmount"]])
+# logistic_winemaker = LogisticRegression()
+# logistic_winemaker.fit(X_train, y_train)
 # -
 
-logistic_winemaker = LogisticRegression()
-logistic_winemaker.fit(X_train, y_train)
+log_winemaker = sm.Logit(y_train, X_train_transform).fit()
+log_winemaker.summary()
 
 # +
-predictions = logistic_winemaker.predict(X_test)
+predictions_winemaker = log_winemaker.predict(X_test_transform)
+predictions_winemaker = np.round(predictions_winemaker)
 
-accuracy = accuracy_score(y_test, predictions)
-precision = precision_score(y_test, predictions)
-recall = recall_score(y_test, predictions)
-f1score = f1_score(y_test, predictions)
+accuracy = accuracy_score(y_test, predictions_winemaker)
+precision = precision_score(y_test, predictions_winemaker)
+recall = recall_score(y_test, predictions_winemaker)
+f1score = f1_score(y_test, predictions_winemaker)
 
 print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
 # -
 
-cm = confusion_matrix(y_test, predictions)
+cm = confusion_matrix(y_test, predictions_winemaker)
 plt.figure(figsize=(10, 6))
 sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
 plt.xlabel('Predicted')
@@ -181,7 +194,7 @@ plt.ylabel('Actual')
 plt.title('Confusion Matrix of Winemaker Subscr')
 plt.show()
 
-y_prob = logistic_winemaker.predict_proba(X_test)[:, 1]
+y_prob = log_winemaker.predict(X_test_transform)
 fpr, tpr, thresholds = roc_curve(y_test, y_prob)
 roc_auc = auc(fpr, tpr)
 
@@ -199,44 +212,49 @@ plt.show()
 # ##### Newsletter Subscription
 
 y = customer.loc[:, "NewsletterSubscr"]
-X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Region", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
+X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
 
 # +
-### TODO: introduce dummies rather than label encoding
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
-label_encoder = LabelEncoder()
-x_cat = X.select_dtypes(include=['object', 'bool']).apply(label_encoder.fit_transform)
-x_num = X.select_dtypes(exclude=['object', 'bool'])
+number_features = list(X.select_dtypes(include=["int", "float"]).columns)
+category_features = list(X.select_dtypes(include=["category", "bool"]).columns)
 
-X_concat = pd.concat([pd.DataFrame(x_num), pd.DataFrame(x_cat)], axis='columns')
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("num", StandardScaler(), number_features),
+        ("cat", OneHotEncoder(drop="first", sparse_output=False), category_features)
+    ])
+
+pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
+pipeline.fit(X_train)
+X_train_transform = pipeline.transform(X_train)
+X_test_transform = pipeline.transform(X_test)
+
+X_train_transform = sm.add_constant(X_train_transform)
+X_test_transform = sm.add_constant(X_test_transform)
 
 # +
-X_train, X_test, y_train, y_test = train_test_split(X_concat, y, test_size=0.2, random_state=0)
-
-scaler = StandardScaler()
-X_train["OrderVolume"] = scaler.fit_transform(X_train[["OrderVolume"]])
-X_train["SaleAmount"] = scaler.fit_transform(X_train[["SaleAmount"]])
-
-# TODO: fit_transform on train data => transform on test
-X_test["OrderVolume"] = scaler.fit_transform(X_test[["OrderVolume"]])
-X_test["SaleAmount"] = scaler.fit_transform(X_test[["SaleAmount"]])
+# logistic_newsletter = LogisticRegression()
+# logistic_newsletter.fit(X_train, y_train)
 # -
 
-logistic_newsletter = LogisticRegression()
-logistic_newsletter.fit(X_train, y_train)
+log_newsletter = sm.Logit(y_train, X_train_transform).fit()
+log_newsletter.summary()
 
 # +
-predictions = logistic_newsletter.predict(X_test)
+predictions_newsletter = log_newsletter.predict(X_test_transform)
+predictions_newsletter = np.round(predictions_newsletter)
 
-accuracy = accuracy_score(y_test, predictions)
-precision = precision_score(y_test, predictions)
-recall = recall_score(y_test, predictions)
-f1score = f1_score(y_test, predictions)
+accuracy = accuracy_score(y_test, predictions_newsletter)
+precision = precision_score(y_test, predictions_newsletter)
+recall = recall_score(y_test, predictions_newsletter)
+f1score = f1_score(y_test, predictions_newsletter)
 
 print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
 # -
 
-cm = confusion_matrix(y_test, predictions)
+cm = confusion_matrix(y_test, predictions_newsletter)
 plt.figure(figsize=(10, 6))
 sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
 plt.xlabel('Predicted')
@@ -244,7 +262,7 @@ plt.ylabel('Actual')
 plt.title('Confusion Matrix of Winemaker Subscr')
 plt.show()
 
-y_prob = logistic_newsletter.predict_proba(X_test)[:, 1]
+y_prob = log_newsletter.predict(X_test_transform)
 fpr, tpr, thresholds = roc_curve(y_test, y_prob)
 roc_auc = auc(fpr, tpr)
 
