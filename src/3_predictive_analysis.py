@@ -284,25 +284,40 @@ plt.show()
 y = customer.loc[:, "EmailSubscr"]
 X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
 
-X = pd.get_dummies(X, columns=["CustomerSegment", "Division"], drop_first=True)
-X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+# +
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+number_features = list(X.select_dtypes(include=["int", "float"]).columns)
+category_features = list(X.select_dtypes(include=["category", "bool"]).columns)
+
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("num", StandardScaler(), number_features),
+        ("cat", OneHotEncoder(drop="first", sparse_output=False), category_features)
+    ])
+
+pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
+pipeline.fit(X_train)
+X_train_transform = pipeline.transform(X_train)
+X_test_transform = pipeline.transform(X_test)
 
 
 # +
 classifier_email = RandomForestClassifier(random_state=0)
-classifier_email.fit(X_train, Y_train)
+classifier_email.fit(X_train_transform, y_train)
 
-predictions_email = classifier_email.predict(X_test)
+predictions_email = classifier_email.predict(X_test_transform)
+predictions_email = np.round(predictions_email)
 feature_importances_email = classifier_email.feature_importances_
 
 print("Feature Importance")
-for feature, importance in zip(X.columns, feature_importances_email):
+for feature, importance in zip(X_train_transform.columns, feature_importances_email):
     print(f"{feature}: {importance:.4f}")
 
-accuracy = accuracy_score(Y_test, np.round(predictions_email))
-precision = precision_score(Y_test, np.round(predictions_email))
-recall = recall_score(Y_test, np.round(predictions_email))
-f1score = f1_score(Y_test, np.round(predictions_email))
+accuracy = accuracy_score(y_test, predictions_email)
+precision = precision_score(y_test, predictions_email)
+recall = recall_score(y_test, predictions_email)
+f1score = f1_score(y_test, predictions_email)
 
 print("\nModel Metrics")
 print("Accuracy", accuracy, "\n",
@@ -317,26 +332,39 @@ y = customer.loc[:, "WinemakerCallSubscr"]
 X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
 
 # +
-X = pd.get_dummies(X, columns=["CustomerSegment", "Division"], drop_first=True)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
-X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+number_features = list(X.select_dtypes(include=["int", "float"]).columns)
+category_features = list(X.select_dtypes(include=["category", "bool"]).columns)
+
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("num", StandardScaler(), number_features),
+        ("cat", OneHotEncoder(drop="first", sparse_output=False), category_features)
+    ])
+
+pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
+pipeline.fit(X_train)
+X_train_transform = pipeline.transform(X_train)
+X_test_transform = pipeline.transform(X_test)
 
 
 # +
 classifier_winemaker = RandomForestClassifier(random_state=0)
-classifier_winemaker.fit(X_train, Y_train)
+classifier_winemaker.fit(X_train_transform, y_train)
 
-predictions_winemaker = classifier_winemaker.predict(X_test)
+predictions_winemaker = classifier_winemaker.predict(X_test_transform)
+predictions_winemaker = np.round(predictions_winemaker)
 feature_importances_winemaker = classifier_winemaker.feature_importances_
 
 print("Feature Importance")
-for feature, importance in zip(X.columns, feature_importances_winemaker):
+for feature, importance in zip(X_train_transform.columns, feature_importances_winemaker):
     print(f"{feature}: {importance:.4f}")
 
-accuracy = accuracy_score(Y_test, np.round(predictions_winemaker))
-precision = precision_score(Y_test, np.round(predictions_winemaker))
-recall = recall_score(Y_test, np.round(predictions_winemaker))
-f1score = f1_score(Y_test, np.round(predictions_winemaker))
+accuracy = accuracy_score(y_test, predictions_winemaker)
+precision = precision_score(y_test, predictions_winemaker)
+recall = recall_score(y_test, predictions_winemaker)
+f1score = f1_score(y_test, predictions_winemaker)
 
 print("\nModel Metrics")
 print("Accuracy", accuracy, "\n",
@@ -351,26 +379,39 @@ y = customer.loc[:, "NewsletterSubscr"]
 X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
 
 # +
-X = pd.get_dummies(X, columns=["CustomerSegment", "Division"], drop_first=True)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
-X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+number_features = list(X.select_dtypes(include=["int", "float"]).columns)
+category_features = list(X.select_dtypes(include=["category", "bool"]).columns)
+
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("num", StandardScaler(), number_features),
+        ("cat", OneHotEncoder(drop="first", sparse_output=False), category_features)
+    ])
+
+pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
+pipeline.fit(X_train)
+X_train_transform = pipeline.transform(X_train)
+X_test_transform = pipeline.transform(X_test)
 
 
 # +
 classifier_newsletter = RandomForestClassifier(random_state=0)
-classifier_newsletter.fit(X_train, Y_train)
+classifier_newsletter.fit(X_train_transform, y_train)
 
-predictions_newsletter = classifier_newsletter.predict(X_test)
+predictions_newsletter = classifier_newsletter.predict(X_test_transform)
+predictions_newsletter = np.round(predictions_newsletter)
 feature_importances_newsletter = classifier_newsletter.feature_importances_
 
 print("Feature Importance")
-for feature, importance in zip(X.columns, feature_importances_newsletter):
+for feature, importance in zip(X_train_transform.columns, feature_importances_newsletter):
     print(f"{feature}: {importance:.4f}")
 
-accuracy = accuracy_score(Y_test, np.round(predictions_newsletter))
-precision = precision_score(Y_test, np.round(predictions_newsletter))
-recall = recall_score(Y_test, np.round(predictions_newsletter))
-f1score = f1_score(Y_test, np.round(predictions_newsletter))
+accuracy = accuracy_score(y_test, predictions_newsletter)
+precision = precision_score(y_test, predictions_newsletter)
+recall = recall_score(y_test, predictions_newsletter)
+f1score = f1_score(y_test, predictions_newsletter)
 
 print("\nModel Metrics")
 print("Accuracy", accuracy, "\n",
