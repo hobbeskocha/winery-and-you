@@ -71,16 +71,20 @@ customer.dtypes
 
 # #### Logistic Regression
 
+# create overall test-train from customer
+cust_train, cust_test = train_test_split(customer, test_size=0.2, random_state=0)
+
 # ##### Email Subscription
 
-y = customer.loc[:, "EmailSubscr"]
-X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
+# train and test subsets for Email model
+y_train = cust_train.loc[:, "EmailSubscr"]
+y_test = cust_test.loc[:, "EmailSubscr"]
+X_train = cust_train.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
+X_test = cust_test.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
 
 # +
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-
-number_features = list(X.select_dtypes(include=["int", "float"]).columns)
-category_features = list(X.select_dtypes(include=["category", "bool"]).columns)
+number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
+category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
 
 preprocessor = ColumnTransformer(
     transformers=[
@@ -93,8 +97,8 @@ pipeline.fit(X_train)
 X_train_transform = pipeline.transform(X_train)
 X_test_transform = pipeline.transform(X_test)
 
-X_train_transform = sm.add_constant(X_train_transform)
-X_test_transform = sm.add_constant(X_test_transform)
+X_train_transform_const = sm.add_constant(X_train_transform)
+X_test_transform_const = sm.add_constant(X_test_transform)
 
 # +
 # logistic_email = LogisticRegression(fit_intercept=False)
@@ -103,11 +107,11 @@ X_test_transform = sm.add_constant(X_test_transform)
 # logistic_email.coef_
 # -
 
-log_email = sm.Logit(y_train, X_train_transform).fit()
+log_email = sm.Logit(y_train, X_train_transform_const).fit()
 log_email.summary()
 
 # +
-predictions_email = log_email.predict(X_test_transform)
+predictions_email = log_email.predict(X_test_transform_const)
 predictions_email = np.round(predictions_email)
 
 accuracy = accuracy_score(y_test, predictions_email)
@@ -126,7 +130,7 @@ plt.ylabel('Actual')
 plt.title('Confusion Matrix of Email Subscr')
 plt.show()
 
-y_prob = log_email.predict(X_test_transform)
+y_prob = log_email.predict(X_test_transform_const)
 fpr, tpr, thresholds = roc_curve(y_test, y_prob)
 roc_auc = auc(fpr, tpr)
 
@@ -143,14 +147,15 @@ plt.show()
 
 # ##### WinemakerCall Subscription
 
-y = customer.loc[:, "WinemakerCallSubscr"]
-X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
+# train and test subsets for WinemakerCall model
+y_train = cust_train.loc[:, "WinemakerCallSubscr"]
+y_test = cust_test.loc[:, "WinemakerCallSubscr"]
+X_train = cust_train.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
+X_test = cust_test.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
 
 # +
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-
-number_features = list(X.select_dtypes(include=["int", "float"]).columns)
-category_features = list(X.select_dtypes(include=["category", "bool"]).columns)
+number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
+category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
 
 preprocessor = ColumnTransformer(
     transformers=[
@@ -163,19 +168,19 @@ pipeline.fit(X_train)
 X_train_transform = pipeline.transform(X_train)
 X_test_transform = pipeline.transform(X_test)
 
-X_train_transform = sm.add_constant(X_train_transform)
-X_test_transform = sm.add_constant(X_test_transform)
+X_train_transform_const = sm.add_constant(X_train_transform)
+X_test_transform_const = sm.add_constant(X_test_transform)
 
 # +
 # logistic_winemaker = LogisticRegression()
 # logistic_winemaker.fit(X_train, y_train)
 # -
 
-log_winemaker = sm.Logit(y_train, X_train_transform).fit()
+log_winemaker = sm.Logit(y_train, X_train_transform_const).fit()
 log_winemaker.summary()
 
 # +
-predictions_winemaker = log_winemaker.predict(X_test_transform)
+predictions_winemaker = log_winemaker.predict(X_test_transform_const)
 predictions_winemaker = np.round(predictions_winemaker)
 
 accuracy = accuracy_score(y_test, predictions_winemaker)
@@ -194,7 +199,7 @@ plt.ylabel('Actual')
 plt.title('Confusion Matrix of Winemaker Subscr')
 plt.show()
 
-y_prob = log_winemaker.predict(X_test_transform)
+y_prob = log_winemaker.predict(X_test_transform_const)
 fpr, tpr, thresholds = roc_curve(y_test, y_prob)
 roc_auc = auc(fpr, tpr)
 
@@ -211,14 +216,15 @@ plt.show()
 
 # ##### Newsletter Subscription
 
-y = customer.loc[:, "NewsletterSubscr"]
-X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
+# train and test subsets for Newsletter model
+y_train = cust_train.loc[:, "NewsletterSubscr"]
+y_test = cust_test.loc[:, "NewsletterSubscr"]
+X_train = cust_train.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
+X_test = cust_test.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
 
 # +
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-
-number_features = list(X.select_dtypes(include=["int", "float"]).columns)
-category_features = list(X.select_dtypes(include=["category", "bool"]).columns)
+number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
+category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
 
 preprocessor = ColumnTransformer(
     transformers=[
@@ -231,19 +237,19 @@ pipeline.fit(X_train)
 X_train_transform = pipeline.transform(X_train)
 X_test_transform = pipeline.transform(X_test)
 
-X_train_transform = sm.add_constant(X_train_transform)
-X_test_transform = sm.add_constant(X_test_transform)
+X_train_transform_const = sm.add_constant(X_train_transform)
+X_test_transform_const = sm.add_constant(X_test_transform)
 
 # +
 # logistic_newsletter = LogisticRegression()
 # logistic_newsletter.fit(X_train, y_train)
 # -
 
-log_newsletter = sm.Logit(y_train, X_train_transform).fit()
+log_newsletter = sm.Logit(y_train, X_train_transform_const).fit()
 log_newsletter.summary()
 
 # +
-predictions_newsletter = log_newsletter.predict(X_test_transform)
+predictions_newsletter = log_newsletter.predict(X_test_transform_const)
 predictions_newsletter = np.round(predictions_newsletter)
 
 accuracy = accuracy_score(y_test, predictions_newsletter)
@@ -262,7 +268,7 @@ plt.ylabel('Actual')
 plt.title('Confusion Matrix of Winemaker Subscr')
 plt.show()
 
-y_prob = log_newsletter.predict(X_test_transform)
+y_prob = log_newsletter.predict(X_test_transform_const)
 fpr, tpr, thresholds = roc_curve(y_test, y_prob)
 roc_auc = auc(fpr, tpr)
 
@@ -419,6 +425,11 @@ print("Accuracy", accuracy, "\n",
     "Recall", recall, "\n",
     "F1-Score", f1score)
 # -
+
+# #### Calculate Lift, Marginal Response Rate, Number of Positive Reponses
+
+# probability, prediction, avg response, lift, marginal response rate, number of positive responses for email, winemaker, newsletter
+
 
 # ### Multinomial Classification
 
