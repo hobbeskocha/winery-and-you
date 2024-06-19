@@ -112,7 +112,9 @@ log_email.summary()
 
 # +
 predictions_email = log_email.predict(X_test_transform_const)
+cust_test["prob_logit_email"] = predictions_email
 predictions_email = np.round(predictions_email)
+cust_test["pred_logit_email"] = predictions_email
 
 accuracy = accuracy_score(y_test, predictions_email)
 precision = precision_score(y_test, predictions_email)
@@ -181,7 +183,9 @@ log_winemaker.summary()
 
 # +
 predictions_winemaker = log_winemaker.predict(X_test_transform_const)
+cust_test["prob_logit_winemaker"] = predictions_winemaker
 predictions_winemaker = np.round(predictions_winemaker)
+cust_test["pred_logit_winemaker"] = predictions_winemaker
 
 accuracy = accuracy_score(y_test, predictions_winemaker)
 precision = precision_score(y_test, predictions_winemaker)
@@ -250,7 +254,9 @@ log_newsletter.summary()
 
 # +
 predictions_newsletter = log_newsletter.predict(X_test_transform_const)
+cust_test["prob_logit_newsletter"] = predictions_newsletter
 predictions_newsletter = np.round(predictions_newsletter)
+cust_test["pred_logit_newsletter"] = predictions_newsletter
 
 accuracy = accuracy_score(y_test, predictions_newsletter)
 precision = precision_score(y_test, predictions_newsletter)
@@ -287,14 +293,15 @@ plt.show()
 
 # ##### Email Subscription
 
-y = customer.loc[:, "EmailSubscr"]
-X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
+# train and test subsets for Email model
+y_train = cust_train.loc[:, "EmailSubscr"]
+y_test = cust_test.loc[:, "EmailSubscr"]
+X_train = cust_train.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
+X_test = cust_test.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
 
 # +
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-
-number_features = list(X.select_dtypes(include=["int", "float"]).columns)
-category_features = list(X.select_dtypes(include=["category", "bool"]).columns)
+number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
+category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
 
 preprocessor = ColumnTransformer(
     transformers=[
@@ -334,14 +341,15 @@ print("Accuracy", accuracy, "\n",
 
 # ##### WinemakerCall Subscription
 
-y = customer.loc[:, "WinemakerCallSubscr"]
-X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
+# train and test subsets for WinemakerCall model
+y_train = cust_train.loc[:, "WinemakerCallSubscr"]
+y_test = cust_test.loc[:, "WinemakerCallSubscr"]
+X_train = cust_train.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
+X_test = cust_test.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
 
 # +
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-
-number_features = list(X.select_dtypes(include=["int", "float"]).columns)
-category_features = list(X.select_dtypes(include=["category", "bool"]).columns)
+number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
+category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
 
 preprocessor = ColumnTransformer(
     transformers=[
@@ -381,14 +389,15 @@ print("Accuracy", accuracy, "\n",
 
 # ##### Newsletter Subscription
 
-y = customer.loc[:, "NewsletterSubscr"]
-X = customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
+# train and test subsets for Newsletter model
+y_train = cust_train.loc[:, "NewsletterSubscr"]
+y_test = cust_test.loc[:, "NewsletterSubscr"]
+X_train = cust_train.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
+X_test = cust_test.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
 
 # +
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-
-number_features = list(X.select_dtypes(include=["int", "float"]).columns)
-category_features = list(X.select_dtypes(include=["category", "bool"]).columns)
+number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
+category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
 
 preprocessor = ColumnTransformer(
     transformers=[
@@ -426,10 +435,92 @@ print("Accuracy", accuracy, "\n",
     "F1-Score", f1score)
 # -
 
-# #### Calculate Lift, Marginal Response Rate, Number of Positive Reponses
+# #### Calculate Lift
 
-# probability, prediction, avg response, lift, marginal response rate, number of positive responses for email, winemaker, newsletter
+cust_test.head() # test df has appended probability and prediction columns to calculate from 
 
+# +
+# avg response
+avg_email = np.mean(cust_test["EmailSubscr"])
+avg_newsletter = np.mean(cust_test["NewsletterSubscr"])
+avg_winemaker = np.mean(cust_test["WinemakerCallSubscr"])
+
+# lift
+cust_test["lift_email"] = cust_test["prob_logit_email"]/avg_email
+cust_test["lift_newsletter"] = cust_test["prob_logit_newsletter"]/avg_newsletter
+cust_test["lift_winemaker"] = cust_test["prob_logit_winemaker"]/avg_winemaker
+# -
+
+# #### Plot Marginal Response Rate
+
+cust_test_email_sorted = cust_test.sort_values(by="lift_email", ascending=False)
+marginal_email = sns.scatterplot(cust_test_email_sorted, x = range(len(cust_test_email_sorted)), y = "prob_logit_email", color = "black")
+marginal_email.set(xlabel="Number of Prospects", ylabel="nth-best Response Rate", title="Email: Marginal Response Rate vs Number of Solicitations")
+plt.show()
+
+cust_test_newsletter_sorted = cust_test.sort_values(by="lift_newsletter", ascending=False)
+marginal_newsletter = sns.scatterplot(cust_test_newsletter_sorted, x = range(len(cust_test_newsletter_sorted)), y = "prob_logit_newsletter", color = "darkgreen")
+marginal_newsletter.set(xlabel="Number of Prospects", ylabel="nth-best Response Rate", title="Newsletter: Marginal Response Rate vs Number of Solicitations")
+plt.show()
+
+cust_test_winemaker_sorted = cust_test.sort_values(by="lift_winemaker", ascending=False)
+marginal_winemaker = sns.scatterplot(cust_test_winemaker_sorted, x = range(len(cust_test_winemaker_sorted)), y = "prob_logit_winemaker", color = "red")
+marginal_winemaker.set(xlabel="Number of Prospects", ylabel="nth-best Response Rate", title="Winemaker: Marginal Response Rate vs Number of Solicitations")
+plt.show()
+
+# #### Plot Number of Positive Reponses
+
+# +
+cust_test_email_sorted["cumsum_email"] = cust_test_email_sorted["prob_logit_email"].cumsum()
+max_cumsum_email = max(cust_test_email_sorted["cumsum_email"])
+
+responses_email = sns.scatterplot(cust_test_email_sorted, x = range(len(cust_test_email_sorted)), y = "cumsum_email", color = "black")
+responses_email.set(xlabel="Number of Customers", ylabel="Expected total number of responses", title="Email: Number of Positive Responses vs Number of Solicitations")
+plt.show()
+
+responses_email_prop = sns.scatterplot(cust_test_email_sorted, 
+                                       x = np.array(range(len(cust_test_email_sorted)))/len(cust_test_email_sorted), 
+                                       y = cust_test_email_sorted["cumsum_email"]/max_cumsum_email, 
+                                       color = "black")
+responses_email_prop.set(xlabel="Fraction of Customers", ylabel="Proportion of responses", title="Email: Proportion of Positive Responses vs Fraction of Solicitations")
+plt.show()
+
+# +
+cust_test_newsletter_sorted["cumsum_newsletter"] = cust_test_newsletter_sorted["prob_logit_newsletter"].cumsum()
+max_cumsum_newsletter = max(cust_test_newsletter_sorted["cumsum_newsletter"])
+
+responses_newsletter = sns.scatterplot(cust_test_newsletter_sorted,
+                                        x = range(len(cust_test_newsletter_sorted)),
+                                          y = "cumsum_newsletter",
+                                            color = "darkgreen")
+responses_newsletter.set(xlabel="Number of Customers", ylabel="Expected total number of responses", title="Newsletter: Number of Positive Responses vs Number of Solicitations")
+plt.show()
+
+responses_newsletter_prop = sns.scatterplot(cust_test_newsletter_sorted, 
+                                       x = np.array(range(len(cust_test_newsletter_sorted)))/len(cust_test_newsletter_sorted), 
+                                       y = cust_test_newsletter_sorted["cumsum_newsletter"]/max_cumsum_newsletter, 
+                                       color = "darkgreen")
+responses_newsletter_prop.set(xlabel="Fraction of Customers", ylabel="Proportion of responses", title="Newsletter: Proportion of Positive Responses vs Fraction of Solicitations")
+plt.show()
+
+# +
+cust_test_winemaker_sorted["cumsum_winemaker"] = cust_test_winemaker_sorted["prob_logit_winemaker"].cumsum()
+max_cumsum_winemaker = max(cust_test_winemaker_sorted["cumsum_winemaker"])
+
+responses_winemaker = sns.scatterplot(cust_test_winemaker_sorted,
+                                        x = range(len(cust_test_winemaker_sorted)),
+                                          y = "cumsum_winemaker",
+                                            color = "darkgreen")
+responses_winemaker.set(xlabel="Number of Customers", ylabel="Expected total number of responses", title="Winemaker: Number of Positive Responses vs Number of Solicitations")
+plt.show()
+
+responses_winemaker_prop = sns.scatterplot(cust_test_winemaker_sorted, 
+                                       x = np.array(range(len(cust_test_winemaker_sorted)))/len(cust_test_winemaker_sorted), 
+                                       y = cust_test_winemaker_sorted["cumsum_winemaker"]/max_cumsum_winemaker, 
+                                       color = "darkgreen")
+responses_winemaker_prop.set(xlabel="Fraction of Customers", ylabel="Proportion of responses", title="Winemaker: Proportion of Positive Responses vs Fraction of Solicitations")
+plt.show()
+# -
 
 # ### Multinomial Classification
 
@@ -438,12 +529,12 @@ print("Accuracy", accuracy, "\n",
 customer["CustomerSegment"].value_counts()
 
 # +
-y = customer.loc[:, "CustomerSegment"]
-X = customer.loc[:, ["OrderVolume", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
+# y = customer.loc[:, "CustomerSegment"]
+# X = customer.loc[:, ["OrderVolume", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
 
-# TODO: use dummies
-label_encoder = LabelEncoder()
-X["Region"] = label_encoder.fit_transform(X["Region"])
+# # TODO: use dummies
+# label_encoder = LabelEncoder()
+# X["Region"] = label_encoder.fit_transform(X["Region"])
 
 # +
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size= 0.2, random_state = 0)
