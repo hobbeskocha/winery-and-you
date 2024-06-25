@@ -69,7 +69,13 @@ list(set(winery_order_nas["CustomerID"].values).intersection(set(multi_order_cus
 
 state_na_condition = (winery["State"].isna())
 winery_state_nas = winery.loc[state_na_condition, :]
-winery_state_nas.sample(5)
+winery_state_nas
+
+# Check if there are other records that we can impute State from
+
+state_nas_ids = set(winery_state_nas["CustomerID"].values)
+state_nas_records = winery[winery["CustomerID"].isin(state_nas_ids)]
+state_nas_records
 
 # #### Drop NAs
 
@@ -99,10 +105,14 @@ winery.dtypes
 
 # #### Filter for valid US states
 
+winery["State"].value_counts()
+
 us_states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS',
                           'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY',
                           'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY']
+print(winery.shape)
 winery = winery[winery["State"].isin(us_states)]
+print(winery.shape)
 
 # #### Remove instances of negative sales
 
