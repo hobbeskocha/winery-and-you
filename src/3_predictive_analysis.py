@@ -99,12 +99,6 @@ X_test_transform = pipeline.transform(X_test)
 
 X_train_transform_const = sm.add_constant(X_train_transform)
 X_test_transform_const = sm.add_constant(X_test_transform)
-
-# +
-# logistic_email = LogisticRegression(fit_intercept=False)
-# logistic_email.fit(X_train_transform, y_train)
-
-# logistic_email.coef_
 # -
 
 log_email = sm.Logit(y_train, X_train_transform_const).fit()
@@ -172,10 +166,6 @@ X_test_transform = pipeline.transform(X_test)
 
 X_train_transform_const = sm.add_constant(X_train_transform)
 X_test_transform_const = sm.add_constant(X_test_transform)
-
-# +
-# logistic_winemaker = LogisticRegression()
-# logistic_winemaker.fit(X_train, y_train)
 # -
 
 log_winemaker = sm.Logit(y_train, X_train_transform_const).fit()
@@ -243,10 +233,6 @@ X_test_transform = pipeline.transform(X_test)
 
 X_train_transform_const = sm.add_constant(X_train_transform)
 X_test_transform_const = sm.add_constant(X_test_transform)
-
-# +
-# logistic_newsletter = LogisticRegression()
-# logistic_newsletter.fit(X_train, y_train)
 # -
 
 log_newsletter = sm.Logit(y_train, X_train_transform_const).fit()
@@ -467,6 +453,8 @@ cust_test_winemaker_sorted = cust_test.sort_values(by="lift_winemaker", ascendin
 marginal_winemaker = sns.scatterplot(cust_test_winemaker_sorted, x = range(len(cust_test_winemaker_sorted)), y = "prob_logit_winemaker", color = "red")
 marginal_winemaker.set(xlabel="Number of Prospects", ylabel="nth-best Response Rate", title="Winemaker: Marginal Response Rate vs Number of Solicitations")
 plt.show()
+
+#
 
 # #### Plot Number of Positive Reponses
 
