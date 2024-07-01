@@ -115,7 +115,7 @@ precision = precision_score(y_test, predictions_email)
 recall = recall_score(y_test, predictions_email)
 f1score = f1_score(y_test, predictions_email)
 
-print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
+print(f"Accuracy: {np.round(accuracy, 4)},\nPrecision: {np.round(precision, 4)},\nRecall: {np.round(recall, 4)},\nF1Score: {np.round(f1score, 4)}")
 # -
 
 cm = confusion_matrix(y_test, predictions_email)
@@ -132,7 +132,7 @@ roc_auc = auc(fpr, tpr)
 
 plt.figure(figsize=(8, 6))
 plt.plot(fpr, tpr, color='darkorange', lw=2,
-         label=f'ROC Curve (AUC = {roc_auc:.2f})')
+         label=f'ROC Curve (AUC = {roc_auc:.4f})')
 plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--', label='Random')
 plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
@@ -182,7 +182,7 @@ precision = precision_score(y_test, predictions_winemaker)
 recall = recall_score(y_test, predictions_winemaker)
 f1score = f1_score(y_test, predictions_winemaker)
 
-print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
+print(f"Accuracy: {np.round(accuracy, 4)},\nPrecision: {np.round(precision, 4)},\nRecall: {np.round(recall, 4)},\nF1Score: {np.round(f1score, 4)}")
 # -
 
 cm = confusion_matrix(y_test, predictions_winemaker)
@@ -199,7 +199,7 @@ roc_auc = auc(fpr, tpr)
 
 plt.figure(figsize=(8, 6))
 plt.plot(fpr, tpr, color='darkorange', lw=2,
-         label=f'ROC Curve (AUC = {roc_auc:.2f})')
+         label=f'ROC Curve (AUC = {roc_auc:.4f})')
 plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--', label='Random')
 plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
@@ -249,7 +249,7 @@ precision = precision_score(y_test, predictions_newsletter)
 recall = recall_score(y_test, predictions_newsletter)
 f1score = f1_score(y_test, predictions_newsletter)
 
-print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
+print(f"Accuracy: {np.round(accuracy, 4)},\nPrecision: {np.round(precision, 4)},\nRecall: {np.round(recall, 4)},\nF1Score: {np.round(f1score, 4)}")
 # -
 
 cm = confusion_matrix(y_test, predictions_newsletter)
@@ -266,7 +266,7 @@ roc_auc = auc(fpr, tpr)
 
 plt.figure(figsize=(8, 6))
 plt.plot(fpr, tpr, color='darkorange', lw=2,
-         label=f'ROC Curve (AUC = {roc_auc:.2f})')
+         label=f'ROC Curve (AUC = {roc_auc:.4f})')
 plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--', label='Random')
 plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
@@ -312,6 +312,7 @@ feature_importances_email = classifier_email.feature_importances_
 print("Feature Importance")
 for feature, importance in zip(X_train_transform.columns, feature_importances_email):
     print(f"{feature}: {importance:.4f}")
+# TODO: make chart for importances
 
 accuracy = accuracy_score(y_test, predictions_email)
 precision = precision_score(y_test, predictions_email)
@@ -319,10 +320,10 @@ recall = recall_score(y_test, predictions_email)
 f1score = f1_score(y_test, predictions_email)
 
 print("\nModel Metrics")
-print("Accuracy", accuracy, "\n",
-    "Precision", precision, "\n",
-    "Recall", recall, "\n",
-    "F1-Score", f1score)
+print("Accuracy", np.round(accuracy, 4), "\n",
+    "Precision", np.round(precision, 4), "\n",
+    "Recall", np.round(recall, 4), "\n",
+    "F1-Score", np.round(f1score, 4))
 # -
 
 # ##### WinemakerCall Subscription
@@ -360,6 +361,7 @@ feature_importances_winemaker = classifier_winemaker.feature_importances_
 print("Feature Importance")
 for feature, importance in zip(X_train_transform.columns, feature_importances_winemaker):
     print(f"{feature}: {importance:.4f}")
+# TODO: feature importance plot
 
 accuracy = accuracy_score(y_test, predictions_winemaker)
 precision = precision_score(y_test, predictions_winemaker)
@@ -367,10 +369,10 @@ recall = recall_score(y_test, predictions_winemaker)
 f1score = f1_score(y_test, predictions_winemaker)
 
 print("\nModel Metrics")
-print("Accuracy", accuracy, "\n",
-    "Precision", precision, "\n",
-    "Recall", recall, "\n",
-    "F1-Score", f1score)
+print("Accuracy", np.round(accuracy, 4), "\n",
+    "Precision", np.round(precision, 4), "\n",
+    "Recall", np.round(recall, 4), "\n",
+    "F1-Score", np.round(f1score, 4))
 # -
 
 # ##### Newsletter Subscription
@@ -408,6 +410,7 @@ feature_importances_newsletter = classifier_newsletter.feature_importances_
 print("Feature Importance")
 for feature, importance in zip(X_train_transform.columns, feature_importances_newsletter):
     print(f"{feature}: {importance:.4f}")
+# TODO: feature importance plot
 
 accuracy = accuracy_score(y_test, predictions_newsletter)
 precision = precision_score(y_test, predictions_newsletter)
@@ -415,10 +418,10 @@ recall = recall_score(y_test, predictions_newsletter)
 f1score = f1_score(y_test, predictions_newsletter)
 
 print("\nModel Metrics")
-print("Accuracy", accuracy, "\n",
-    "Precision", precision, "\n",
-    "Recall", recall, "\n",
-    "F1-Score", f1score)
+print("Accuracy", np.round(accuracy, 4), "\n",
+    "Precision", np.round(precision, 4), "\n",
+    "Recall", np.round(recall, 4), "\n",
+    "F1-Score", np.round(f1score, 4))
 # -
 
 # #### Calculate Lift
@@ -453,8 +456,6 @@ cust_test_winemaker_sorted = cust_test.sort_values(by="lift_winemaker", ascendin
 marginal_winemaker = sns.scatterplot(cust_test_winemaker_sorted, x = range(len(cust_test_winemaker_sorted)), y = "prob_logit_winemaker", color = "red")
 marginal_winemaker.set(xlabel="Number of Prospects", ylabel="nth-best Response Rate", title="Winemaker: Marginal Response Rate vs Number of Solicitations")
 plt.show()
-
-#
 
 # #### Plot Number of Positive Reponses
 
