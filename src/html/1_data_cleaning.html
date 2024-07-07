@@ -14589,7 +14589,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -14608,7 +14608,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">max_columns</span> <span class="o">=</span> <span class="mi">25</span>
@@ -14647,7 +14647,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[35]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">winery</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/Winery_Data_csv.csv"</span><span class="p">)</span>
@@ -14669,7 +14669,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[35]:</div>
 
 
 
@@ -14863,7 +14863,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[36]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">winery</span><span class="o">.</span><span class="n">dtypes</span><span class="p">,</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
@@ -14990,7 +14990,7 @@ None
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">winery</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">winery</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
@@ -15063,7 +15063,7 @@ dtype: int64
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[38]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">orders_na_condition</span> <span class="o">=</span> <span class="p">(</span><span class="n">winery</span><span class="p">[</span><span class="s2">"Orders2008"</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())</span> <span class="o">|</span> <span class="p">(</span><span class="n">winery</span><span class="p">[</span><span class="s2">"Orders2009"</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())</span> <span class="o">|</span> <span class="p">(</span><span class="n">winery</span><span class="p">[</span><span class="s2">"Orders2010"</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())</span>
@@ -15086,7 +15086,7 @@ dtype: int64
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[38]:</div>
 
 
 
@@ -15118,7 +15118,7 @@ dtype: int64
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[39]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">full_counts</span> <span class="o">=</span> <span class="n">winery</span><span class="p">[</span><span class="s2">"CustomerID"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span>
@@ -15143,7 +15143,7 @@ dtype: int64
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[39]:</div>
 
 
 
@@ -15175,7 +15175,7 @@ dtype: int64
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[40]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">winery_order_nas</span><span class="p">[</span><span class="s2">"CustomerID"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">multi_order_custs</span><span class="p">)))</span>
@@ -15196,7 +15196,7 @@ dtype: int64
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[40]:</div>
 
 
 
@@ -15227,12 +15227,12 @@ dtype: int64
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[41]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">state_na_condition</span> <span class="o">=</span> <span class="p">(</span><span class="n">winery</span><span class="p">[</span><span class="s2">"State"</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())</span>
 <span class="n">winery_state_nas</span> <span class="o">=</span> <span class="n">winery</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">state_na_condition</span><span class="p">,</span> <span class="p">:]</span>
-<span class="n">winery_state_nas</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">winery_state_nas</span>
 </pre></div>
 
      </div>
@@ -15250,7 +15250,7 @@ dtype: int64
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[41]:</div>
 
 
 
@@ -15298,30 +15298,6 @@ dtype: int64
   </thead>
   <tbody>
     <tr>
-      <th>59333</th>
-      <td>19947</td>
-      <td>13484</td>
-      <td>Casual Visitor</td>
-      <td>29-Sep-08</td>
-      <td>57702</td>
-      <td>NaN</td>
-      <td>0.0</td>
-      <td>16.0</td>
-      <td>0.0</td>
-      <td>51.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>2009</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>51.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
       <th>44100</th>
       <td>12853</td>
       <td>10597</td>
@@ -15346,23 +15322,23 @@ dtype: int64
       <td>0.0</td>
     </tr>
     <tr>
-      <th>51068</th>
-      <td>16083</td>
-      <td>29216</td>
+      <th>44101</th>
+      <td>12853</td>
+      <td>53573</td>
       <td>Casual Visitor</td>
-      <td>13-Feb-09</td>
-      <td>9180</td>
+      <td>11-Sep-09</td>
+      <td>9868</td>
       <td>NaN</td>
-      <td>65.0</td>
+      <td>79.0</td>
       <td>17.0</td>
       <td>0.0</td>
       <td>17.0</td>
       <td>1.0</td>
       <td>1.0</td>
       <td>0.0</td>
-      <td>2010</td>
-      <td>0</td>
-      <td>0</td>
+      <td>2009</td>
+      <td>1</td>
+      <td>1</td>
       <td>0</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -15391,6 +15367,296 @@ dtype: int64
       <td>0.0</td>
       <td>0.0</td>
       <td>65.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>51068</th>
+      <td>16083</td>
+      <td>29216</td>
+      <td>Casual Visitor</td>
+      <td>13-Feb-09</td>
+      <td>9180</td>
+      <td>NaN</td>
+      <td>65.0</td>
+      <td>17.0</td>
+      <td>0.0</td>
+      <td>17.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>2010</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>17.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>59333</th>
+      <td>19947</td>
+      <td>13484</td>
+      <td>Casual Visitor</td>
+      <td>29-Sep-08</td>
+      <td>57702</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>16.0</td>
+      <td>0.0</td>
+      <td>51.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>2009</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>51.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>59334</th>
+      <td>19947</td>
+      <td>56442</td>
+      <td>Casual Visitor</td>
+      <td>29-Sep-09</td>
+      <td>57702</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>16.0</td>
+      <td>0.0</td>
+      <td>16.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>2009</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>16.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Check if there are other records that we can impute State from</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[42]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">state_nas_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">winery_state_nas</span><span class="p">[</span><span class="s2">"CustomerID"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">state_nas_records</span> <span class="o">=</span> <span class="n">winery</span><span class="p">[</span><span class="n">winery</span><span class="p">[</span><span class="s2">"CustomerID"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">state_nas_ids</span><span class="p">)]</span>
+<span class="n">state_nas_records</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[42]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CustomerID</th>
+      <th>OrderID</th>
+      <th>CustomerSegment</th>
+      <th>Date</th>
+      <th>ZipCode</th>
+      <th>State</th>
+      <th>Sales2008</th>
+      <th>Sales2009</th>
+      <th>Sales2010</th>
+      <th>SaleAmount</th>
+      <th>Orders2008</th>
+      <th>Orders2009</th>
+      <th>Orders2010</th>
+      <th>YearAcquired</th>
+      <th>EmailSubscr</th>
+      <th>NewsletterSubscr</th>
+      <th>WinemakerCallSubscr</th>
+      <th>EmailSales</th>
+      <th>NewsletterSales</th>
+      <th>TastingRoomSales</th>
+      <th>WinemakerCallSales</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>44100</th>
+      <td>12853</td>
+      <td>10597</td>
+      <td>Casual Visitor</td>
+      <td>11-Sep-08</td>
+      <td>9868</td>
+      <td>NaN</td>
+      <td>79.0</td>
+      <td>17.0</td>
+      <td>0.0</td>
+      <td>79.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>2009</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>79.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>44101</th>
+      <td>12853</td>
+      <td>53573</td>
+      <td>Casual Visitor</td>
+      <td>11-Sep-09</td>
+      <td>9868</td>
+      <td>NaN</td>
+      <td>79.0</td>
+      <td>17.0</td>
+      <td>0.0</td>
+      <td>17.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>2009</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>17.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>51067</th>
+      <td>16083</td>
+      <td>6140</td>
+      <td>Casual Visitor</td>
+      <td>12-Aug-08</td>
+      <td>9180</td>
+      <td>NaN</td>
+      <td>65.0</td>
+      <td>17.0</td>
+      <td>0.0</td>
+      <td>65.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>2010</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>65.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>51068</th>
+      <td>16083</td>
+      <td>29216</td>
+      <td>Casual Visitor</td>
+      <td>13-Feb-09</td>
+      <td>9180</td>
+      <td>NaN</td>
+      <td>65.0</td>
+      <td>17.0</td>
+      <td>0.0</td>
+      <td>17.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>2010</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>17.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>59333</th>
+      <td>19947</td>
+      <td>13484</td>
+      <td>Casual Visitor</td>
+      <td>29-Sep-08</td>
+      <td>57702</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>16.0</td>
+      <td>0.0</td>
+      <td>51.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>2009</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>51.0</td>
       <td>0.0</td>
     </tr>
     <tr>
@@ -15444,7 +15710,7 @@ dtype: int64
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[43]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">winery</span> <span class="o">=</span> <span class="n">winery</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>     <span class="c1"># ignore_index resets the row labels to 0 -&gt; n-1 after dropping NA rows</span>
@@ -15519,7 +15785,7 @@ Shape (64845, 21)
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[44]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">winery</span><span class="p">[</span><span class="s2">"Date"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">winery</span><span class="p">[</span><span class="s2">"Date"</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"</span><span class="si">%d</span><span class="s2">-%b-%y"</span><span class="p">)</span>
@@ -15554,7 +15820,7 @@ Shape (64845, 21)
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[44]:</div>
 
 
 
@@ -15601,23 +15867,147 @@ dtype: object</pre>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[45]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">us_states</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'AL'</span><span class="p">,</span> <span class="s1">'AK'</span><span class="p">,</span> <span class="s1">'AZ'</span><span class="p">,</span> <span class="s1">'AR'</span><span class="p">,</span> <span class="s1">'CA'</span><span class="p">,</span> <span class="s1">'CO'</span><span class="p">,</span> <span class="s1">'CT'</span><span class="p">,</span> <span class="s1">'DE'</span><span class="p">,</span> <span class="s1">'FL'</span><span class="p">,</span> <span class="s1">'GA'</span><span class="p">,</span> <span class="s1">'HI'</span><span class="p">,</span> <span class="s1">'ID'</span><span class="p">,</span> <span class="s1">'IL'</span><span class="p">,</span> <span class="s1">'IN'</span><span class="p">,</span> <span class="s1">'IA'</span><span class="p">,</span> <span class="s1">'KS'</span><span class="p">,</span>
-                          <span class="s1">'KY'</span><span class="p">,</span> <span class="s1">'LA'</span><span class="p">,</span> <span class="s1">'ME'</span><span class="p">,</span> <span class="s1">'MD'</span><span class="p">,</span> <span class="s1">'MA'</span><span class="p">,</span> <span class="s1">'MI'</span><span class="p">,</span> <span class="s1">'MN'</span><span class="p">,</span> <span class="s1">'MS'</span><span class="p">,</span> <span class="s1">'MO'</span><span class="p">,</span> <span class="s1">'MT'</span><span class="p">,</span> <span class="s1">'NE'</span><span class="p">,</span> <span class="s1">'NV'</span><span class="p">,</span> <span class="s1">'NH'</span><span class="p">,</span> <span class="s1">'NJ'</span><span class="p">,</span> <span class="s1">'NM'</span><span class="p">,</span> <span class="s1">'NY'</span><span class="p">,</span>
-                          <span class="s1">'NC'</span><span class="p">,</span> <span class="s1">'ND'</span><span class="p">,</span> <span class="s1">'OH'</span><span class="p">,</span> <span class="s1">'OK'</span><span class="p">,</span> <span class="s1">'OR'</span><span class="p">,</span> <span class="s1">'PA'</span><span class="p">,</span> <span class="s1">'RI'</span><span class="p">,</span> <span class="s1">'SC'</span><span class="p">,</span> <span class="s1">'SD'</span><span class="p">,</span> <span class="s1">'TN'</span><span class="p">,</span> <span class="s1">'TX'</span><span class="p">,</span> <span class="s1">'UT'</span><span class="p">,</span> <span class="s1">'VT'</span><span class="p">,</span> <span class="s1">'VA'</span><span class="p">,</span> <span class="s1">'WA'</span><span class="p">,</span> <span class="s1">'WV'</span><span class="p">,</span> <span class="s1">'WI'</span><span class="p">,</span> <span class="s1">'WY'</span><span class="p">]</span>
-<span class="n">winery</span> <span class="o">=</span> <span class="n">winery</span><span class="p">[</span><span class="n">winery</span><span class="p">[</span><span class="s2">"State"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">us_states</span><span class="p">)]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">winery</span><span class="p">[</span><span class="s2">"State"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 </pre></div>
 
      </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[45]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>State
+TX    7533
+CA    7047
+FL    4901
+VA    3184
+NY    2866
+IL    2707
+OH    2616
+PA    2286
+NC    1683
+NJ    1630
+MI    1626
+GA    1589
+CO    1428
+AZ    1375
+MD    1342
+MO    1247
+TN    1240
+MA    1146
+IN    1092
+AL    1081
+WI    1053
+KS     956
+CT     926
+MN     883
+OK     827
+LA     821
+SC     756
+IA     692
+WA     681
+NV     644
+KY     624
+MS     606
+DC     573
+NE     479
+AR     418
+NM     411
+UT     364
+WY     341
+HI     308
+MT     295
+NH     295
+ND     293
+OR     289
+SD     267
+WV     258
+ME     256
+DE     250
+AK     232
+RI     158
+VT     106
+ID      95
+PR      31
+ZZ      14
+GU      12
+MP       9
+VI       3
+Name: count, dtype: int64</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[46]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">us_states</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'AL'</span><span class="p">,</span> <span class="s1">'AK'</span><span class="p">,</span> <span class="s1">'AZ'</span><span class="p">,</span> <span class="s1">'AR'</span><span class="p">,</span> <span class="s1">'CA'</span><span class="p">,</span> <span class="s1">'CO'</span><span class="p">,</span> <span class="s1">'CT'</span><span class="p">,</span> <span class="s1">'DE'</span><span class="p">,</span> <span class="s1">'FL'</span><span class="p">,</span> <span class="s1">'GA'</span><span class="p">,</span> <span class="s1">'HI'</span><span class="p">,</span> <span class="s1">'ID'</span><span class="p">,</span> <span class="s1">'IL'</span><span class="p">,</span> <span class="s1">'IN'</span><span class="p">,</span> <span class="s1">'IA'</span><span class="p">,</span> <span class="s1">'KS'</span><span class="p">,</span>
+                          <span class="s1">'KY'</span><span class="p">,</span> <span class="s1">'LA'</span><span class="p">,</span> <span class="s1">'ME'</span><span class="p">,</span> <span class="s1">'MD'</span><span class="p">,</span> <span class="s1">'MA'</span><span class="p">,</span> <span class="s1">'MI'</span><span class="p">,</span> <span class="s1">'MN'</span><span class="p">,</span> <span class="s1">'MS'</span><span class="p">,</span> <span class="s1">'MO'</span><span class="p">,</span> <span class="s1">'MT'</span><span class="p">,</span> <span class="s1">'NE'</span><span class="p">,</span> <span class="s1">'NV'</span><span class="p">,</span> <span class="s1">'NH'</span><span class="p">,</span> <span class="s1">'NJ'</span><span class="p">,</span> <span class="s1">'NM'</span><span class="p">,</span> <span class="s1">'NY'</span><span class="p">,</span>
+                          <span class="s1">'NC'</span><span class="p">,</span> <span class="s1">'ND'</span><span class="p">,</span> <span class="s1">'OH'</span><span class="p">,</span> <span class="s1">'OK'</span><span class="p">,</span> <span class="s1">'OR'</span><span class="p">,</span> <span class="s1">'PA'</span><span class="p">,</span> <span class="s1">'RI'</span><span class="p">,</span> <span class="s1">'SC'</span><span class="p">,</span> <span class="s1">'SD'</span><span class="p">,</span> <span class="s1">'TN'</span><span class="p">,</span> <span class="s1">'TX'</span><span class="p">,</span> <span class="s1">'UT'</span><span class="p">,</span> <span class="s1">'VT'</span><span class="p">,</span> <span class="s1">'VA'</span><span class="p">,</span> <span class="s1">'WA'</span><span class="p">,</span> <span class="s1">'WV'</span><span class="p">,</span> <span class="s1">'WI'</span><span class="p">,</span> <span class="s1">'WY'</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">winery</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">winery</span> <span class="o">=</span> <span class="n">winery</span><span class="p">[</span><span class="n">winery</span><span class="p">[</span><span class="s2">"State"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">us_states</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">winery</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>(64845, 21)
+(64203, 21)
+</pre>
+</div>
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -15636,7 +16026,7 @@ dtype: object</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[41]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">winery</span><span class="o">.</span><span class="n">describe</span><span class="p">()[[</span><span class="s2">"SaleAmount"</span><span class="p">,</span> <span class="s2">"EmailSales"</span><span class="p">,</span> <span class="s2">"NewsletterSales"</span><span class="p">,</span> <span class="s2">"TastingRoomSales"</span><span class="p">,</span> <span class="s2">"WinemakerCallSales"</span><span class="p">]],</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
@@ -15696,7 +16086,7 @@ Shape (64203, 21)
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[42]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">negative_sales_condition</span> <span class="o">=</span> <span class="p">(</span><span class="n">winery</span><span class="p">[</span><span class="s2">"SaleAmount"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">winery</span><span class="p">[</span><span class="s2">"EmailSales"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">winery</span><span class="p">[</span><span class="s2">"NewsletterSales"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>\
@@ -15737,7 +16127,7 @@ Shape (64203, 21)
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[43]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sales_condition</span> <span class="o">=</span> <span class="p">(</span><span class="n">winery</span><span class="p">[</span><span class="s2">"SaleAmount"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">winery</span><span class="p">[</span><span class="s2">"EmailSales"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">winery</span><span class="p">[</span><span class="s2">"NewsletterSales"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">winery</span><span class="p">[</span><span class="s2">"WinemakerCallSales"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">winery</span><span class="p">[</span><span class="s2">"TastingRoomSales"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
@@ -15774,6 +16164,64 @@ Shape (64203, 21)
 
 </div>
 
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[44]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">winery</span><span class="o">.</span><span class="n">describe</span><span class="p">()[[</span><span class="s2">"SaleAmount"</span><span class="p">,</span> <span class="s2">"EmailSales"</span><span class="p">,</span> <span class="s2">"NewsletterSales"</span><span class="p">,</span> <span class="s2">"TastingRoomSales"</span><span class="p">,</span> <span class="s2">"WinemakerCallSales"</span><span class="p">]],</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>         SaleAmount    EmailSales  NewsletterSales  TastingRoomSales  \
+count  63717.000000  63717.000000     63717.000000      63717.000000   
+mean      86.114181      8.724307         4.672487         71.684256   
+min        0.000000      0.000000         0.000000          0.000000   
+25%       21.000000      0.000000         0.000000         16.000000   
+50%       42.000000      0.000000         0.000000         35.000000   
+75%       71.340000      0.000000         0.000000         64.320000   
+max     9523.750000   7567.390000      5558.620000       9523.750000   
+std      308.953800    107.375955        67.335034        283.971842   
+
+       WinemakerCallSales  
+count        63717.000000  
+mean             1.033131  
+min              0.000000  
+25%              0.000000  
+50%              0.000000  
+75%              0.000000  
+max           3167.280000  
+std             30.444730   
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
@@ -15801,7 +16249,7 @@ Shape (64203, 21)
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">state_to_division</span> <span class="o">=</span> <span class="p">{</span>
@@ -15876,7 +16324,7 @@ Shape (64203, 21)
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
 
 
 
@@ -15907,39 +16355,39 @@ Shape (64203, 21)
   </thead>
   <tbody>
     <tr>
-      <th>38662</th>
-      <td>10683</td>
-      <td>41660</td>
-      <td>TX</td>
-      <td>West South Central</td>
+      <th>16322</th>
+      <td>3892</td>
+      <td>7213</td>
+      <td>NY</td>
+      <td>Middle Atlantic</td>
     </tr>
     <tr>
-      <th>14211</th>
-      <td>3337</td>
-      <td>12532</td>
-      <td>FL</td>
-      <td>South Atlantic</td>
+      <th>4721</th>
+      <td>1103</td>
+      <td>61016</td>
+      <td>PA</td>
+      <td>Middle Atlantic</td>
     </tr>
     <tr>
-      <th>59147</th>
-      <td>20153</td>
-      <td>28518</td>
-      <td>IA</td>
+      <th>58279</th>
+      <td>19756</td>
+      <td>12360</td>
+      <td>MN</td>
       <td>West North Central</td>
     </tr>
     <tr>
-      <th>47363</th>
-      <td>14636</td>
-      <td>8032</td>
-      <td>KY</td>
-      <td>East South Central</td>
+      <th>35593</th>
+      <td>9426</td>
+      <td>22700</td>
+      <td>CA</td>
+      <td>Pacific</td>
     </tr>
     <tr>
-      <th>13024</th>
-      <td>3058</td>
-      <td>23474</td>
-      <td>OH</td>
-      <td>East North Central</td>
+      <th>53051</th>
+      <td>17211</td>
+      <td>7411</td>
+      <td>CA</td>
+      <td>Pacific</td>
     </tr>
   </tbody>
 </table>
@@ -15968,7 +16416,7 @@ Shape (64203, 21)
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">state_to_region</span> <span class="o">=</span> <span class="p">{</span>
@@ -16043,7 +16491,7 @@ Shape (64203, 21)
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
 
 
 
@@ -16073,34 +16521,34 @@ Shape (64203, 21)
   </thead>
   <tbody>
     <tr>
-      <th>60437</th>
-      <td>MI</td>
+      <th>62614</th>
+      <td>VA</td>
+      <td>South</td>
+      <td>South Atlantic</td>
+    </tr>
+    <tr>
+      <th>924</th>
+      <td>MO</td>
       <td>Midwest</td>
-      <td>East North Central</td>
+      <td>West North Central</td>
     </tr>
     <tr>
-      <th>24415</th>
-      <td>NM</td>
-      <td>West</td>
-      <td>Mountain</td>
+      <th>59449</th>
+      <td>NC</td>
+      <td>South</td>
+      <td>South Atlantic</td>
     </tr>
     <tr>
-      <th>37859</th>
-      <td>CA</td>
-      <td>West</td>
-      <td>Pacific</td>
+      <th>45879</th>
+      <td>SC</td>
+      <td>South</td>
+      <td>South Atlantic</td>
     </tr>
     <tr>
-      <th>38612</th>
-      <td>CA</td>
-      <td>West</td>
-      <td>Pacific</td>
-    </tr>
-    <tr>
-      <th>40112</th>
-      <td>NY</td>
-      <td>Northeast</td>
-      <td>Middle Atlantic</td>
+      <th>30458</th>
+      <td>AR</td>
+      <td>South</td>
+      <td>West South Central</td>
     </tr>
   </tbody>
 </table>
@@ -16129,7 +16577,7 @@ Shape (64203, 21)
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">determine_channel</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
@@ -16167,7 +16615,7 @@ Shape (64203, 21)
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">winery_clean</span> <span class="o">=</span> <span class="n">winery</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">"EmailSales"</span><span class="p">,</span> <span class="s2">"NewsletterSales"</span><span class="p">,</span> <span class="s2">"TastingRoomSales"</span><span class="p">,</span> <span class="s2">"WinemakerCallSales"</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="s2">"columns"</span><span class="p">)</span>
@@ -16189,7 +16637,7 @@ Shape (64203, 21)
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
 
 
 
@@ -16225,7 +16673,7 @@ Shape (64203, 21)
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">winery_clean</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">"Date"</span><span class="p">,</span> <span class="s2">"Sales2008"</span><span class="p">,</span> <span class="s2">"Sales2009"</span><span class="p">,</span> <span class="s2">"Sales2010"</span><span class="p">,</span> <span class="s2">"Orders2008"</span><span class="p">,</span> <span class="s2">"Orders2009"</span><span class="p">,</span> <span class="s2">"Orders2010"</span> <span class="p">,</span><span class="s2">"Channel"</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="s2">"columns"</span><span class="p">)</span>
@@ -16247,7 +16695,7 @@ Shape (64203, 21)
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
 
 
 
@@ -16376,7 +16824,7 @@ Shape (64203, 21)
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">customer</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"CustomerID"</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
@@ -16412,7 +16860,7 @@ Shape (64203, 21)
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[31]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
 
 
 
@@ -16552,7 +17000,7 @@ Shape (64203, 21)
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">winery_clean</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"../data/Winery_Data_Clean.csv"</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
