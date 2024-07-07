@@ -69,10 +69,10 @@ customer.dtypes
 
 # ### Binary Classification
 
-# #### Logistic Regression
-
 # create overall test-train from customer
 cust_train, cust_test = train_test_split(customer, test_size=0.2, random_state=0)
+
+# #### Logistic Regression
 
 # ##### Email Subscription
 
@@ -120,10 +120,8 @@ print(f"Accuracy: {np.round(accuracy, 4)},\nPrecision: {np.round(precision, 4)},
 
 cm = confusion_matrix(y_test, predictions_email)
 plt.figure(figsize=(10, 6))
-sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
-plt.xlabel('Predicted')
-plt.ylabel('Actual')
-plt.title('Confusion Matrix of Email Subscr')
+email_heatmap_plot = sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
+email_heatmap_plot.set(xlabel = "Predicted", ylabel = "Actual", title = "Confusion Matrix of Email Subscr")
 plt.show()
 
 y_prob = log_email.predict(X_test_transform_const)
@@ -187,10 +185,8 @@ print(f"Accuracy: {np.round(accuracy, 4)},\nPrecision: {np.round(precision, 4)},
 
 cm = confusion_matrix(y_test, predictions_winemaker)
 plt.figure(figsize=(10, 6))
-sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
-plt.xlabel('Predicted')
-plt.ylabel('Actual')
-plt.title('Confusion Matrix of Winemaker Subscr')
+winemaker_heatmap_plot = sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
+winemaker_heatmap_plot.set(xlabel = "Predicted", ylabel = "Actual", title = "Confusion Matrix of Winemaker Subscr")
 plt.show()
 
 y_prob = log_winemaker.predict(X_test_transform_const)
@@ -254,10 +250,8 @@ print(f"Accuracy: {np.round(accuracy, 4)},\nPrecision: {np.round(precision, 4)},
 
 cm = confusion_matrix(y_test, predictions_newsletter)
 plt.figure(figsize=(10, 6))
-sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
-plt.xlabel('Predicted')
-plt.ylabel('Actual')
-plt.title('Confusion Matrix of Winemaker Subscr')
+newsletter_heatmap_plot = sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
+newsletter_heatmap_plot.set(xlabel = "Predicted", ylabel = "Actual", title = "Confusion Matrix of Newsletter Subscr")
 plt.show()
 
 y_prob = log_newsletter.predict(X_test_transform_const)
@@ -312,7 +306,6 @@ feature_importances_email = classifier_email.feature_importances_
 print("Feature Importance")
 for feature, importance in zip(X_train_transform.columns, feature_importances_email):
     print(f"{feature}: {importance:.4f}")
-# TODO: make chart for importances
 
 accuracy = accuracy_score(y_test, predictions_email)
 precision = precision_score(y_test, predictions_email)
@@ -324,6 +317,15 @@ print("Accuracy", np.round(accuracy, 4), "\n",
     "Precision", np.round(precision, 4), "\n",
     "Recall", np.round(recall, 4), "\n",
     "F1-Score", np.round(f1score, 4))
+
+# +
+df_email_feat_import = pd.DataFrame(list(zip(X_train_transform.columns, feature_importances_email)), columns =['Feature', 'Importance'])
+df_email_feat_import = df_email_feat_import.sort_values(by="Importance")
+
+plt.figure(figsize=(8, 6))
+email_feat_import_plot = sns.barplot(x='Importance', y='Feature', data=df_email_feat_import, hue='Feature', palette="colorblind")
+email_feat_import_plot.set(xlabel = "Importance", ylabel = "Feature", title = "Feature Importance for the Email Random Forest Model")
+plt.show()
 # -
 
 # ##### WinemakerCall Subscription
@@ -361,7 +363,6 @@ feature_importances_winemaker = classifier_winemaker.feature_importances_
 print("Feature Importance")
 for feature, importance in zip(X_train_transform.columns, feature_importances_winemaker):
     print(f"{feature}: {importance:.4f}")
-# TODO: feature importance plot
 
 accuracy = accuracy_score(y_test, predictions_winemaker)
 precision = precision_score(y_test, predictions_winemaker)
@@ -373,6 +374,15 @@ print("Accuracy", np.round(accuracy, 4), "\n",
     "Precision", np.round(precision, 4), "\n",
     "Recall", np.round(recall, 4), "\n",
     "F1-Score", np.round(f1score, 4))
+
+# +
+df_winemaker_feat_import = pd.DataFrame(list(zip(X_train_transform.columns, feature_importances_winemaker)), columns =['Feature', 'Importance'])
+df_winemaker_feat_import = df_winemaker_feat_import.sort_values(by="Importance")
+
+plt.figure(figsize=(8, 6))
+winemaker_feat_import_plot = sns.barplot(x='Importance', y='Feature', data=df_winemaker_feat_import, hue='Feature', palette="colorblind")
+winemaker_feat_import_plot.set(xlabel = "Importance", ylabel = "Feature", title = "Feature Importance for the Winemaker Random Forest Model")
+plt.show()
 # -
 
 # ##### Newsletter Subscription
@@ -410,7 +420,6 @@ feature_importances_newsletter = classifier_newsletter.feature_importances_
 print("Feature Importance")
 for feature, importance in zip(X_train_transform.columns, feature_importances_newsletter):
     print(f"{feature}: {importance:.4f}")
-# TODO: feature importance plot
 
 accuracy = accuracy_score(y_test, predictions_newsletter)
 precision = precision_score(y_test, predictions_newsletter)
@@ -422,6 +431,15 @@ print("Accuracy", np.round(accuracy, 4), "\n",
     "Precision", np.round(precision, 4), "\n",
     "Recall", np.round(recall, 4), "\n",
     "F1-Score", np.round(f1score, 4))
+
+# +
+df_newsletter_feat_import = pd.DataFrame(list(zip(X_train_transform.columns, feature_importances_newsletter)), columns =['Feature', 'Importance'])
+df_newsletter_feat_import = df_newsletter_feat_import.sort_values(by="Importance")
+
+plt.figure(figsize=(8, 6))
+newsletter_feat_import_plot = sns.barplot(x='Importance', y='Feature', data=df_newsletter_feat_import, hue='Feature', palette="colorblind")
+newsletter_feat_import_plot.set(xlabel = "Importance", ylabel = "Feature", title = "Feature Importance for the Newsletter Random Forest Model")
+plt.show()
 # -
 
 # #### Calculate Lift
@@ -513,35 +531,45 @@ plt.show()
 
 # ### Multinomial Classification
 
+# create overall test-train from customer
+cust_train_mc, cust_test_mc = train_test_split(customer, test_size=0.2, random_state=0, stratify=customer["CustomerSegment"])
+
 # #### KNN
 
-customer["CustomerSegment"].value_counts()
+print(cust_train_mc["CustomerSegment"].value_counts(), "\n")
+print(cust_test_mc["CustomerSegment"].value_counts())
+
+# train and test subsets for Segment model
+y_train = cust_train_mc.loc[:, "CustomerSegment"]
+y_test = cust_test_mc.loc[:, "CustomerSegment"]
+X_train = cust_train_mc.loc[:, ["OrderVolume", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
+X_test = cust_test_mc.loc[:, ["OrderVolume", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
 
 # +
-# y = customer.loc[:, "CustomerSegment"]
-# X = customer.loc[:, ["OrderVolume", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
+number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
+category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
 
-# # TODO: use dummies
-# label_encoder = LabelEncoder()
-# X["Region"] = label_encoder.fit_transform(X["Region"])
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("num", StandardScaler(), number_features),
+        ("cat", OneHotEncoder(drop="first", sparse_output=False), category_features)
+    ])
 
-# +
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size= 0.2, random_state = 0)
+pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
+pipeline.fit(X_train)
+X_train_transform = pipeline.transform(X_train)
+X_test_transform = pipeline.transform(X_test)
+# -
 
-k = int(np.round(np.sqrt(len(X_train))))
-knn = KNeighborsClassifier(n_neighbors = k).fit(X_train, y_train)
-
-knn_predictions = knn.predict(X_test)
+k = int(np.round(np.sqrt(len(X_train_transform))))
+knn = KNeighborsClassifier(n_neighbors = k).fit(X_train_transform, y_train)
+knn_predictions = knn.predict(X_test_transform)
 cm = confusion_matrix(y_test, knn_predictions)
 
 plt.figure(figsize=(10, 8))
-sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
-plt.xlabel('Predicted')
-plt.ylabel('Actual')
-plt.title('Confusion Matrix')
+segment_heatmap_plot = sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
+segment_heatmap_plot.set(xlabel = "Predicted", ylabel = "Actual", title = "Customer Segment KNN Confusion Matrix")
 plt.show()
-
-print(k)
 
 # +
 accuracy = accuracy_score(y_test, knn_predictions)
@@ -549,38 +577,57 @@ precision = precision_score(y_test, knn_predictions, average='weighted')
 recall = recall_score(y_test, knn_predictions, average='weighted')
 f1 = f1_score(y_test, knn_predictions, average='weighted')
 
-print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
+print(f"Accuracy: {np.round(accuracy, 4)},\nPrecision: {np.round(precision, 4)},\nRecall: {np.round(recall, 4)},\nF1Score: {np.round(f1score, 4)}")
 # -
 
 # #### Random Forest
 
-# +
-y = customer.loc[:, "CustomerSegment"]
-X = customer.loc[:, ["OrderVolume", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
-
-# TODO: use dummies
-label_encoder = LabelEncoder()
-X["Region"] = label_encoder.fit_transform(X["Region"])
-y = label_encoder.fit_transform(y)
-# -
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size= 0.2, random_state = 0)
+# train and test subsets for Segment model
+y_train = cust_train_mc.loc[:, "CustomerSegment"]
+y_test = cust_test_mc.loc[:, "CustomerSegment"]
+X_train = cust_train_mc.loc[:, ["OrderVolume", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
+X_test = cust_test_mc.loc[:, ["OrderVolume", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]]
 
 # +
-regressor = RandomForestClassifier(n_estimators=50, random_state=0)
-regressor.fit(X_train, y_train)
+number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
+category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
 
-predictions = regressor.predict(X_test)
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("num", StandardScaler(), number_features),
+        ("cat", OneHotEncoder(drop="first", sparse_output=False), category_features)
+    ])
 
-feature_importances = regressor.feature_importances_
-for feature, importance in zip(["OrderVolume", "Region", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr", "EmailSubscr"]
-                               , feature_importances):
+pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
+pipeline.fit(X_train)
+X_train_transform = pipeline.transform(X_train)
+X_test_transform = pipeline.transform(X_test)
+
+# +
+classifier = RandomForestClassifier(n_estimators=50, random_state=0)
+classifier.fit(X_train_transform, y_train)
+
+predictions_rf = classifier.predict(X_test_transform)
+feature_importances = classifier.feature_importances_
+
+print("Feature Importance")
+for feature, importance in zip(X_train_transform.columns, feature_importances):
     print(f"{feature}: {importance:.4f}")
 
-accuracy = accuracy_score(y_test, np.round(predictions))
-precision = precision_score(y_test, np.round(predictions), average="weighted")
-recall = recall_score(y_test, np.round(predictions), average="weighted")
-f1score = f1_score(y_test, np.round(predictions), average="weighted")
+accuracy = accuracy_score(y_test, predictions_rf)
+precision = precision_score(y_test, predictions_rf, average="weighted")
+recall = recall_score(y_test, predictions_rf, average="weighted")
+f1score = f1_score(y_test, predictions_rf, average="weighted")
 
-print()
-print("Acc", accuracy, "Prec", precision, "Rec", recall, "f1", f1score)
+print("\nModel Metrics")
+print("Accuracy", np.round(accuracy, 4), "\n",
+    "Precision", np.round(precision, 4), "\n",
+    "Recall", np.round(recall, 4), "\n",
+    "F1-Score", np.round(f1score, 4))
+# -
+
+cm = confusion_matrix(y_test, predictions_rf)
+plt.figure(figsize=(10, 6))
+winemaker_heatmap_plot = sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
+winemaker_heatmap_plot.set(xlabel = "Predicted", ylabel = "Actual", title = "Customer Segment Random Forest Confusion Matrix")
+plt.show()
