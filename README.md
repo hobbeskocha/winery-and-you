@@ -11,6 +11,13 @@ In the face of a highly competitive, niche industry, wineries must leverage data
 This project is designed to support such a winery by analyzing sales data from customers across the United States. Through predictive modeling, we aim to provide the winery with actionable insights into the factors that drive high engagement with their three subscription-based marketing channels: email, newsletter, and direct calls. Additionally, we deliver the predictive models themselves that enable the winery to swiftly adapt to customer preferences, thereby enhancing customer loyalty and driving sustained business growth.
 
 ## Dataset Overview
+The original dataset contains over 65,000 records detailing individual orders by the winery's customers. Key attributes include:
+- _Customer and Order IDs_: Unique identifiers for customers and their respective orders.
+- _Order Date_: The date when each order was placed.
+- _Regional Attributes_: Geographic information including Zip Code and State.
+- _Current Subscription Status_: Subscription status to the winery's three marketing channels - Email, Newsletter, and Direct Calls.
+- _Sale Amount per Order_: The monetary value of each order, along with the marketing channel through which the sale originated.
+- _Pre-defined Customer Segment_: A classification of customers into one of four segments — Casual Visitor, Wine Enthusiast, High Roller, and Luxury Estate.
 
 ## Data Cleaning
 The analysis performed consists of initial data cleaning processing of the dataset using Pandas. This consisted of handling missing values, removing erroneous data (such as invalid US State abbreviations), and creating a new dataframe that contained aggregated data to capture each unique customer's information. Some preliminary EDA was performed in Seaborn and Matplotlib, to look at the shape and distribution of the data. This was expanded upon in a packaged Tableau workbook, yielding novel understanding of customer and order sales figures across the United States as well as over the lifetime of the dataset.
