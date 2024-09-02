@@ -58,11 +58,15 @@ Three logit models were trained for the three subscription channels, producing t
 
 #### Email Logit
 The Email logit model generated the following metrics against the validation set:
+![plot1](artifacts/email-logit-cm.png)
+![plot2](artifacts/email-logit-roc.png)
+
 - Accuracy: 93.83
 - Precision: 87.22
 - Recall: 95.32
 - F1-Score: 91.09
 - AUC: 0.9742
+
 
 Additionally, the following features were statistically significant at the 5% level:
 num__OrderVolume                       -0.431373
@@ -74,6 +78,9 @@ cat__WinemakerCallSubscr_True           5.047596
 
 #### Direct (Winemaker) Call Logit
 The Direct Call logit model generated the following metrics against the validation set:
+![plot1](artifacts/winemaker-logit-cm.png)
+![plot2](artifacts/winemaker-logit-roc.png)
+
 - Accuracy: 90.24
 - Precision: 96.16
 - Recall: 78.99
@@ -89,6 +96,9 @@ cat__EmailSubscr_True                 5.021326
 
 #### Newsletter Logit
 The Newsletter logit model generated the following metrics against the validation set:
+![plot1](artifacts/newsletter-logit-cm.png)
+![plot2](artifacts/newsletter-logit-roc.png)
+
 - Accuracy: 66.23
 - Precision: 75.57
 - Recall: 73.00
@@ -108,34 +118,41 @@ Similarly, three RF models were trained for the three subscription channels, wit
 
 #### Email RF
 The Email RF model generated the following metrics against the validation set:
-- Accuracy:
-- Precision:
-- Recall:
-- F1-Score
-- AUC:
+- Accuracy: 93.01
+- Precision: 87.75
+- Recall: 91.67
+- F1-Score: 89.67
 
 Additionally, the following variables had feature importances at or above the 75the percentile of the model's feature importances:
-
+num__SaleAmount: 0.1339
+cat__CustomerSegment_Wine Enthusiast: 0.0995
+cat__NewsletterSubscr_True: 0.1322
+cat__WinemakerCallSubscr_True: 0.5265
 
 #### Direct (Winemaker) Call RF
 The Direct Call RF model generated the following metrics against the validation set:
-- Accuracy:
-- Precision:
-- Recall:
-- F1-Score
-- AUC:
+- Accuracy: 88.33
+- Precision: 90.09
+- Recall: 79.89
+- F1-Score: 84.68
 
 Additionally, the following variables had feature importances at or above the 75the percentile of the model's feature importances:
-
+num__SaleAmount: 0.2136
+cat__CustomerSegment_Wine Enthusiast: 0.0587
+cat__NewsletterSubscr_True: 0.0631
+cat__EmailSubscr_True: 0.5580
 
 #### Newsletter RF
 The Newsletter RF model generated the following metrics against the validation set:
-- Accuracy:
-- Precision:
-- Recall:
-- F1-Score
-- AUC:
+- Accuracy: 67.03
+- Precision: 76.05
+- Recall: 73.85
+- F1-Score: 74.94
 
 Additionally, the following variables had feature importances at or above the 75the percentile of the model's feature importances:
+num__OrderVolume: 0.0643
+num__SaleAmount: 0.5840
+cat__WinemakerCallSubscr_True: 0.0810
+cat__EmailSubscr_True: 0.1938
 
 ## Recommendations
