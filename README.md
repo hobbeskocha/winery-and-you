@@ -48,7 +48,7 @@ The dashboard additionally allows for dynamic filtering by customer segment, reg
 
 ## Modeling & Results
 
-To ensure robust model evaluation and identify the best-performing model, an initial train-test split was configured. This allowed for effective training and subsequent assessment of the models. A Scikit-learn pipeline was then created to preprocess the dataset, including scaling numeric features and one-hot encoding categorical features.
+Since this analysis was focussed on customer preferences, the supplemental Customer dataframe was used as the primary dataset for training and validation. To ensure robust model evaluation and identify the best-performing model, an initial train-test split was configured. This allowed for effective training and subsequent assessment of the models. A Scikit-learn pipeline was then created to preprocess the dataset, including scaling numeric features and one-hot encoding categorical features.
 
 Predictive analysis was conducted using Statsmodels and Scikit-learn to develop binary classification models aimed at predicting customers' subscription preferences for email, newsletter, and direct calls. Logistic regression and random forest were selected as the primary models for this analysis due to their ability to provide insights into the importance of each independent variable through coefficients in logistic regression and feature importances in random forest. These insights are crucial for identifying the key factors that the winery can leverage to enhance customer engagement. 
 
@@ -67,12 +67,12 @@ The Email logit model generated the following metrics against the validation set
 - F1-Score: 91.09
 - AUC: 0.9742
 
-Additionally, the following features were statistically significant at the 5% level:
-num__OrderVolume                       -0.431373
-cat__CustomerSegment_High Roller        2.545175
-cat__CustomerSegment_Wine Enthusiast    3.021592
-cat__NewsletterSubscr_True              3.224129
-cat__WinemakerCallSubscr_True           5.047596
+Additionally, the following features (with coefficients) were statistically significant at the 5% level:
+- Order Volume: -0.43
+- High Roller: 2.55
+- Wine Enthusiast: 3.02
+- Newsletter Subscriber: 3.22
+- Winemaker Call Subscriber: 5.05
 
 
 #### Direct (Winemaker) Call Logit
@@ -86,11 +86,11 @@ The Direct Call logit model generated the following metrics against the validati
 - F1-Score: 86.73
 - AUC: 0.9033
 
-Additionally, the following features were statistically significant at the 5% level:
-num__OrderVolume                      0.350340
-cat__CustomerSegment_Luxury Estate   -0.266285
-cat__NewsletterSubscr_True            0.407120
-cat__EmailSubscr_True                 5.021326
+Additionally, the following features (with coefficients) were statistically significant at the 5% level:
+- Order Volume: 0.35
+- Luxury Estate: -0.27
+- Newsletter Subscriber: 0.41
+- Email Subscriber: 5.02
 
 
 #### Newsletter Logit
@@ -104,11 +104,11 @@ The Newsletter logit model generated the following metrics against the validatio
 - F1-Score: 74.26
 - AUC: 0.7393
 
-Additionally, the following features were statistically significant at the 5% level:
-num__SaleAmount                    -0.070034
-cat__CustomerSegment_High Roller   -0.222301
-cat__WinemakerCallSubscr_True       0.396108
-cat__EmailSubscr_True               3.418899
+Additionally, the following features (with coefficients) were statistically significant at the 5% level:
+- Sale Amount: -0.07
+- High Roller: -0.22
+- Winemaker Call Subscriber: 0.40
+- Email Subscriber: 3.42
 
 
 ### Random Forest (RF)
@@ -163,5 +163,31 @@ With the following variables having importances at or above the 75th percentile:
 - Winemaker Call Subscriber
 - Email Subscriber
 
-## Recommendations
-TODO
+## Findings & Recommendations
+
+Based on the metrics, the predictive models for Email and Direct Call subscriptions demonstrate strong performance, while the models for Newsletter subscriptions are solid but offer more room for improvement.
+
+An analysis of the coefficients and feature importances from the logistic regression and random forest models, respectively, reveals a noteworthy outcome. Specifically, in a focal subscription model, whether a customer is subscribed to one of the other two channels has a significant feature importance and a large positive effect on the likelihood of subscribing to the focal channel. This indicates a cross-channel marketing effect.
+
+With this in mind, we can offer the following recommendations:
+
+**Cross-channel Promotion**:
+
+Given the identified cross-channel marketing effect, the winery should leverage cross-channel promotions through targeted messaging to enhance customer engagement. This can be implemented through a tailored approach to maximize impact. Based on the model results, we recommend the following:
+
+- _Enhancing Marketer Calls_: Encourage the sales team to promote the benefits of Email subscriptions to Direct Call subscribers during their next interaction. The high feature importance and positive effect of Direct Call subscriptions on Email subscriptions suggest this strategy could be highly effective.
+- _Email Promotions_: Develop promotional email campaigns highlighting the benefits of Direct Call and Newsletter subscriptions to current Email subscribers. Since Email subscriptions have a positive effect and high feature importance for both Direct Call and Newsletter subscriptions, this approach can drive cross-channel engagement.
+
+By implementing these tailored cross-channel promotions, the winery can improve customer engagement across multiple marketing channels and enhance its marketing ROI.
+
+**Emphasis on High-importance Features**:
+Given that Direct Call subscription, Email subscription, and Sale Amount are consistently high-importance features across multiple models, the winery should prioritize these factors in its marketing efforts.
+
+This could include:
+- _Enhanced Call Engagement_: Invest in improving the training of the sales team responsible for marketer calls, ensuring a pleasant and seamless customer experience. Additionally, consider offering personalized and time-limited promotions to those subscribed to Direct Calls.
+- _Email Campaign Improvements_: Strengthen email campaigns by incorporating personalized offers and value-added content. Examples of personalized offers could be welcome gifts, birthday discounts, and re-engagement strategies. Meanwhile, value-added content might include winery history, invitations for on-site visits, and wine pairing tips, all designed to create a more personal connection with customers.
+- _Upselling Opportunities_: Recognizing that customers who spend more are more engaged, the winery should explore upselling tactics such as bundling products, offering volume discounts, or promoting relevant accessories and merchandise.
+
+
+By integrating these recommendations into its business strategy, the winery will be better positioned to boost customer engagement across its marketing channels, leading to increased customer satisfaction, loyalty, and overall revenue. 
+
