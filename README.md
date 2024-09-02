@@ -19,8 +19,32 @@ The original dataset contains over 65,000 records detailing individual orders by
 - _Sale Amount per Order_: The monetary value of each order, along with the marketing channel through which the sale originated.
 - _Pre-defined Customer Segment_: A classification of customers into one of four segments — Casual Visitor, Wine Enthusiast, High Roller, and Luxury Estate.
 
-## Data Cleaning
-The analysis performed consists of initial data cleaning processing of the dataset using Pandas. This consisted of handling missing values, removing erroneous data (such as invalid US State abbreviations), and creating a new dataframe that contained aggregated data to capture each unique customer's information. Some preliminary EDA was performed in Seaborn and Matplotlib, to look at the shape and distribution of the data. This was expanded upon in a packaged Tableau workbook, yielding novel understanding of customer and order sales figures across the United States as well as over the lifetime of the dataset.
+## Data Cleaning & Transformation
+The initial data cleaning of the dataset was carried out using Pandas, focusing on improving data quality and preparing the dataset for analysis. Key steps included:
+- _Handling Missing Values_:
+    - We investigated the possibility of imputing missing values, such as those in the State column, from other records associated with the same customer.
+    - Since imputation was not feasible, missing values were dropped, resulting in a reduction of approximately 1% of the overall dataset.
+- _Removing Erroneous Data_:
+    - Data anomalies, such as negative Sale Amounts and invalid US State codes, were identified and removed. This process affected about 1.5% of the dataset.
+    
+In addition to cleaning, some preliminary feature engineering was performed, which included:
+- _Data Type Customization_:
+    - Adjusting data types for greater accuracy and utility, such as converting IDs from integers to objects and changing Email Subscription from float to boolean.
+- _Geographic Mapping_:
+    - Enhancing the granularity of geographic data by mapping US States to their respective US Regions and Divisions.
+
+A supplemental dataframe was also created, aggregating data to capture distinct customer information. This included details such as each customer's State, Total Order Volume, and Total Sale Amount. This additional dataframe provides a comprehensive view of customer behavior, which is critical for subsequent analysis and modeling efforts.
+
+
+## Exploratory Data Analysis
+Some preliminary EDA was performed in Seaborn and Matplotlib, to look at the general shape and distribution of the data. This was expanded upon in a [packaged Tableau workbook](src/winery-dashboard.twbx), yielding novel understanding of customer and order sales figures across the United States as well as over the lifetime of the dataset.
+
+The Tableau dashboard showcases:
+- _Geographic Map_: An interactive map showing where customers reside in the United States, with filtering capabilities that dynamically update the other charts in the dashboard based on the selected state.
+- _Line Charts_: Display trends in total sales and order volume over the life of the dataset.
+- _Stacked Bar Charts_: Illustrate the distribution of customer segments within each geographic division.
+
+The dashboard additionally allows for dynamic filtering by customer segment, region, division, and month-year.
 
 ## Modeling & Results
 The predictive analysis is performed using Statsmodels and Scikit-learn to build predictive models for customers' subscription preferences of email, newsletter, and winemaker calls. The models used were Logistic Regression and Random Forest, namely becuase they offered insight into the weight/importance of each independent variable via coefficients and feature importances. This includes generating models metrics like accuracy, precision, and AUC to assess the predictive strength of the models. Confusion matrices were also generated to get a better sense of which cases that particular models were performing well on.
