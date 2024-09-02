@@ -67,7 +67,6 @@ The Email logit model generated the following metrics against the validation set
 - F1-Score: 91.09
 - AUC: 0.9742
 
-
 Additionally, the following features were statistically significant at the 5% level:
 num__OrderVolume                       -0.431373
 cat__CustomerSegment_High Roller        2.545175
@@ -123,11 +122,14 @@ The Email RF model generated the following metrics against the validation set:
 - Recall: 91.67
 - F1-Score: 89.67
 
-Additionally, the following variables had feature importances at or above the 75the percentile of the model's feature importances:
-num__SaleAmount: 0.1339
-cat__CustomerSegment_Wine Enthusiast: 0.0995
-cat__NewsletterSubscr_True: 0.1322
-cat__WinemakerCallSubscr_True: 0.5265
+Additionally, these are the feature importances of the variables:
+![plot1](artifacts/email-rf-fi.png)
+
+With the following variables having importances at or above the 75th percentile:
+- Sale Amount
+- Wine Enthusiast
+- Newsletter Subscriber
+- Winemaker Call Subscriber
 
 #### Direct (Winemaker) Call RF
 The Direct Call RF model generated the following metrics against the validation set:
@@ -136,11 +138,14 @@ The Direct Call RF model generated the following metrics against the validation 
 - Recall: 79.89
 - F1-Score: 84.68
 
-Additionally, the following variables had feature importances at or above the 75the percentile of the model's feature importances:
-num__SaleAmount: 0.2136
-cat__CustomerSegment_Wine Enthusiast: 0.0587
-cat__NewsletterSubscr_True: 0.0631
-cat__EmailSubscr_True: 0.5580
+Additionally, these are the feature importances of the variables:
+![plot1](artifacts/winemaker-rf-fi.png)
+
+With the following variables having importances at or above the 75th percentile:
+- Sale Amount
+- Wine Enthusiast
+- Newsletter Subscriber
+- Email Subscriber
 
 #### Newsletter RF
 The Newsletter RF model generated the following metrics against the validation set:
@@ -149,10 +154,14 @@ The Newsletter RF model generated the following metrics against the validation s
 - Recall: 73.85
 - F1-Score: 74.94
 
-Additionally, the following variables had feature importances at or above the 75the percentile of the model's feature importances:
-num__OrderVolume: 0.0643
-num__SaleAmount: 0.5840
-cat__WinemakerCallSubscr_True: 0.0810
-cat__EmailSubscr_True: 0.1938
+Additionally, these are the feature importances of the variables:
+![plot1](artifacts/newsletter-rf-fi.png)
+
+With the following variables having importances at or above the 75th percentile:
+- Order Volume
+- Sale Amount
+- Winemaker Call Subscriber
+- Email Subscriber
 
 ## Recommendations
+TODO
