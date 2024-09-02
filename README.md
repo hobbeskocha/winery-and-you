@@ -33,7 +33,7 @@ In addition to cleaning, some preliminary feature engineering was performed, whi
 - _Geographic Mapping_:
     - Enhancing the granularity of geographic data by mapping US States to their respective US Regions and Divisions.
 
-A supplemental dataframe was also created, aggregating data to capture distinct customer information. This included details such as each customer's State, Total Order Volume, and Total Sale Amount. This additional dataframe provides a comprehensive view of customer behavior, which is critical for subsequent analysis and modeling efforts.
+A supplemental dataframe was also created, aggregating data to capture distinct customer information. This includes details such as each customer's State, Total Order Volume, and Total Sale Amount. This additional dataframe provides a comprehensive view of customer behavior, which is critical for subsequent analysis and modeling efforts.
 
 
 ## Exploratory Data Analysis
@@ -47,11 +47,95 @@ The Tableau dashboard showcases:
 The dashboard additionally allows for dynamic filtering by customer segment, region, division, and month-year.
 
 ## Modeling & Results
-The predictive analysis is performed using Statsmodels and Scikit-learn to build predictive models for customers' subscription preferences of email, newsletter, and winemaker calls. The models used were Logistic Regression and Random Forest, namely becuase they offered insight into the weight/importance of each independent variable via coefficients and feature importances. This includes generating models metrics like accuracy, precision, and AUC to assess the predictive strength of the models. Confusion matrices were also generated to get a better sense of which cases that particular models were performing well on.
-We then went one step further and calculated the lift of the subscriptions. This allowed generating marginal response and positive response curves to understand how customers would respond to solicitation for subscription.
 
-### Logit
+To ensure robust model evaluation and identify the best-performing model, an initial train-test split was configured. This allowed for effective training and subsequent assessment of the models. A Scikit-learn pipeline was then created to preprocess the dataset, including scaling numeric features and one-hot encoding categorical features.
 
-### Random Forest
+Predictive analysis was conducted using Statsmodels and Scikit-learn to develop binary classification models aimed at predicting customers' subscription preferences for email, newsletter, and direct calls. Logistic regression and random forest were selected as the primary models for this analysis due to their ability to provide insights into the importance of each independent variable through coefficients in logistic regression and feature importances in random forest. These insights are crucial for identifying the key factors that the winery can leverage to enhance customer engagement. 
+
+### Logistic Regression (Logit)
+
+Three logit models were trained for the three subscription channels, producing the following results:
+
+#### Email Logit
+The Email logit model generated the following metrics against the validation set:
+- Accuracy: 93.83
+- Precision: 87.22
+- Recall: 95.32
+- F1-Score: 91.09
+- AUC: 0.9742
+
+Additionally, the following features were statistically significant at the 5% level:
+num__OrderVolume                       -0.431373
+cat__CustomerSegment_High Roller        2.545175
+cat__CustomerSegment_Wine Enthusiast    3.021592
+cat__NewsletterSubscr_True              3.224129
+cat__WinemakerCallSubscr_True           5.047596
+
+
+#### Direct (Winemaker) Call Logit
+The Direct Call logit model generated the following metrics against the validation set:
+- Accuracy: 90.24
+- Precision: 96.16
+- Recall: 78.99
+- F1-Score: 86.73
+- AUC: 0.9033
+
+Additionally, the following features were statistically significant at the 5% level:
+num__OrderVolume                      0.350340
+cat__CustomerSegment_Luxury Estate   -0.266285
+cat__NewsletterSubscr_True            0.407120
+cat__EmailSubscr_True                 5.021326
+
+
+#### Newsletter Logit
+The Newsletter logit model generated the following metrics against the validation set:
+- Accuracy: 66.23
+- Precision: 75.57
+- Recall: 73.00
+- F1-Score: 74.26
+- AUC: 0.7393
+
+Additionally, the following features were statistically significant at the 5% level:
+num__SaleAmount                    -0.070034
+cat__CustomerSegment_High Roller   -0.222301
+cat__WinemakerCallSubscr_True       0.396108
+cat__EmailSubscr_True               3.418899
+
+
+### Random Forest (RF)
+
+Similarly, three RF models were trained for the three subscription channels, with the following results:
+
+#### Email RF
+The Email RF model generated the following metrics against the validation set:
+- Accuracy:
+- Precision:
+- Recall:
+- F1-Score
+- AUC:
+
+Additionally, the following variables had feature importances at or above the 75the percentile of the model's feature importances:
+
+
+#### Direct (Winemaker) Call RF
+The Direct Call RF model generated the following metrics against the validation set:
+- Accuracy:
+- Precision:
+- Recall:
+- F1-Score
+- AUC:
+
+Additionally, the following variables had feature importances at or above the 75the percentile of the model's feature importances:
+
+
+#### Newsletter RF
+The Newsletter RF model generated the following metrics against the validation set:
+- Accuracy:
+- Precision:
+- Recall:
+- F1-Score
+- AUC:
+
+Additionally, the following variables had feature importances at or above the 75the percentile of the model's feature importances:
 
 ## Recommendations
