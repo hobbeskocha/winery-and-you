@@ -37,9 +37,11 @@ A supplemental dataframe was also created, aggregating data to capture distinct 
 
 
 ## Exploratory Data Analysis
-Some preliminary EDA was performed in Seaborn and Matplotlib, to look at the general shape and distribution of the data. This was expanded upon in a [packaged Tableau workbook](src/winery-dashboard.twbx), yielding novel understanding of customer and order sales figures across the United States as well as over the lifetime of the dataset.
+Some preliminary EDA was performed in Seaborn and Matplotlib, to look at the general shape and distribution of the data. This was expanded upon in a [packaged Tableau workbook](src/winery-dashboard.twbx), yielding novel understanding of customer and order sales figures across the United States as well as over the lifetime of the dataset. A screenshot is shown below:
 
-The Tableau dashboard showcases:
+![Winery Dashboard](artifacts/winery-dashboard.png)
+
+The dashboard showcases:
 - _Geographic Map_: An interactive map showing where customers reside in the United States, with filtering capabilities that dynamically update the other charts in the dashboard based on the selected state.
 - _Line Charts_: Display trends in total sales and order volume over the life of the dataset.
 - _Stacked Bar Charts_: Illustrate the distribution of customer segments within each geographic division.
