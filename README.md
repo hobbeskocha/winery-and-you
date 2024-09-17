@@ -1,4 +1,5 @@
 # Winery and You!
+![Winery](artifacts/winery.png)
 
 This is a collaborative personal portfolio project between [Hyewon Jeong](https://www.linkedin.com/in/jeonghyewon/) and [Ayush Shrestha](https://www.linkedin.com/in/ayush-yoshi-shrestha/). The dataset used is on sales order data for a national winery, accessible [here](data/). The dataset was provided to us by [Dr. Oliver J. Rutz](https://foster.uw.edu/faculty-research/directory/oliver-rutz/) of the University of Washington, Seattle.
 
