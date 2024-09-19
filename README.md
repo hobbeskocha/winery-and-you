@@ -38,7 +38,7 @@ A supplemental dataframe was also created, aggregating data to capture distinct 
 
 
 ## Exploratory Data Analysis
-Some preliminary EDA was performed in Seaborn and Matplotlib, to look at the general shape and distribution of the data. This was expanded upon in a [packaged Tableau workbook](src/winery-dashboard.twbx), yielding novel understanding of customer and order sales figures across the United States as well as over the lifetime of the dataset. A screenshot is shown below:
+Some preliminary EDA was performed in Seaborn and Matplotlib to look at the general shape and distribution of the data. This was expanded upon in a [packaged Tableau workbook](src/winery-dashboard.twbx), yielding novel understanding of customer and order sales figures across the United States as well as over the lifetime of the dataset. A screenshot is shown below:
 
 ![Winery Dashboard](artifacts/winery-dashboard.png)
 
