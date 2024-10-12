@@ -6,7 +6,7 @@ This is a collaborative personal portfolio project between [Ayush Shrestha](http
 
 ## Instructions
 
-For easy version control purposes, the source code is stored as converted Python scripts, but HTML files of the source Python notebooks can be found [here](src/html/). Alternatively, the CLI commands [here](cli-commands-reference.md) can convert the python scripts back into notebooks.
+For easy version control purposes, the source code is stored as converted Python scripts, but HTML files of the source Python notebooks can be found [here](src/html/). Alternatively, the CLI commands [here](cli-commands-reference.md) can convert the Python scripts back into notebooks.
 
 ## Business Problem
 
