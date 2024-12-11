@@ -7,7 +7,7 @@
 #       format_version: '1.5'
 #       jupytext_version: 1.16.1
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: winery-project
 #     language: python
 #     name: python3
 # ---
@@ -19,20 +19,17 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import statsmodels.api as sm
 
 from sklearn import set_config
-from sklearn.impute import KNNImputer
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score, confusion_matrix, roc_curve, auc
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import cross_val_score
-
-import statsmodels.api as sm
 # -
 
 pd.options.display.max_columns = 25
@@ -67,10 +64,24 @@ customer.dtypes
 
 # ## Predictive Models
 
+# +
+# TODO: stratify train-test split for each subscription model
+# TODO: cross-validation? cross_validate() for multiple metrics, KFold class + visualization of metrics
+# TODO: RandomizedSearchCV - hyperparameter tuning
+
+# TODO: Pipeline supports final prediction model, crossvalidation workflow, and processing steps -- make_pipeline()
+# TODO: clustering with customer segment analysis for reclassification -- K-means, t-SNE, PCA?, NMF? + visualization of clusters/data points
+# -
+
 # ### Binary Classification
 
+# +
 # create overall test-train from customer
 cust_train, cust_test = train_test_split(customer, test_size=0.2, random_state=0)
+
+print(len(customer))
+print(len(cust_train), len(cust_test))
+# -
 
 # #### Logistic Regression
 
@@ -103,6 +114,10 @@ X_test_transform_const = sm.add_constant(X_test_transform)
 
 log_email = sm.Logit(y_train, X_train_transform_const).fit()
 log_email.summary()
+
+significance = 0.05
+sig_coeffs_email = [var for var, p in zip(log_email.pvalues.index, log_email.pvalues) if p < significance]
+log_email.params[sig_coeffs_email]
 
 # +
 predictions_email = log_email.predict(X_test_transform_const)
@@ -169,6 +184,10 @@ X_test_transform_const = sm.add_constant(X_test_transform)
 log_winemaker = sm.Logit(y_train, X_train_transform_const).fit()
 log_winemaker.summary()
 
+significance = 0.05
+sig_coeffs_winemaker = [var for var, p in zip(log_winemaker.pvalues.index, log_winemaker.pvalues) if p < significance]
+log_winemaker.params[sig_coeffs_winemaker]
+
 # +
 predictions_winemaker = log_winemaker.predict(X_test_transform_const)
 cust_test["prob_logit_winemaker"] = predictions_winemaker
@@ -233,6 +252,10 @@ X_test_transform_const = sm.add_constant(X_test_transform)
 
 log_newsletter = sm.Logit(y_train, X_train_transform_const).fit()
 log_newsletter.summary()
+
+significance = 0.05
+sig_coeffs_newsletter = [var for var, p in zip(log_newsletter.pvalues.index, log_newsletter.pvalues) if p < significance]
+log_newsletter.params[sig_coeffs_newsletter]
 
 # +
 predictions_newsletter = log_newsletter.predict(X_test_transform_const)
@@ -319,6 +342,13 @@ print("Accuracy", np.round(accuracy, 4), "\n",
     "F1-Score", np.round(f1score, 4))
 
 # +
+email_75th_importance = np.percentile(feature_importances_email, 75)
+
+for feature, importance in zip(X_train_transform.columns, feature_importances_email):
+    if importance >= email_75th_importance:
+        print(f"{feature}: {importance:.4f}")
+
+# +
 df_email_feat_import = pd.DataFrame(list(zip(X_train_transform.columns, feature_importances_email)), columns =['Feature', 'Importance'])
 df_email_feat_import = df_email_feat_import.sort_values(by="Importance")
 
@@ -376,6 +406,13 @@ print("Accuracy", np.round(accuracy, 4), "\n",
     "F1-Score", np.round(f1score, 4))
 
 # +
+winemaker_75th_importance = np.percentile(feature_importances_winemaker, 75)
+
+for feature, importance in zip(X_train_transform.columns, feature_importances_winemaker):
+    if importance >= winemaker_75th_importance:
+        print(f"{feature}: {importance:.4f}")
+
+# +
 df_winemaker_feat_import = pd.DataFrame(list(zip(X_train_transform.columns, feature_importances_winemaker)), columns =['Feature', 'Importance'])
 df_winemaker_feat_import = df_winemaker_feat_import.sort_values(by="Importance")
 
@@ -431,6 +468,13 @@ print("Accuracy", np.round(accuracy, 4), "\n",
     "Precision", np.round(precision, 4), "\n",
     "Recall", np.round(recall, 4), "\n",
     "F1-Score", np.round(f1score, 4))
+
+# +
+newsletter_75th_importance = np.percentile(feature_importances_newsletter, 75)
+
+for feature, importance in zip(X_train_transform.columns, feature_importances_newsletter):
+    if importance >= newsletter_75th_importance:
+        print(f"{feature}: {importance:.4f}")
 
 # +
 df_newsletter_feat_import = pd.DataFrame(list(zip(X_train_transform.columns, feature_importances_newsletter)), columns =['Feature', 'Importance'])
