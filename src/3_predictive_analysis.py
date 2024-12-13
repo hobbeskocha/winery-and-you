@@ -75,23 +75,18 @@ customer.dtypes
 
 # ### Binary Classification
 
-# +
-# create overall test-train from customer
-cust_train, cust_test = train_test_split(customer, test_size=0.2, random_state=0)
-
-print(len(customer))
-print(len(cust_train), len(cust_test))
-# -
+cust_test = pd.DataFrame()
 
 # #### Logistic Regression
 
 # ##### Email Subscription
 
-# train and test subsets for Email model
-y_train = cust_train.loc[:, "EmailSubscr"]
-y_test = cust_test.loc[:, "EmailSubscr"]
-X_train = cust_train.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
-X_test = cust_test.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
+# train test split for Email Subscription, stratified
+X_train, X_test, y_train, y_test = train_test_split(
+    customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]],
+    customer.loc[:, "EmailSubscr"],
+    test_size=0.2, random_state=0, stratify=customer.loc[:, "EmailSubscr"])
+
 
 # +
 number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
@@ -156,11 +151,11 @@ plt.show()
 
 # ##### WinemakerCall Subscription
 
-# train and test subsets for WinemakerCall model
-y_train = cust_train.loc[:, "WinemakerCallSubscr"]
-y_test = cust_test.loc[:, "WinemakerCallSubscr"]
-X_train = cust_train.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
-X_test = cust_test.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
+# train test split for Winemaker Subscription, stratified
+X_train, X_test, y_train, y_test = train_test_split(
+    customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]],
+    customer.loc[:, "WinemakerCallSubscr"],
+    test_size=0.2, random_state=0, stratify=customer.loc[:, "WinemakerCallSubscr"])
 
 # +
 number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
@@ -225,11 +220,11 @@ plt.show()
 
 # ##### Newsletter Subscription
 
-# train and test subsets for Newsletter model
-y_train = cust_train.loc[:, "NewsletterSubscr"]
-y_test = cust_test.loc[:, "NewsletterSubscr"]
-X_train = cust_train.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
-X_test = cust_test.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
+# train test split for Newsletter Subscription, stratified
+X_train, X_test, y_train, y_test = train_test_split(
+    customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]],
+    customer.loc[:, "NewsletterSubscr"],
+    test_size=0.2, random_state=0, stratify=customer.loc[:, "NewsletterSubscr"])
 
 # +
 number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
@@ -296,11 +291,12 @@ plt.show()
 
 # ##### Email Subscription
 
-# train and test subsets for Email model
-y_train = cust_train.loc[:, "EmailSubscr"]
-y_test = cust_test.loc[:, "EmailSubscr"]
-X_train = cust_train.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
-X_test = cust_test.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]]
+# train test split for Email Subscription, stratified
+X_train, X_test, y_train, y_test = train_test_split(
+    customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]],
+    customer.loc[:, "EmailSubscr"],
+    test_size=0.2, random_state=0, stratify=customer.loc[:, "EmailSubscr"])
+
 
 # +
 number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
@@ -360,11 +356,11 @@ plt.show()
 
 # ##### WinemakerCall Subscription
 
-# train and test subsets for WinemakerCall model
-y_train = cust_train.loc[:, "WinemakerCallSubscr"]
-y_test = cust_test.loc[:, "WinemakerCallSubscr"]
-X_train = cust_train.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
-X_test = cust_test.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]]
+# train test split for Winemaker Subscription, stratified
+X_train, X_test, y_train, y_test = train_test_split(
+    customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]],
+    customer.loc[:, "WinemakerCallSubscr"],
+    test_size=0.2, random_state=0, stratify=customer.loc[:, "WinemakerCallSubscr"])
 
 # +
 number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
@@ -424,11 +420,11 @@ plt.show()
 
 # ##### Newsletter Subscription
 
-# train and test subsets for Newsletter model
-y_train = cust_train.loc[:, "NewsletterSubscr"]
-y_test = cust_test.loc[:, "NewsletterSubscr"]
-X_train = cust_train.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
-X_test = cust_test.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]]
+# train test split for Newsletter Subscription, stratified
+X_train, X_test, y_train, y_test = train_test_split(
+    customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]],
+    customer.loc[:, "NewsletterSubscr"],
+    test_size=0.2, random_state=0, stratify=customer.loc[:, "NewsletterSubscr"])
 
 # +
 number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
@@ -488,6 +484,7 @@ plt.show()
 
 # #### Calculate Lift
 
+# TODO: setup cust_test for lift, rate calculations
 cust_test.head() # test df has appended probability and prediction columns to calculate from 
 
 # +
