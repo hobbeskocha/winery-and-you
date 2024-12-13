@@ -75,18 +75,22 @@ customer.dtypes
 
 # ### Binary Classification
 
-cust_test = pd.DataFrame()
+email_test = pd.DataFrame()
+newsletter_test = pd.DataFrame()
+winemaker_test = pd.DataFrame()
 
 # #### Logistic Regression
 
 # ##### Email Subscription
 
+# +
 # train test split for Email Subscription, stratified
 X_train, X_test, y_train, y_test = train_test_split(
     customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "WinemakerCallSubscr"]],
     customer.loc[:, "EmailSubscr"],
     test_size=0.2, random_state=0, stratify=customer.loc[:, "EmailSubscr"])
 
+email_test["EmailSubscr"] = y_test
 
 # +
 number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
@@ -116,9 +120,9 @@ log_email.params[sig_coeffs_email]
 
 # +
 predictions_email = log_email.predict(X_test_transform_const)
-cust_test["prob_logit_email"] = predictions_email
+email_test["prob_logit_email"] = predictions_email
 predictions_email = np.round(predictions_email)
-cust_test["pred_logit_email"] = predictions_email
+email_test["pred_logit_email"] = predictions_email
 
 accuracy = accuracy_score(y_test, predictions_email)
 precision = precision_score(y_test, predictions_email)
@@ -151,11 +155,14 @@ plt.show()
 
 # ##### WinemakerCall Subscription
 
+# +
 # train test split for Winemaker Subscription, stratified
 X_train, X_test, y_train, y_test = train_test_split(
     customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "NewsletterSubscr", "EmailSubscr"]],
     customer.loc[:, "WinemakerCallSubscr"],
     test_size=0.2, random_state=0, stratify=customer.loc[:, "WinemakerCallSubscr"])
+
+winemaker_test["WinemakerCallSubscr"] = y_test
 
 # +
 number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
@@ -185,9 +192,9 @@ log_winemaker.params[sig_coeffs_winemaker]
 
 # +
 predictions_winemaker = log_winemaker.predict(X_test_transform_const)
-cust_test["prob_logit_winemaker"] = predictions_winemaker
+winemaker_test["prob_logit_winemaker"] = predictions_winemaker
 predictions_winemaker = np.round(predictions_winemaker)
-cust_test["pred_logit_winemaker"] = predictions_winemaker
+winemaker_test["pred_logit_winemaker"] = predictions_winemaker
 
 accuracy = accuracy_score(y_test, predictions_winemaker)
 precision = precision_score(y_test, predictions_winemaker)
@@ -220,11 +227,14 @@ plt.show()
 
 # ##### Newsletter Subscription
 
+# +
 # train test split for Newsletter Subscription, stratified
 X_train, X_test, y_train, y_test = train_test_split(
     customer.loc[:, ["OrderVolume", "CustomerSegment", "Division", "SaleAmount", "WinemakerCallSubscr", "EmailSubscr"]],
     customer.loc[:, "NewsletterSubscr"],
     test_size=0.2, random_state=0, stratify=customer.loc[:, "NewsletterSubscr"])
+
+newsletter_test["NewsletterSubscr"] = y_test
 
 # +
 number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
@@ -254,9 +264,9 @@ log_newsletter.params[sig_coeffs_newsletter]
 
 # +
 predictions_newsletter = log_newsletter.predict(X_test_transform_const)
-cust_test["prob_logit_newsletter"] = predictions_newsletter
+newsletter_test["prob_logit_newsletter"] = predictions_newsletter
 predictions_newsletter = np.round(predictions_newsletter)
-cust_test["pred_logit_newsletter"] = predictions_newsletter
+newsletter_test["pred_logit_newsletter"] = predictions_newsletter
 
 accuracy = accuracy_score(y_test, predictions_newsletter)
 precision = precision_score(y_test, predictions_newsletter)
@@ -484,87 +494,90 @@ plt.show()
 
 # #### Calculate Lift
 
-# TODO: setup cust_test for lift, rate calculations
-cust_test.head() # test df has appended probability and prediction columns to calculate from 
+email_test.head(3)
+
+newsletter_test.head(3)
+
+winemaker_test.head(3)
 
 # +
 # avg response
-avg_email = np.mean(cust_test["EmailSubscr"])
-avg_newsletter = np.mean(cust_test["NewsletterSubscr"])
-avg_winemaker = np.mean(cust_test["WinemakerCallSubscr"])
+avg_email = np.mean(email_test["EmailSubscr"])
+avg_newsletter = np.mean(newsletter_test["NewsletterSubscr"])
+avg_winemaker = np.mean(winemaker_test["WinemakerCallSubscr"])
 
 # lift
-cust_test["lift_email"] = cust_test["prob_logit_email"]/avg_email
-cust_test["lift_newsletter"] = cust_test["prob_logit_newsletter"]/avg_newsletter
-cust_test["lift_winemaker"] = cust_test["prob_logit_winemaker"]/avg_winemaker
+email_test["lift_email"] = email_test["prob_logit_email"]/avg_email
+newsletter_test["lift_newsletter"] = newsletter_test["prob_logit_newsletter"]/avg_newsletter
+winemaker_test["lift_winemaker"] = winemaker_test["prob_logit_winemaker"]/avg_winemaker
 # -
 
 # #### Plot Marginal Response Rate
 
-cust_test_email_sorted = cust_test.sort_values(by="lift_email", ascending=False)
-marginal_email = sns.scatterplot(cust_test_email_sorted, x = range(len(cust_test_email_sorted)), y = "prob_logit_email", color = "black")
+email_test_sorted = email_test.sort_values(by="lift_email", ascending=False)
+marginal_email = sns.scatterplot(email_test_sorted, x = range(len(email_test_sorted)), y = "prob_logit_email", color = "black")
 marginal_email.set(xlabel="Number of Prospects", ylabel="nth-best Response Rate", title="Email: Marginal Response Rate vs Number of Solicitations")
 plt.show()
 
-cust_test_newsletter_sorted = cust_test.sort_values(by="lift_newsletter", ascending=False)
-marginal_newsletter = sns.scatterplot(cust_test_newsletter_sorted, x = range(len(cust_test_newsletter_sorted)), y = "prob_logit_newsletter", color = "darkgreen")
+newsletter_test_sorted = newsletter_test.sort_values(by="lift_newsletter", ascending=False)
+marginal_newsletter = sns.scatterplot(newsletter_test_sorted, x = range(len(newsletter_test_sorted)), y = "prob_logit_newsletter", color = "darkgreen")
 marginal_newsletter.set(xlabel="Number of Prospects", ylabel="nth-best Response Rate", title="Newsletter: Marginal Response Rate vs Number of Solicitations")
 plt.show()
 
-cust_test_winemaker_sorted = cust_test.sort_values(by="lift_winemaker", ascending=False)
-marginal_winemaker = sns.scatterplot(cust_test_winemaker_sorted, x = range(len(cust_test_winemaker_sorted)), y = "prob_logit_winemaker", color = "red")
+winemaker_test_sorted = winemaker_test.sort_values(by="lift_winemaker", ascending=False)
+marginal_winemaker = sns.scatterplot(winemaker_test_sorted, x = range(len(winemaker_test_sorted)), y = "prob_logit_winemaker", color = "red")
 marginal_winemaker.set(xlabel="Number of Prospects", ylabel="nth-best Response Rate", title="Winemaker: Marginal Response Rate vs Number of Solicitations")
 plt.show()
 
 # #### Plot Number of Positive Reponses
 
 # +
-cust_test_email_sorted["cumsum_email"] = cust_test_email_sorted["prob_logit_email"].cumsum()
-max_cumsum_email = max(cust_test_email_sorted["cumsum_email"])
+email_test_sorted["cumsum_email"] = email_test_sorted["prob_logit_email"].cumsum()
+max_cumsum_email = max(email_test_sorted["cumsum_email"])
 
-responses_email = sns.scatterplot(cust_test_email_sorted, x = range(len(cust_test_email_sorted)), y = "cumsum_email", color = "black")
+responses_email = sns.scatterplot(email_test_sorted, x = range(len(email_test_sorted)), y = "cumsum_email", color = "black")
 responses_email.set(xlabel="Number of Customers", ylabel="Expected total number of responses", title="Email: Number of Positive Responses vs Number of Solicitations")
 plt.show()
 
-responses_email_prop = sns.scatterplot(cust_test_email_sorted, 
-                                       x = np.array(range(len(cust_test_email_sorted)))/len(cust_test_email_sorted), 
-                                       y = cust_test_email_sorted["cumsum_email"]/max_cumsum_email, 
+responses_email_prop = sns.scatterplot(email_test_sorted, 
+                                       x = np.array(range(len(email_test_sorted)))/len(email_test_sorted), 
+                                       y = email_test_sorted["cumsum_email"]/max_cumsum_email, 
                                        color = "black")
 responses_email_prop.set(xlabel="Fraction of Customers", ylabel="Proportion of responses", title="Email: Proportion of Positive Responses vs Fraction of Solicitations")
 plt.show()
 
 # +
-cust_test_newsletter_sorted["cumsum_newsletter"] = cust_test_newsletter_sorted["prob_logit_newsletter"].cumsum()
-max_cumsum_newsletter = max(cust_test_newsletter_sorted["cumsum_newsletter"])
+newsletter_test_sorted["cumsum_newsletter"] = newsletter_test_sorted["prob_logit_newsletter"].cumsum()
+max_cumsum_newsletter = max(newsletter_test_sorted["cumsum_newsletter"])
 
-responses_newsletter = sns.scatterplot(cust_test_newsletter_sorted,
-                                        x = range(len(cust_test_newsletter_sorted)),
+responses_newsletter = sns.scatterplot(newsletter_test_sorted,
+                                        x = range(len(newsletter_test_sorted)),
                                           y = "cumsum_newsletter",
                                             color = "darkgreen")
 responses_newsletter.set(xlabel="Number of Customers", ylabel="Expected total number of responses", title="Newsletter: Number of Positive Responses vs Number of Solicitations")
 plt.show()
 
-responses_newsletter_prop = sns.scatterplot(cust_test_newsletter_sorted, 
-                                       x = np.array(range(len(cust_test_newsletter_sorted)))/len(cust_test_newsletter_sorted), 
-                                       y = cust_test_newsletter_sorted["cumsum_newsletter"]/max_cumsum_newsletter, 
+responses_newsletter_prop = sns.scatterplot(newsletter_test_sorted, 
+                                       x = np.array(range(len(newsletter_test_sorted)))/len(newsletter_test_sorted), 
+                                       y = newsletter_test_sorted["cumsum_newsletter"]/max_cumsum_newsletter, 
                                        color = "darkgreen")
 responses_newsletter_prop.set(xlabel="Fraction of Customers", ylabel="Proportion of responses", title="Newsletter: Proportion of Positive Responses vs Fraction of Solicitations")
 plt.show()
 
 # +
-cust_test_winemaker_sorted["cumsum_winemaker"] = cust_test_winemaker_sorted["prob_logit_winemaker"].cumsum()
-max_cumsum_winemaker = max(cust_test_winemaker_sorted["cumsum_winemaker"])
+winemaker_test_sorted["cumsum_winemaker"] = winemaker_test_sorted["prob_logit_winemaker"].cumsum()
+max_cumsum_winemaker = max(winemaker_test_sorted["cumsum_winemaker"])
 
-responses_winemaker = sns.scatterplot(cust_test_winemaker_sorted,
-                                        x = range(len(cust_test_winemaker_sorted)),
+responses_winemaker = sns.scatterplot(winemaker_test_sorted,
+                                        x = range(len(winemaker_test_sorted)),
                                           y = "cumsum_winemaker",
                                             color = "darkgreen")
 responses_winemaker.set(xlabel="Number of Customers", ylabel="Expected total number of responses", title="Winemaker: Number of Positive Responses vs Number of Solicitations")
 plt.show()
 
-responses_winemaker_prop = sns.scatterplot(cust_test_winemaker_sorted, 
-                                       x = np.array(range(len(cust_test_winemaker_sorted)))/len(cust_test_winemaker_sorted), 
-                                       y = cust_test_winemaker_sorted["cumsum_winemaker"]/max_cumsum_winemaker, 
+responses_winemaker_prop = sns.scatterplot(winemaker_test_sorted, 
+                                       x = np.array(range(len(winemaker_test_sorted)))/len(winemaker_test_sorted), 
+                                       y = winemaker_test_sorted["cumsum_winemaker"]/max_cumsum_winemaker, 
                                        color = "darkgreen")
 responses_winemaker_prop.set(xlabel="Fraction of Customers", ylabel="Proportion of responses", title="Winemaker: Proportion of Positive Responses vs Fraction of Solicitations")
 plt.show()
