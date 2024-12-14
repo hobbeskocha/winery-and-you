@@ -14,7 +14,6 @@
 
 # ## Import Libraries and Config pandas display
 
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -54,11 +53,15 @@ sns.set_palette("colorblind")
 
 # Preliminary analysis was performed using seaborn. More detailed analysis was performed using Tableau
 
+# +
+#TODO: numeric distribution
+# -
+
 # ### Analyzing the distribution of customer segment counts across states, regions, and divisions. Is there a considerable difference in the distribution of customer segments across the USA?
 
-segment_by_states = winery.groupby("State")["CustomerSegment"].value_counts()
-segment_by_region = winery.groupby("Region")["CustomerSegment"].value_counts()
-segment_by_division = winery.groupby("Division")["CustomerSegment"].value_counts()
+segment_by_states = winery.groupby("State", observed=False)["CustomerSegment"].value_counts()
+segment_by_region = winery.groupby("Region", observed=False)["CustomerSegment"].value_counts()
+segment_by_division = winery.groupby("Division", observed=False)["CustomerSegment"].value_counts()
 
 # #### Distribution by State
 
@@ -99,7 +102,7 @@ plt.show()
 # #### Total channel sales amount by customer segment
 
 # +
-channel_sales_by_segment = winery.groupby(["CustomerSegment", "Channel"])["SaleAmount"].sum().reset_index()
+channel_sales_by_segment = winery.groupby(["CustomerSegment", "Channel"], observed=False)["SaleAmount"].sum().reset_index()
 
 plt.figure(figsize=(10, 6))
 sns.barplot(x='CustomerSegment', y='SaleAmount', hue='Channel', data=channel_sales_by_segment)
@@ -112,7 +115,7 @@ plt.show()
 # #### Total channel sales amount by Region
 
 # +
-channel_sales_by_segment = winery.groupby(["Region", "Channel"])["SaleAmount"].sum().reset_index()
+channel_sales_by_segment = winery.groupby(["Region", "Channel"], observed=False)["SaleAmount"].sum().reset_index()
 
 plt.figure(figsize=(12, 8))
 sns.barplot(x='Region', y='SaleAmount', hue='Channel', data=channel_sales_by_segment)
@@ -125,7 +128,7 @@ plt.show()
 # #### Total channel sales amount by State
 
 # +
-channel_sales_by_segment = winery.groupby(["State", "Channel"])["SaleAmount"].sum().reset_index()
+channel_sales_by_segment = winery.groupby(["State", "Channel"], observed=False)["SaleAmount"].sum().reset_index()
 
 plt.figure(figsize=(12, 8))
 sns.barplot(x='State', y='SaleAmount', hue='Channel', data=channel_sales_by_segment)
@@ -140,7 +143,7 @@ plt.show()
 # #### Total channel sales amount by Division
 
 # +
-channel_sales_by_segment = winery.groupby(["Division", "Channel"])["SaleAmount"].sum().reset_index()
+channel_sales_by_segment = winery.groupby(["Division", "Channel"], observed=False)["SaleAmount"].sum().reset_index()
 
 plt.figure(figsize=(12, 8))
 sns.barplot(x='Division', y='SaleAmount', hue='Channel', data=channel_sales_by_segment)
@@ -154,9 +157,9 @@ plt.show()
 
 # ### Volume of orders by geographic regions, channel including segments
 
-vol_by_region_seg = winery.groupby(["Region", "CustomerSegment"])["OrderID"].count().reset_index(name='OrderVolume')
-vol_by_division_seg = winery.groupby(["Division", "CustomerSegment"])["OrderID"].count().reset_index(name='OrderVolume')
-vol_by_channel_seg = winery.groupby(["Channel", "CustomerSegment"])["OrderID"].count().reset_index(name='OrderVolume')
+vol_by_region_seg = winery.groupby(["Region", "CustomerSegment"], observed=False)["OrderID"].count().reset_index(name='OrderVolume')
+vol_by_division_seg = winery.groupby(["Division", "CustomerSegment"], observed=False)["OrderID"].count().reset_index(name='OrderVolume')
+vol_by_channel_seg = winery.groupby(["Channel", "CustomerSegment"], observed=False)["OrderID"].count().reset_index(name='OrderVolume')
 
 # #### Customer Segment Order volume by region 
 
@@ -201,17 +204,17 @@ plt.show()
 
 # #### Groupings by Segment, Region, and Division for subscription preferences
 
-customer_seg_email = customer.groupby("CustomerSegment")["EmailSubscr"].value_counts().reset_index(name = "SubscrCount")
-customer_seg_newsletter = customer.groupby("CustomerSegment")["NewsletterSubscr"].value_counts().reset_index(name = "SubscrCount")
-customer_seg_winemakercalls = customer.groupby("CustomerSegment")["WinemakerCallSubscr"].value_counts().reset_index(name = "SubscrCount")
+customer_seg_email = customer.groupby("CustomerSegment", observed=False)["EmailSubscr"].value_counts().reset_index(name = "SubscrCount")
+customer_seg_newsletter = customer.groupby("CustomerSegment", observed=False)["NewsletterSubscr"].value_counts().reset_index(name = "SubscrCount")
+customer_seg_winemakercalls = customer.groupby("CustomerSegment", observed=False)["WinemakerCallSubscr"].value_counts().reset_index(name = "SubscrCount")
 
-customer_reg_email = customer.groupby("Region")["EmailSubscr"].value_counts().reset_index(name = "SubscrCount")
-customer_reg_newsletter = customer.groupby("Region")["NewsletterSubscr"].value_counts().reset_index(name = "SubscrCount")
-customer_reg_winemakercalls = customer.groupby("Region")["WinemakerCallSubscr"].value_counts().reset_index(name = "SubscrCount")
+customer_reg_email = customer.groupby("Region", observed=False)["EmailSubscr"].value_counts().reset_index(name = "SubscrCount")
+customer_reg_newsletter = customer.groupby("Region", observed=False)["NewsletterSubscr"].value_counts().reset_index(name = "SubscrCount")
+customer_reg_winemakercalls = customer.groupby("Region", observed=False)["WinemakerCallSubscr"].value_counts().reset_index(name = "SubscrCount")
 
-customer_div_email = customer.groupby("Division")["EmailSubscr"].value_counts().reset_index(name = "SubscrCount")
-customer_div_newsletter = customer.groupby("Division")["NewsletterSubscr"].value_counts().reset_index(name = "SubscrCount")
-customer_div_winemakercalls = customer.groupby("Division")["WinemakerCallSubscr"].value_counts().reset_index(name = "SubscrCount")
+customer_div_email = customer.groupby("Division", observed=False)["EmailSubscr"].value_counts().reset_index(name = "SubscrCount")
+customer_div_newsletter = customer.groupby("Division", observed=False)["NewsletterSubscr"].value_counts().reset_index(name = "SubscrCount")
+customer_div_winemakercalls = customer.groupby("Division", observed=False)["WinemakerCallSubscr"].value_counts().reset_index(name = "SubscrCount")
 
 # #### Subscription preferences by Segment
 
