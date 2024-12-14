@@ -14,10 +14,7 @@
 
 # ## Import libraries and config Pandas display
 
-import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 pd.options.display.max_columns = 25
 pd.options.display.max_rows = 100
@@ -252,6 +249,7 @@ state_to_region = {
 
 winery["Region"] = winery["State"].map(state_to_region)
 winery.sample(5)[["State", "Region", "Division"]]
+
 
 # -
 
