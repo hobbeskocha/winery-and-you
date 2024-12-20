@@ -14,6 +14,7 @@
 
 # ## Import Libraries and Config pandas display
 
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -53,9 +54,64 @@ sns.set_palette("colorblind")
 
 # Preliminary analysis was performed using seaborn. More detailed analysis was performed using Tableau
 
-# +
-#TODO: numeric distribution
-# -
+# ### Orders
+
+winery.columns
+
+# #### Baseline
+
+plt.figure(figsize=(12, 8))
+sns.boxplot(data = winery, y = "SaleAmount", x = "Channel")
+plt.title('Boxplot of Sale Amount by Channel')
+plt.show()
+
+plt.figure(figsize=(12, 8))
+sns.boxplot(data = winery, y = "SaleAmount", x = "CustomerSegment")
+plt.title('Boxplot of Sale Amount by Customer Segment')
+plt.show()
+
+# #### Log Transform Sale Amount
+
+winery_copy = winery.copy()
+winery_copy["SaleAmount"] = winery_copy["SaleAmount"].replace(0, 0.0001)
+winery_copy["SaleAmount_log"] = np.log(winery_copy["SaleAmount"])
+
+plt.figure(figsize=(12, 8))
+sns.boxplot(data = winery_copy, y = "SaleAmount_log", x = "Channel")
+plt.title('Boxplot of Logged Sale Amount by Channel')
+plt.show()
+
+plt.figure(figsize=(12, 8))
+sns.boxplot(data = winery_copy, y = "SaleAmount_log", x = "CustomerSegment")
+plt.title('Boxplot of Logged Sale Amount by Customer Segment')
+plt.show()
+
+# ### Customers
+
+customer.columns
+
+customer_copy = customer.copy()
+# customer_copy["SaleAmount"] = customer_copy["SaleAmount"].replace(0, 0.0001)
+customer_copy["SaleAmount_log"] = np.log(customer_copy["SaleAmount"])
+
+# #### Baseline
+
+plt.figure(figsize=(12, 8))
+sns.boxplot(data = customer_copy, y = "SaleAmount", x = "CustomerSegment")
+plt.title("Boxplot of Sale Amount by Customer Segment")
+plt.show()
+
+plt.figure(figsize=(12, 8))
+sns.boxplot(data = customer, y = "OrderVolume", x = "CustomerSegment")
+plt.title("Boxplot of Order Volume")
+plt.show()
+
+# #### Log Tranformed
+
+plt.figure(figsize=(12, 8))
+sns.boxplot(data = customer_copy, y = "SaleAmount_log", x = "CustomerSegment")
+plt.title("Boxplot of Sale Amount by Customer Segment")
+plt.show()
 
 # ### Analyzing the distribution of customer segment counts across states, regions, and divisions. Is there a considerable difference in the distribution of customer segments across the USA?
 
