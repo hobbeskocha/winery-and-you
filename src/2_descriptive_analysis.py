@@ -60,15 +60,17 @@ winery.columns
 
 # #### Baseline
 
-plt.figure(figsize=(12, 8))
+# +
+plt.figure(figsize=(12, 5.5))
 sns.boxplot(data = winery, y = "SaleAmount", x = "Channel")
 plt.title('Boxplot of Sale Amount by Channel')
 plt.show()
 
-plt.figure(figsize=(12, 8))
+plt.figure(figsize=(12, 5.5))
 sns.boxplot(data = winery, y = "SaleAmount", x = "CustomerSegment")
 plt.title('Boxplot of Sale Amount by Customer Segment')
 plt.show()
+# -
 
 # #### Log Transform Sale Amount
 
@@ -76,42 +78,157 @@ winery_copy = winery.copy()
 winery_copy["SaleAmount"] = winery_copy["SaleAmount"].replace(0, 0.0001)
 winery_copy["SaleAmount_log"] = np.log(winery_copy["SaleAmount"])
 
-plt.figure(figsize=(12, 8))
+# +
+plt.figure(figsize=(12, 5.5))
 sns.boxplot(data = winery_copy, y = "SaleAmount_log", x = "Channel")
 plt.title('Boxplot of Logged Sale Amount by Channel')
 plt.show()
 
-plt.figure(figsize=(12, 8))
+plt.figure(figsize=(12, 5.5))
+sns.violinplot(data = winery_copy, y = "SaleAmount_log", x = "Channel")
+plt.title('Violinplot of Logged Sale Amount by Channel')
+plt.show()
+
+plt.figure(figsize=(12, 5.5))
+sns.histplot(data = winery_copy, x="SaleAmount_log",
+              binwidth=0.25, hue="Channel")
+plt.title('Histogram of Logged Sale Amount')
+plt.show()
+
+plt.figure(figsize=(12, 5.5))
+sns.histplot(data = winery_copy, x="SaleAmount_log", y="Channel",
+              binwidth=0.25, hue="Channel", legend=False)
+plt.title('Histogram of Logged Sale Amount by Channel')
+plt.show()
+
+# +
+plt.figure(figsize=(12, 5.5))
 sns.boxplot(data = winery_copy, y = "SaleAmount_log", x = "CustomerSegment")
 plt.title('Boxplot of Logged Sale Amount by Customer Segment')
 plt.show()
+
+plt.figure(figsize=(12, 5.5))
+sns.violinplot(data = winery_copy, y = "SaleAmount_log", x = "CustomerSegment")
+plt.title('Violinplot of Logged Sale Amount by Customer Segment')
+plt.show()
+
+plt.figure(figsize=(12, 5.5))
+sns.histplot(data = winery_copy, x="SaleAmount_log",
+              binwidth=0.25, hue="CustomerSegment")
+plt.title('Histogram of Logged Sale Amount')
+plt.show()
+
+plt.figure(figsize=(12, 5.5))
+sns.histplot(data = winery_copy, x="SaleAmount_log", y="CustomerSegment",
+              binwidth=0.25, hue="CustomerSegment", legend=False)
+plt.title('Histogram of Logged Sale Amount by Customer Segment')
+plt.show()
+# -
 
 # ### Customers
 
 customer.columns
 
 customer_copy = customer.copy()
-# customer_copy["SaleAmount"] = customer_copy["SaleAmount"].replace(0, 0.0001)
 customer_copy["SaleAmount_log"] = np.log(customer_copy["SaleAmount"])
 
 # #### Baseline
 
-plt.figure(figsize=(12, 8))
+# +
+plt.figure(figsize=(12, 5.5))
 sns.boxplot(data = customer_copy, y = "SaleAmount", x = "CustomerSegment")
 plt.title("Boxplot of Sale Amount by Customer Segment")
 plt.show()
 
-plt.figure(figsize=(12, 8))
-sns.boxplot(data = customer, y = "OrderVolume", x = "CustomerSegment")
-plt.title("Boxplot of Order Volume")
+plt.figure(figsize=(12, 5.5))
+sns.boxplot(data = customer_copy, y = "OrderVolume", x = "CustomerSegment")
+plt.title("Boxplot of Order Volume by Customer Segment")
 plt.show()
 
-# #### Log Tranformed
+plt.figure(figsize=(12, 5.5))
+sns.histplot(data = customer_copy, x="OrderVolume",
+              binwidth=0.25, hue="CustomerSegment")
+plt.title('Histogram of Order Volume')
+plt.show()
 
-plt.figure(figsize=(12, 8))
+plt.figure(figsize=(12, 5.5))
+sns.histplot(data = customer_copy, x="OrderVolume", y="CustomerSegment",
+              binwidth=0.25, hue="CustomerSegment", legend=False)
+plt.title('Histogram of Order Volume by Customer Segment')
+plt.show()
+
+# +
+plt.figure(figsize=(12, 5.5))
+sns.boxplot(data = customer_copy, y = "SaleAmount", x = "Region")
+plt.title("Boxplot of Sale Amount by Region")
+plt.show()
+
+plt.figure(figsize=(12, 5.5))
+sns.boxplot(data = customer_copy, y = "OrderVolume", x = "Region")
+plt.title("Boxplot of Order Volume by Region")
+plt.show()
+
+plt.figure(figsize=(12, 5.5))
+sns.histplot(data = customer_copy, x="OrderVolume",
+              binwidth=0.25, hue="Region")
+plt.title('Histogram of Order Volume')
+plt.show()
+
+plt.figure(figsize=(12, 5.5))
+sns.histplot(data = customer_copy, x="OrderVolume", y="Region",
+              binwidth=0.25, hue="Region", legend=False)
+plt.title('Histogram of Order Volume by Region')
+plt.show()
+# -
+
+# #### Log Transformed Sale Amount
+
+# +
+plt.figure(figsize=(12, 5.5))
 sns.boxplot(data = customer_copy, y = "SaleAmount_log", x = "CustomerSegment")
-plt.title("Boxplot of Sale Amount by Customer Segment")
+plt.title("Boxplot of Logged Sale Amount by Customer Segment")
 plt.show()
+
+plt.figure(figsize=(12, 5.5))
+sns.violinplot(data = customer_copy, y = "SaleAmount_log", x = "CustomerSegment")
+plt.title("Violinplot of Logged Sale Amount by Customer Segment")
+plt.show()
+
+plt.figure(figsize=(12, 5.5))
+sns.histplot(data = customer_copy, x="SaleAmount_log",
+              binwidth=0.25, hue="CustomerSegment")
+plt.title('Histogram of Logged Sale Amount')
+plt.show()
+
+plt.figure(figsize=(12, 5.5))
+sns.histplot(data = customer_copy, x="SaleAmount_log", y="CustomerSegment",
+              binwidth=0.25, hue="CustomerSegment", legend=False)
+plt.title('Histogram of Logged Sale Amount by Customer Segment')
+plt.show()
+
+# +
+plt.figure(figsize=(12, 5.5))
+sns.boxplot(data = customer_copy, y = "SaleAmount_log", x = "Region")
+plt.title("Boxplot of Logged Sale Amount by Region")
+plt.show()
+
+plt.figure(figsize=(12, 5.5))
+sns.violinplot(data = customer_copy, y = "SaleAmount_log", x = "Region")
+plt.title("Violinplot of Logged Sale Amount by Region")
+plt.show()
+
+plt.figure(figsize=(12, 5.5))
+sns.histplot(data = customer_copy, x="SaleAmount_log",
+              binwidth=0.25, hue="Region")
+plt.title('Histogram of Logged Sale Amount')
+plt.show()
+
+plt.figure(figsize=(12, 5.5))
+sns.histplot(data = customer_copy, x="SaleAmount_log", y="Region",
+              binwidth=0.25, hue="Region", legend=False)
+plt.title('Histogram of Logged Sale Amount by Region')
+plt.show()
+# -
 
 # ### Analyzing the distribution of customer segment counts across states, regions, and divisions. Is there a considerable difference in the distribution of customer segments across the USA?
 
@@ -124,7 +241,7 @@ segment_by_division = winery.groupby("Division", observed=False)["CustomerSegmen
 # +
 segment_by_states_df = segment_by_states.reset_index(name='Count')
 
-plt.figure(figsize=(12, 8))
+plt.figure(figsize=(12, 5.5))
 sns.barplot(x='State', y='Count', hue='CustomerSegment', data=segment_by_states_df)
 plt.title('Customer Segments Count by State')
 plt.xticks(rotation=45)
@@ -146,7 +263,7 @@ plt.show()
 # +
 segment_by_division_df = segment_by_division.reset_index(name='Count')
 
-# plt.figure(figsize=(12, 8))
+# plt.figure(figsize=(12, 5.5))
 sns.barplot(x='Division', y='Count', hue='CustomerSegment', data=segment_by_division_df)
 plt.title('Customer Segments Count by Division')
 plt.xticks(rotation=45)
@@ -173,7 +290,7 @@ plt.show()
 # +
 channel_sales_by_segment = winery.groupby(["Region", "Channel"], observed=False)["SaleAmount"].sum().reset_index()
 
-plt.figure(figsize=(12, 8))
+plt.figure(figsize=(12, 5.5))
 sns.barplot(x='Region', y='SaleAmount', hue='Channel', data=channel_sales_by_segment)
 plt.title('Sum of SaleAmount by Region and Channel')
 plt.xlabel('Region')
@@ -186,7 +303,7 @@ plt.show()
 # +
 channel_sales_by_segment = winery.groupby(["State", "Channel"], observed=False)["SaleAmount"].sum().reset_index()
 
-plt.figure(figsize=(12, 8))
+plt.figure(figsize=(12, 5.5))
 sns.barplot(x='State', y='SaleAmount', hue='Channel', data=channel_sales_by_segment)
 plt.title('Sum of SaleAmount by State and Channel')
 plt.xlabel('State')
@@ -201,7 +318,7 @@ plt.show()
 # +
 channel_sales_by_segment = winery.groupby(["Division", "Channel"], observed=False)["SaleAmount"].sum().reset_index()
 
-plt.figure(figsize=(12, 8))
+plt.figure(figsize=(12, 5.5))
 sns.barplot(x='Division', y='SaleAmount', hue='Channel', data=channel_sales_by_segment)
 plt.title('Sum of SaleAmount by State and Channel')
 plt.xlabel('Division')
@@ -220,7 +337,7 @@ vol_by_channel_seg = winery.groupby(["Channel", "CustomerSegment"], observed=Fal
 # #### Customer Segment Order volume by region 
 
 # +
-plt.figure(figsize=(12, 8))
+plt.figure(figsize=(12, 5.5))
 sns.barplot(x='Region', y='OrderVolume', hue='CustomerSegment', data=vol_by_region_seg)
 plt.title('Order Volume by Region and Segment')
 plt.xlabel('Region')
@@ -233,7 +350,7 @@ plt.show()
 # #### Customer Segment Order volume by division
 
 # +
-plt.figure(figsize=(12, 8))
+plt.figure(figsize=(12, 5.5))
 sns.barplot(x='Division', y='OrderVolume', hue='CustomerSegment', data=vol_by_division_seg)
 plt.title('Order Volume by Division and Segment')
 plt.xlabel('Division')
@@ -246,7 +363,7 @@ plt.show()
 # #### Customer Segment Order volume by channel
 
 # +
-plt.figure(figsize=(12, 8))
+plt.figure(figsize=(12, 5.5))
 sns.barplot(x='Channel', y='OrderVolume', hue='CustomerSegment', data=vol_by_channel_seg)
 plt.title('Order Volume by Channel and Segment')
 plt.xlabel('Channel')
