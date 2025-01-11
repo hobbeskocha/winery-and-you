@@ -24,7 +24,7 @@ pd.options.display.max_rows = 100
 
 # ## Import datasets from data cleaning process
 
-winery = pd.read_csv("../data/Winery_Data_Clean.csv")
+winery = pd.read_csv("../../data/Winery_Data_Clean.csv")
 winery.dtypes
 
 # +
@@ -37,7 +37,7 @@ winery[categorical_columns] = winery[categorical_columns].astype("category")
 winery.dtypes
 # -
 
-customer = pd.read_csv("../data/Winery_Customer.csv")
+customer = pd.read_csv("../../data/Winery_Customer.csv")
 customer.dtypes
 
 # +

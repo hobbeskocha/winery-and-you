@@ -23,7 +23,7 @@ pd.options.display.max_rows = 100
 
 # #### Read CSV
 
-winery = pd.read_csv("../data/Winery_Data_csv.csv")
+winery = pd.read_csv("../../data/Winery_Data_csv.csv")
 winery.head()
 
 # #### Print basic attributes
@@ -301,5 +301,5 @@ customer.head()
 
 # ## Export csv
 
-winery_clean.to_csv("../data/Winery_Data_Clean.csv", index = False)
-customer.to_csv("../data/Winery_Customer.csv", index = False)
+winery_clean.to_csv("../../data/Winery_Data_Clean.csv", index = False)
+customer.to_csv("../../data/Winery_Customer.csv", index = False)

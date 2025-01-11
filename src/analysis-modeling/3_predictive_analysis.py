@@ -38,7 +38,7 @@ set_config(transform_output = "pandas")
 
 # ## Import datasets
 
-winery = pd.read_csv("../data/Winery_Data_Clean.csv", dtype={"Zipcode": object, })
+winery = pd.read_csv("../../data/Winery_Data_Clean.csv", dtype={"Zipcode": object, })
 winery.dtypes
 
 # +
@@ -51,7 +51,7 @@ winery[categorical_columns] = winery[categorical_columns].astype("category")
 winery.dtypes
 # -
 
-customer = pd.read_csv("../data/Winery_Customer.csv")
+customer = pd.read_csv("../../data/Winery_Customer.csv")
 customer.dtypes
 
 # +
@@ -65,12 +65,13 @@ customer.dtypes
 # ## Predictive Models
 
 # +
-# TODO: stratify train-test split for each subscription model
 # TODO: cross-validation? cross_validate() for multiple metrics, KFold class + visualization of metrics
 # TODO: RandomizedSearchCV - hyperparameter tuning
 
 # TODO: Pipeline supports final prediction model, crossvalidation workflow, and processing steps -- make_pipeline()
 # TODO: clustering with customer segment analysis for reclassification -- K-means, t-SNE, PCA?, NMF? + visualization of clusters/data points
+
+#TODO: automate image export for all plots into /artifacts
 # -
 
 # ### Binary Classification
