@@ -11,7 +11,7 @@ class InputData(BaseModel):
     CustomerSegment: str # TODO: one-hot encode
     Division: str # TODO: one-hot encode
     SaleAmount: float
-    NewsletterSubscr: bool
+    NewsletterSubscr: bool 
     WinemakerCallSubscr: bool 
 
 @backend_app.post("/predict")
