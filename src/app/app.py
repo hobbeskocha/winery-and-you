@@ -13,7 +13,7 @@ customer_segment = st.selectbox("Customer Segment", ["High Roller", "Luxury Esta
 division = st.selectbox("Division", ["New England", "Middle Atlantic", "East North Central",
                                       "West North Central", "South Atlantic", "East South Central",
                                       "West South Central", "Mountain", "Pacific"])
-sale_amount = st.number_input("Sale Amount", min_value=0, max_value=100_000, value=5)
+sale_amount = st.number_input("Sale Amount", min_value=0.0, max_value=100_000.0, value=5)
 newsletter_subscr = st.checkbox("Newsletter Subscription")
 winemaker_call_subscr = st.checkbox("Winemaker Call Subscription")
 
