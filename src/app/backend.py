@@ -5,10 +5,9 @@ import logging
 from classes.EmailInputData import EmailInputData
 from classes.NewsletterInputData import NewsletterInputData
 from classes.WinemakerInputData import WinemakerInputData
-
 from helpers.categorical_encoders import *
 
-# Load models
+# Load models from local storage
 model_log_email = joblib.load("../model-artifacts/log_email.pkl")
 model_log_newsletter = joblib.load("../model-artifacts/log_newsletter.pkl")
 model_log_winemaker = joblib.load("../model-artifacts/log_winemaker.pkl")
@@ -17,6 +16,7 @@ model_log_winemaker = joblib.load("../model-artifacts/log_winemaker.pkl")
 backend_app = FastAPI()
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO)
+
 
 # HTTP requests
 @backend_app.post("/predict-email")
@@ -80,6 +80,7 @@ def predict_winemaker(data: WinemakerInputData):
     prediction = model_log_winemaker.predict(input_data)
     logging.info(f"Winemaker Probability: {prediction} and Prediction: {round(prediction[0])}")
     return {"prediction": round(prediction[0])}
+
 
 
 if __name__ == "__main__":
