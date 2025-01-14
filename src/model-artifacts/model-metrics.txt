@@ -1,0 +1,6 @@
+Logit email accuracy: 0.9386,
+Logit winemaker accuracy: 0.9108,
+Logit newsletter accuracy: 0.6526,
+RF Email accuracy: 0.9349,
+RF Winemaker accuracy: 0.8878,
+RF Newsletter accuracy: 0.6553,
