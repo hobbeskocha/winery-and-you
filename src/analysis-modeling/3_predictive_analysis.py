@@ -20,6 +20,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import statsmodels.api as sm
+import joblib
 
 from sklearn import set_config
 from sklearn.model_selection import train_test_split, cross_val_score
@@ -154,6 +155,10 @@ plt.title('Receiver Operating Characteristic (ROC) Curve\nAccuracy: {:.2f}%'.for
 plt.legend(loc="lower right")
 plt.show()
 
+joblib.dump(log_email, "../model-artifacts/log_email.pkl", compress=("zlib", 3))
+with open("../model-artifacts/model-metrics.txt", "w") as f:
+    f.write(f"Logit Email accuracy: {np.round(accuracy, 4)},\n")
+
 # ##### WinemakerCall Subscription
 
 # +
@@ -225,6 +230,10 @@ plt.title('Receiver Operating Characteristic (ROC) Curve\nAccuracy: {:.2f}%'.for
     accuracy * 100))
 plt.legend(loc="lower right")
 plt.show()
+
+joblib.dump(log_winemaker, "../model-artifacts/log_winemaker.pkl", compress=("zlib", 3))
+with open("../model-artifacts/model-metrics.txt", "a") as f:
+    f.write(f"Logit Winemaker accuracy: {np.round(accuracy, 4)},\n")
 
 # ##### Newsletter Subscription
 
@@ -298,6 +307,10 @@ plt.title('Receiver Operating Characteristic (ROC) Curve\nAccuracy: {:.2f}%'.for
 plt.legend(loc="lower right")
 plt.show()
 
+joblib.dump(log_newsletter, "../model-artifacts/log_newsletter.pkl", compress=("zlib", 3))
+with open("../model-artifacts/model-metrics.txt", "a") as f:
+    f.write(f"Logit Newsletter accuracy: {np.round(accuracy, 4)},\n")
+
 # #### Random Forest
 
 # ##### Email Subscription
@@ -365,6 +378,10 @@ email_feat_import_plot.set(xlabel = "Importance", ylabel = "Feature", title = "F
 plt.show()
 # -
 
+joblib.dump(classifier_email, "../model-artifacts/rf_email.pkl", compress=("zlib", 3))
+with open("../model-artifacts/model-metrics.txt", "a") as f:
+    f.write(f"RF Email accuracy: {np.round(accuracy, 4)},\n")
+
 # ##### WinemakerCall Subscription
 
 # train test split for Winemaker Subscription, stratified
@@ -429,6 +446,10 @@ winemaker_feat_import_plot.set(xlabel = "Importance", ylabel = "Feature", title 
 plt.show()
 # -
 
+joblib.dump(classifier_winemaker, "../model-artifacts/rf_winemaker.pkl", compress=("zlib", 3))
+with open("../model-artifacts/model-metrics.txt", "a") as f:
+    f.write(f"RF Winemaker accuracy: {np.round(accuracy, 4)},\n")
+
 # ##### Newsletter Subscription
 
 # train test split for Newsletter Subscription, stratified
@@ -492,6 +513,10 @@ newsletter_feat_import_plot = sns.barplot(x='Importance', y='Feature', data=df_n
 newsletter_feat_import_plot.set(xlabel = "Importance", ylabel = "Feature", title = "Feature Importance for the Newsletter Random Forest Model")
 plt.show()
 # -
+
+joblib.dump(classifier_newsletter, "../model-artifacts/rf_newsletter.pkl", compress=("zlib", 3))
+with open("../model-artifacts/model-metrics.txt", "a") as f:
+    f.write(f"RF Newsletter accuracy: {np.round(accuracy, 4)},\n")
 
 # #### Calculate Lift
 
