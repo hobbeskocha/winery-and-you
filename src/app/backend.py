@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 import joblib
 import logging
-from typing import List
+import pandas as pd
 
 from classes.EmailInputData import EmailInputData
 from classes.NewsletterInputData import NewsletterInputData
 from classes.WinemakerInputData import WinemakerInputData
+from classes.InputData import InputData
 from helpers.categorical_encoders import *
 
 # Load models from local storage
@@ -41,6 +42,37 @@ def model_selector():
 	# print(best_email_model, best_newsletter_model, best_winemaker_model)
 	return best_email_model, best_newsletter_model, best_winemaker_model
 
+def prepare_input(data: InputData, model_tuple: tuple, channel: str): 
+	# map categorical data for one-hot encoding
+	is_high_roller, is_luxury_estate, is_wine_enthusiast = encode_customer_segment(data.CustomerSegment)
+	(is_east_south_central, is_middle_atlantic, is_mountain,
+	  is_new_england, is_pacific, is_south_atlantic,
+		is_west_north_central, is_west_south_central) = encode_division(data.Division)
+
+	# config input data for model prediction
+	input_data = [[data.OrderVolume, data.SaleAmount, 
+				   is_high_roller, is_luxury_estate, is_wine_enthusiast, 
+				   is_east_south_central, is_middle_atlantic, is_mountain,
+				   is_new_england, is_pacific, is_south_atlantic,
+					is_west_north_central, is_west_south_central]]
+	
+	model, model_type = model_tuple
+	if model_type == "Logit":
+		input_data[0].insert(0, 1.0)
+
+	if channel == "Email":
+		input_data[-1].append(data.NewsletterSubscr)
+		input_data[-1].append(data.WinemakerCallSubscr)
+	elif channel == "Newsletter":
+		input_data[-1].append(data.WinemakerCallSubscr)
+		input_data[-1].append(data.EmailSubscr)
+	elif channel == "Winemaker":
+		input_data[-1].append(data.NewsletterSubscr)
+		input_data[-1].append(data.EmailSubscr)
+	
+	return input_data, model, model_type
+
+
 # Select best models
 email_model_tuple, newsletter_model_tuple, winemaker_model_tuple = model_selector()
 
@@ -52,25 +84,9 @@ logging.basicConfig(level=logging.INFO)
 # HTTP requests
 @backend_app.post("/predict-email")
 def predict_email(data: EmailInputData):
-	# map categorical data for one-hot encoding
-	is_high_roller, is_luxury_estate, is_wine_enthusiast = encode_customer_segment(data.CustomerSegment)
-	(is_east_south_central, is_middle_atlantic, is_mountain,
-	  is_new_england, is_pacific, is_south_atlantic,
-		is_west_north_central, is_west_south_central) = encode_division(data.Division)
-
-	# config input data for model prediction
-	input_data = [[data.OrderVolume, data.SaleAmount, 
-				   is_high_roller, is_luxury_estate, is_wine_enthusiast, 
-				   is_east_south_central, is_middle_atlantic, is_mountain,
-				   is_new_england, is_pacific, is_south_atlantic,
-					is_west_north_central, is_west_south_central,
-					data.NewsletterSubscr, data.WinemakerCallSubscr]]
-	
-	email_model, email_model_type = email_model_tuple
-	if email_model_type == "Logit":
-		input_data[0].insert(0, 1.0)
-	
+	input_data, email_model, email_model_type = prepare_input(data, email_model_tuple, "Email")
 	prediction = email_model.predict(input_data)
+
 	if email_model_type == "RF":
 		logging.info(f"RF Email Prediction: {prediction}")
 		return {"prediction": int(prediction[0])}
@@ -81,24 +97,7 @@ def predict_email(data: EmailInputData):
 
 @backend_app.post("/predict-newsletter")
 def predict_newsletter(data: NewsletterInputData):
-	# map categorical data for one-hot encoding
-	is_high_roller, is_luxury_estate, is_wine_enthusiast = encode_customer_segment(data.CustomerSegment)
-	(is_east_south_central, is_middle_atlantic, is_mountain,
-	  is_new_england, is_pacific, is_south_atlantic,
-		is_west_north_central, is_west_south_central) = encode_division(data.Division)
-	
-	# config input data for model prediction
-	input_data = [[data.OrderVolume, data.SaleAmount, 
-				   is_high_roller, is_luxury_estate, is_wine_enthusiast, 
-				   is_east_south_central, is_middle_atlantic, is_mountain,
-				   is_new_england, is_pacific, is_south_atlantic,
-					is_west_north_central, is_west_south_central,
-					data.WinemakerCallSubscr, data.EmailSubscr]]
-	
-	newsletter_model, newsletter_model_type = newsletter_model_tuple
-	if newsletter_model_type == "Logit":
-		input_data[0].insert(0, 1.0)
-	
+	input_data, newsletter_model, newsletter_model_type = prepare_input(data, newsletter_model_tuple, "Newsletter")
 	prediction = newsletter_model.predict(input_data)
 
 	if newsletter_model_type == "RF":
@@ -111,25 +110,9 @@ def predict_newsletter(data: NewsletterInputData):
 
 @backend_app.post("/predict-winemaker")
 def predict_winemaker(data: WinemakerInputData):
-	# map categorical data for one-hot encoding
-	is_high_roller, is_luxury_estate, is_wine_enthusiast = encode_customer_segment(data.CustomerSegment)
-	(is_east_south_central, is_middle_atlantic, is_mountain,
-	  is_new_england, is_pacific, is_south_atlantic,
-		is_west_north_central, is_west_south_central) = encode_division(data.Division)
-	
-	# config input data for model prediction
-	input_data = [[data.OrderVolume, data.SaleAmount, 
-				   is_high_roller, is_luxury_estate, is_wine_enthusiast, 
-				   is_east_south_central, is_middle_atlantic, is_mountain,
-				   is_new_england, is_pacific, is_south_atlantic,
-					is_west_north_central, is_west_south_central,
-					data.NewsletterSubscr, data.EmailSubscr]]
-	
-	winemaker_model, winemaker_model_type = winemaker_model_tuple
-	if winemaker_model_type == "Logit":
-		input_data[0].insert(0, 1.0)
-	
+	input_data, winemaker_model, winemaker_model_type = prepare_input(data, winemaker_model_tuple, "Winemaker")
 	prediction = winemaker_model.predict(input_data)
+
 	if winemaker_model_type == "RF":
 		logging.info(f"RF Winemaker Prediction: {prediction}")
 		return {"prediction": int(prediction[0])}
