@@ -1,10 +1,16 @@
 def encode_customer_segment(segment: str):
+    """
+    encode customer segment to one-hot encoding
+    """
     is_high_roller = 1 if segment == "High Roller" else 0
     is_luxury_estate = 1 if segment == "Luxury Estate" else 0
     is_wine_enthusiast = 1 if segment == "Wine Enthusiast" else 0
     return [is_high_roller, is_luxury_estate, is_wine_enthusiast]
 
 def encode_division(division: str):
+    """
+    encode US division to one-hot encoding
+    """
     is_east_south_central = 1 if division == "East South Central" else 0
     is_middle_atlantic = 1 if division == "Middle Atlantic" else 0
     is_mountain = 1 if division == "Mountain" else 0
