@@ -8,15 +8,22 @@ WINEMAKER_API_URL = "http://127.0.0.1:8000/predict-winemaker"
 
 # Header
 st.title = "Winery Subscription Predictions"
-st.markdown("# Winery Subscription Predictions")
-st.write("This is a simple app to predict whether a customer will subscribe to the winery's emails, newsletters, or winemaker calls.")
+st.markdown("# Winery Subscription Predictions 🍷")
+header_description = """
+This simple interface allows you to utilize the predictive models developed from our portfolio project
+to predict whether a customer will subscribe to the winery's emails, newsletters, or winemaker calls.\n\n 
 
+Simply input the required information and click the "Predict" button for the respective marketing channel. Behind the scenes,
+the most accurate model of the Logistic Regression and Random Forest models is used to make the prediction.
+"""
+
+st.write(header_description)
 st.markdown("######")
 
 # User Inputs
 
 ## Email Subscription
-st.markdown("## Email Subscription")
+st.markdown("## Email Subscription 📧")
 sale_amount = st.number_input("Total Sale Amount", min_value=0.0, max_value=100_000.0, value=5.0, key="email_sale_amount")
 order_volume = st.number_input("Order Volume", min_value=0, max_value=100_000, value=5, key="email_order_volume")
 customer_segment = st.selectbox("Customer Segment", ["High Roller", "Luxury Estate",
@@ -50,7 +57,7 @@ st.markdown("######")
 
 
 ## Newsletter Subscription
-st.markdown("## Newsletter Subscription")
+st.markdown("## Newsletter Subscription 📰")
 sale_amount = st.number_input("Total Sale Amount", min_value=0.0, max_value=100_000.0, value=5.0, key="newsletter_sale_amount")
 order_volume = st.number_input("Order Volume", min_value=0, max_value=100_000, value=5, key="newsletter_order_volume")
 customer_segment = st.selectbox("Customer Segment", ["High Roller", "Luxury Estate",
@@ -83,7 +90,7 @@ if st.button("Predict Newsletter Subscription"):
 st.markdown("######")
 
 ## Winemaker Call Subscription
-st.markdown("## Winemaker Call Subscription")
+st.markdown("## Winemaker Call Subscription 📞")
 sale_amount = st.number_input("Total Sale Amount", min_value=0.0, max_value=100_000.0, value=5.0, key="winemaker_sale_amount")
 order_volume = st.number_input("Order Volume", min_value=0, max_value=100_000, value=5, key="winemaker_order_volume")
 customer_segment = st.selectbox("Customer Segment", ["High Roller", "Luxury Estate",
@@ -112,3 +119,14 @@ if st.button("Predict Winemaker Subscription"):
         st.success(f"Winemaker Prediction: {prediction}", icon="🎉")
     else:
         st.error("Error: Unable to make Winemaker prediction")
+
+
+st.markdown("######")
+
+footer_description = """
+### Future updates will include:
+1. refining the UX/UI of this interface
+2. improving the robustness and accuracy of the underlying models with hyperparameter tuning 
+3. introducing multinomial classification to predict a customer's segment e.g. High Roller, Wine Enthusiast, etc.
+"""
+st.markdown(footer_description)
