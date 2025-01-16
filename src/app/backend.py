@@ -70,6 +70,9 @@ def prepare_input(data: InputData, model_tuple: tuple, channel: str):
 		input_data[-1].append(data.NewsletterSubscr)
 		input_data[-1].append(data.EmailSubscr)
 	
+	if model_type == "RF":
+		input_data = pd.DataFrame(input_data, columns=model.feature_names_in_)
+	
 	return input_data, model, model_type
 
 
