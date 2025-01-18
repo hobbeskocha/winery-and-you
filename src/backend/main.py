@@ -13,43 +13,43 @@ from helpers.categorical_encoders import *
 
 # -------------------------Utilities-------------------------
 
-# Load models from local storage
-model_log_email = joblib.load("../model-artifacts/log_email.pkl")
-model_log_newsletter = joblib.load("../model-artifacts/log_newsletter.pkl")
-model_log_winemaker = joblib.load("../model-artifacts/log_winemaker.pkl")
-model_rf_email = joblib.load("../model-artifacts/rf_email.pkl")
-model_rf_newsletter = joblib.load("../model-artifacts/rf_newsletter.pkl")
-model_rf_winemaker = joblib.load("../model-artifacts/rf_winemaker.pkl")
+# # Load models from local storage
+# model_log_email = joblib.load("../model-artifacts/log_email.pkl")
+# model_log_newsletter = joblib.load("../model-artifacts/log_newsletter.pkl")
+# model_log_winemaker = joblib.load("../model-artifacts/log_winemaker.pkl")
+# model_rf_email = joblib.load("../model-artifacts/rf_email.pkl")
+# model_rf_newsletter = joblib.load("../model-artifacts/rf_newsletter.pkl")
+# model_rf_winemaker = joblib.load("../model-artifacts/rf_winemaker.pkl")
 
-# # Load models from GCS
-# def download_blob(bucket_name, source_blob_name, destination_file_name):
-# 	"""Downloads a blob from the bucket."""
-# 	storage_client = storage.Client()
-# 	bucket = storage_client.bucket(bucket_name)
-# 	blob = bucket.blob(source_blob_name)
-# 	blob.download_to_filename(destination_file_name)
-# 	print(f"Blob {source_blob_name} downloaded to {destination_file_name}.")
+# Load models from GCS
+def download_blob(bucket_name, source_blob_name, destination_file_name):
+	"""Downloads a blob from the bucket."""
+	storage_client = storage.Client()
+	bucket = storage_client.bucket(bucket_name)
+	blob = bucket.blob(source_blob_name)
+	blob.download_to_filename(destination_file_name)
+	print(f"Blob {source_blob_name} downloaded to {destination_file_name}.")
 
-# bucket_name = " winery-ml-models-bucket"
-# model_artifacts = {
-# 	"log_email": "/log_email.pkl",
-# 	"log_newsletter": "/log_newsletter.pkl",
-# 	"log_winemaker": "/log_winemaker.pkl",
-# 	"rf_email": "/rf_email.pkl",	
-# 	"rf_newsletter": "/rf_newsletter.pkl",
-# 	"rf_winemaker": "/rf_winemaker.pkl"
-# }
+bucket_name = " winery-ml-models-bucket"
+model_artifacts = {
+	"log_email": "/log_email.pkl",
+	"log_newsletter": "/log_newsletter.pkl",
+	"log_winemaker": "/log_winemaker.pkl",
+	"rf_email": "/rf_email.pkl",	
+	"rf_newsletter": "/rf_newsletter.pkl",
+	"rf_winemaker": "/rf_winemaker.pkl"
+}
 
-# tmp_dir = "/tmp/models"
-# os.makedirs(tmp_dir, exist_ok=True)
-# models = {}
-# for model_name, gcs_path in model_artifacts.items():
-# 	local_path = os.path.join(tmp_dir, model_name + ".pkl")
-# 	download_blob(bucket_name, gcs_path, local_path)
-# 	models[model_name] = joblib.load(local_path)
+tmp_dir = "/tmp/models"
+os.makedirs(tmp_dir, exist_ok=True)
+models = {}
+for model_name, gcs_path in model_artifacts.items():
+	local_path = os.path.join(tmp_dir, model_name + ".pkl")
+	download_blob(bucket_name, gcs_path, local_path)
+	models[model_name] = joblib.load(local_path)
 
-# model_log_email, model_log_newsletter, model_log_winemaker = models["log_email"], models["log_newsletter"], models["log_winemaker"]
-# model_rf_email, model_rf_newsletter, model_rf_winemaker = models["rf_email"], models["rf_newsletter"], models["rf_winemaker"]
+model_log_email, model_log_newsletter, model_log_winemaker = models["log_email"], models["log_newsletter"], models["log_winemaker"]
+model_rf_email, model_rf_newsletter, model_rf_winemaker = models["rf_email"], models["rf_newsletter"], models["rf_winemaker"]
 
 def model_selector():
 	"""
