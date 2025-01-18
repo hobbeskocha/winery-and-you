@@ -1,9 +1,12 @@
 import os
+import sys
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import joblib
 import logging
 # import pandas as pd
 from google.cloud import storage
+import uvicorn
 
 from classes.EmailInputData import EmailInputData
 from classes.NewsletterInputData import NewsletterInputData
@@ -21,6 +24,10 @@ from helpers.categorical_encoders import *
 # model_rf_newsletter = joblib.load("../model-artifacts/rf_newsletter.pkl")
 # model_rf_winemaker = joblib.load("../model-artifacts/rf_winemaker.pkl")
 
+# metrics_file = open("../model-artifacts/model-metrics.txt")    
+# metrics_line = metrics_file.readline()
+# metrics_file.close()
+
 # Load models from GCS
 def download_blob(bucket_name, source_blob_name, destination_file_name):
 	"""Downloads a blob from the bucket."""
@@ -30,14 +37,14 @@ def download_blob(bucket_name, source_blob_name, destination_file_name):
 	blob.download_to_filename(destination_file_name)
 	print(f"Blob {source_blob_name} downloaded to {destination_file_name}.")
 
-bucket_name = " winery-ml-models-bucket"
+bucket_name = "winery-ml-models-bucket"
 model_artifacts = {
-	"log_email": "/log_email.pkl",
-	"log_newsletter": "/log_newsletter.pkl",
-	"log_winemaker": "/log_winemaker.pkl",
-	"rf_email": "/rf_email.pkl",	
-	"rf_newsletter": "/rf_newsletter.pkl",
-	"rf_winemaker": "/rf_winemaker.pkl"
+	"log_email": "log_email.pkl",
+	"log_newsletter": "log_newsletter.pkl",
+	"log_winemaker": "log_winemaker.pkl",
+	"rf_email": "rf_email.pkl",	
+	"rf_newsletter": "rf_newsletter.pkl",
+	"rf_winemaker": "rf_winemaker.pkl"
 }
 
 tmp_dir = "/tmp/models"
@@ -51,14 +58,15 @@ for model_name, gcs_path in model_artifacts.items():
 model_log_email, model_log_newsletter, model_log_winemaker = models["log_email"], models["log_newsletter"], models["log_winemaker"]
 model_rf_email, model_rf_newsletter, model_rf_winemaker = models["rf_email"], models["rf_newsletter"], models["rf_winemaker"]
 
+metrics_file = download_blob(bucket_name, "/model-metrics.txt", "/tmp/model-metrics.txt")
+metrics_file = open("/tmp/model-metrics.txt")    
+metrics_line = metrics_file.readline()
+metrics_file.close()
+
 def model_selector():
 	"""
 	compare model accuracies and return best model and model type as tuple
 	"""
-	metrics_file = open("../model-artifacts/model-metrics.txt")    
-	metrics_line = metrics_file.readline()
-	metrics_file.close()
-
 	models = metrics_line.split(",")
 	email_models = [model for model in models if "Email" in model]
 	newsletter_models = [model for model in models if "Newsletter" in model]
@@ -119,10 +127,22 @@ app = FastAPI()
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all HTTP methods
+    allow_headers=["*"],  # Allows all headers
+)
+
 # HTTP requests
 @app.get("/")
 def read_root():
 	return {"message": "Hello World"}
+
+@app.get("/version")
+def read_version():
+	return {f"Python version": f"{sys.version}"}
 
 @app.post("/predict-email")
 def predict_email(data: EmailInputData):
@@ -165,5 +185,4 @@ def predict_winemaker(data: WinemakerInputData):
 
 
 if __name__ == "__main__":
-	import uvicorn
 	uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))

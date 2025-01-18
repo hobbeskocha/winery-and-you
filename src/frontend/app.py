@@ -6,7 +6,7 @@ EMAIL_API_URL = "http://127.0.0.1:8080/predict-email"
 NEWSLETTER_API_URL = "http://127.0.0.1:8080/predict-newsletter"
 WINEMAKER_API_URL = "http://127.0.0.1:8080/predict-winemaker"
 
-# # Cloud APIs
+# Cloud APIs
 # GOOGLE_CLOUD_API_URL = "https://winery-backend-505678819204.us-east1.run.app"
 # EMAIL_API_URL = GOOGLE_CLOUD_API_URL + "/predict-email"
 # NEWSLETTER_API_URL = GOOGLE_CLOUD_API_URL + "/predict-newsletter"
