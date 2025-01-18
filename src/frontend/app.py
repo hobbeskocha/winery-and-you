@@ -1,10 +1,16 @@
 import streamlit as st
 import requests
 
-EMAIL_API_URL = "http://127.0.0.1:8000/predict-email"
-NEWSLETTER_API_URL = "http://127.0.0.1:8000/predict-newsletter"
-WINEMAKER_API_URL = "http://127.0.0.1:8000/predict-winemaker"
+# Local APIs
+EMAIL_API_URL = "http://127.0.0.1:8080/predict-email"
+NEWSLETTER_API_URL = "http://127.0.0.1:8080/predict-newsletter"
+WINEMAKER_API_URL = "http://127.0.0.1:8080/predict-winemaker"
 
+# # Cloud APIs
+# GOOGLE_CLOUD_API_URL = "https://winery-backend-505678819204.us-east1.run.app"
+# EMAIL_API_URL = GOOGLE_CLOUD_API_URL + "/predict-email"
+# NEWSLETTER_API_URL = GOOGLE_CLOUD_API_URL + "/predict-newsletter"
+# WINEMAKER_API_URL = GOOGLE_CLOUD_API_URL + "/predict-winemaker"
 
 # Header
 st.title = "Winery Subscription Predictions"
