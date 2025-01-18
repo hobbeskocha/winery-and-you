@@ -115,12 +115,12 @@ def prepare_input(data: InputData, model_tuple: tuple, channel: str):
 email_model_tuple, newsletter_model_tuple, winemaker_model_tuple = model_selector()
 
 # Create backend app
-backend_app = FastAPI()
+app = FastAPI()
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO)
 
 # HTTP requests
-@backend_app.post("/predict-email")
+@app.post("/predict-email")
 def predict_email(data: EmailInputData):
 	input_data, email_model, email_model_type = prepare_input(data, email_model_tuple, "Email")
 	prediction = email_model.predict(input_data)
@@ -133,7 +133,7 @@ def predict_email(data: EmailInputData):
 		return {"prediction": round(prediction[0])}
 
 
-@backend_app.post("/predict-newsletter")
+@app.post("/predict-newsletter")
 def predict_newsletter(data: NewsletterInputData):
 	input_data, newsletter_model, newsletter_model_type = prepare_input(data, newsletter_model_tuple, "Newsletter")
 	prediction = newsletter_model.predict(input_data)
@@ -146,7 +146,7 @@ def predict_newsletter(data: NewsletterInputData):
 		return {"prediction": round(prediction[0])}
 		
 
-@backend_app.post("/predict-winemaker")
+@app.post("/predict-winemaker")
 def predict_winemaker(data: WinemakerInputData):
 	input_data, winemaker_model, winemaker_model_type = prepare_input(data, winemaker_model_tuple, "Winemaker")
 	prediction = winemaker_model.predict(input_data)
@@ -162,4 +162,4 @@ def predict_winemaker(data: WinemakerInputData):
 
 if __name__ == "__main__":
 	import uvicorn
-	uvicorn.run(backend_app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
+	uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
