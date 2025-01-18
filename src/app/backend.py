@@ -21,7 +21,7 @@ from helpers.categorical_encoders import *
 # model_rf_newsletter = joblib.load("../model-artifacts/rf_newsletter.pkl")
 # model_rf_winemaker = joblib.load("../model-artifacts/rf_winemaker.pkl")
 
-# Download models from GCS
+# Load models from GCS
 def download_blob(bucket_name, source_blob_name, destination_file_name):
 	"""Downloads a blob from the bucket."""
 	storage_client = storage.Client()
