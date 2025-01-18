@@ -6,7 +6,6 @@ import joblib
 import logging
 # import pandas as pd
 from google.cloud import storage
-import uvicorn
 
 from classes.EmailInputData import EmailInputData
 from classes.NewsletterInputData import NewsletterInputData
@@ -58,7 +57,8 @@ for model_name, gcs_path in model_artifacts.items():
 model_log_email, model_log_newsletter, model_log_winemaker = models["log_email"], models["log_newsletter"], models["log_winemaker"]
 model_rf_email, model_rf_newsletter, model_rf_winemaker = models["rf_email"], models["rf_newsletter"], models["rf_winemaker"]
 
-metrics_file = download_blob(bucket_name, "/model-metrics.txt", "/tmp/model-metrics.txt")
+metrics_file = download_blob(bucket_name, "model-metrics.txt", "/tmp/model-metrics.txt")
+print(f"Metrics file downloaded to /tmp/model-metrics.txt")
 metrics_file = open("/tmp/model-metrics.txt")    
 metrics_line = metrics_file.readline()
 metrics_file.close()
@@ -182,7 +182,3 @@ def predict_winemaker(data: WinemakerInputData):
 		logging.info(f"Logit Winemaker Probability: {prediction} and Prediction: {round(prediction[0])}")
 		return {"prediction": round(prediction[0])}
 
-
-
-if __name__ == "__main__":
-	uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
