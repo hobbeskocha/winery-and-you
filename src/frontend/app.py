@@ -18,7 +18,7 @@ st.markdown("# A Winery's Marketing Edge: Predict Subscriptions with AI 🍷")
 header_description = """
 This interface leverages machine learning models to predict whether a customer will subscribe 
 to one of the winery's marketing channels - emails, newsletters, or winemaker calls - 
-based on their subscription status to the other 2 channels, total spending, order volume, customer segment, and geographic location .\n\n 
+based on their subscription status to the other 2 channels, total spending, order volume, customer segment, and geographic location.\n\n 
 Simply enter the customer's details and click "Predict" to find out if the customer will subscribe to that channel. 
 Our system uses the most accurate model, between Logistic Regression and Random Forest, to make its prediction.
 """
