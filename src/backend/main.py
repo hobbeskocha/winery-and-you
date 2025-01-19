@@ -66,22 +66,25 @@ metrics_file.close()
 def model_selector():
 	"""
 	compare model accuracies and return best model and model type as tuple
+	sale: scale mean, order: scale mean
 	"""
 	models = metrics_line.split(",")
 	email_models = [model for model in models if "Email" in model]
 	newsletter_models = [model for model in models if "Newsletter" in model]
 	winemaker_models = [model for model in models if "Winemaker" in model]
 
-	best_email_model = [model.split(":")[1] for model in email_models]
-	best_email_model = (model_log_email, "Logit") if best_email_model[0] > best_email_model[1] else (model_rf_email, "RF")
+	email_model_metrics = [model.split(":")[1] for model in email_models]
+	email_model_accuracies = [model.split(";")[0] for model in email_model_metrics]
+	best_email_model = (model_log_email, "Logit") if email_model_accuracies[0] > email_model_accuracies[1] else (model_rf_email, "RF")
 
-	best_newsletter_model = [model.split(":")[1] for model in newsletter_models]
-	best_newsletter_model = (model_log_newsletter, "Logit") if best_newsletter_model[0] > best_newsletter_model[1] else (model_rf_newsletter, "RF")
+	newsletter_model_metrics = [model.split(":")[1] for model in newsletter_models]
+	newsletter_model_accuracies = [model.split(";")[0] for model in newsletter_model_metrics]
+	best_newsletter_model = (model_log_newsletter, "Logit") if newsletter_model_accuracies[0] > newsletter_model_accuracies[1] else (model_rf_newsletter, "RF")
 
-	best_winemaker_model = [model.split(":")[1] for model in winemaker_models]
-	best_winemaker_model = (model_log_winemaker, "Logit") if best_winemaker_model[0] > best_winemaker_model[1] else (model_rf_winemaker, "RF")
+	winemaker_model_metrics = [model.split(":")[1] for model in winemaker_models]
+	winemaker_model_accuracies = [model.split(";")[0] for model in winemaker_model_metrics]
+	best_winemaker_model = (model_log_winemaker, "Logit") if winemaker_model_accuracies[0] > winemaker_model_accuracies[1] else (model_rf_winemaker, "RF")
 	
-	# print(best_email_model, best_newsletter_model, best_winemaker_model)
 	return best_email_model, best_newsletter_model, best_winemaker_model
 
 def prepare_input(data: InputData, model_tuple: tuple, channel: str): 
@@ -91,6 +94,7 @@ def prepare_input(data: InputData, model_tuple: tuple, channel: str):
 	  is_new_england, is_pacific, is_south_atlantic,
 		is_west_north_central, is_west_south_central) = encode_division(data.Division)
 
+	# TODO: apply StandardScaler onto OrderVolume and SaleAmount
 	# config input data for model prediction
 	input_data = [[data.OrderVolume, data.SaleAmount, 
 				   is_high_roller, is_luxury_estate, is_wine_enthusiast, 
@@ -182,3 +186,6 @@ def predict_winemaker(data: WinemakerInputData):
 		logging.info(f"Logit Winemaker Probability: {prediction} and Prediction: {round(prediction[0])}")
 		return {"prediction": round(prediction[0])}
 
+if __name__ == "__main__":
+	import uvicorn
+	uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))

@@ -155,9 +155,20 @@ plt.title('Receiver Operating Characteristic (ROC) Curve\nAccuracy: {:.2f}%'.for
 plt.legend(loc="lower right")
 plt.show()
 
+# Export artifacts
+
+# +
+email_scaler = StandardScaler()
+email_scaler.fit(X_train[["SaleAmount", "OrderVolume"]])
+email_sale_scale, email_sale_mean = email_scaler.scale_[0], email_scaler.mean_[0]
+email_order_scale, email_order_mean = email_scaler.scale_[1], email_scaler.mean_[1]
+
+print(email_sale_scale, email_sale_mean, email_order_scale, email_order_mean)
+# -
+
 joblib.dump(log_email, "../model-artifacts/log_email.pkl", compress=("zlib", 3))
 with open("../model-artifacts/model-metrics.txt", "w") as f:
-    f.write(f"Logit Email accuracy: {np.round(accuracy, 4)},\n")
+    f.write(f"Logit Email metrics:{np.round(accuracy, 4)};{email_sale_scale};{email_sale_mean};{email_order_scale};{email_order_mean},")
 
 # ##### WinemakerCall Subscription
 
@@ -231,9 +242,20 @@ plt.title('Receiver Operating Characteristic (ROC) Curve\nAccuracy: {:.2f}%'.for
 plt.legend(loc="lower right")
 plt.show()
 
+# Export Artifacts
+
+# +
+winemaker_scaler = StandardScaler()
+winemaker_scaler.fit(X_train[["SaleAmount", "OrderVolume"]])
+winemaker_sale_scale, winemaker_sale_mean = winemaker_scaler.scale_[0], winemaker_scaler.mean_[0]
+winemaker_order_scale, winemaker_order_mean = winemaker_scaler.scale_[1], winemaker_scaler.mean_[1]
+
+print(winemaker_sale_scale, winemaker_sale_mean, winemaker_order_scale, winemaker_order_mean)
+# -
+
 joblib.dump(log_winemaker, "../model-artifacts/log_winemaker.pkl", compress=("zlib", 3))
 with open("../model-artifacts/model-metrics.txt", "a") as f:
-    f.write(f"Logit Winemaker accuracy: {np.round(accuracy, 4)},\n")
+    f.write(f"Logit Winemaker metrics:{np.round(accuracy, 4)};{winemaker_sale_scale};{winemaker_sale_mean};{winemaker_order_scale};{winemaker_order_mean},")
 
 # ##### Newsletter Subscription
 
@@ -307,9 +329,20 @@ plt.title('Receiver Operating Characteristic (ROC) Curve\nAccuracy: {:.2f}%'.for
 plt.legend(loc="lower right")
 plt.show()
 
+# Export Artifacts
+
+# +
+newsletter_scaler = StandardScaler()
+newsletter_scaler.fit(X_train[["SaleAmount", "OrderVolume"]])
+newsletter_sale_scale, newsletter_sale_mean = newsletter_scaler.scale_[0], newsletter_scaler.mean_[0]
+newsletter_order_scale, newsletter_order_mean = newsletter_scaler.scale_[1], newsletter_scaler.mean_[1]
+
+print(newsletter_sale_scale, newsletter_sale_mean, newsletter_order_scale, newsletter_order_mean)
+# -
+
 joblib.dump(log_newsletter, "../model-artifacts/log_newsletter.pkl", compress=("zlib", 3))
 with open("../model-artifacts/model-metrics.txt", "a") as f:
-    f.write(f"Logit Newsletter accuracy: {np.round(accuracy, 4)},\n")
+    f.write(f"Logit Newsletter metrics:{np.round(accuracy, 4)};{newsletter_sale_scale};{newsletter_sale_mean};{newsletter_order_scale};{newsletter_order_mean},")
 
 # #### Random Forest
 
@@ -378,9 +411,20 @@ email_feat_import_plot.set(xlabel = "Importance", ylabel = "Feature", title = "F
 plt.show()
 # -
 
+# Export Artifacts
+
+# +
+email_scaler = StandardScaler()
+email_scaler.fit(X_train[["SaleAmount", "OrderVolume"]])
+email_sale_scale, email_sale_mean = email_scaler.scale_[0], email_scaler.mean_[0]
+email_order_scale, email_order_mean = email_scaler.scale_[1], email_scaler.mean_[1]
+
+print(email_sale_scale, email_sale_mean, email_order_scale, email_order_mean)
+# -
+
 joblib.dump(classifier_email, "../model-artifacts/rf_email.pkl", compress=("zlib", 3))
 with open("../model-artifacts/model-metrics.txt", "a") as f:
-    f.write(f"RF Email accuracy: {np.round(accuracy, 4)},\n")
+    f.write(f"RF Email metrics:{np.round(accuracy, 4)};{email_sale_scale};{email_sale_mean};{email_order_scale};{email_order_mean},")
 
 # ##### WinemakerCall Subscription
 
@@ -446,9 +490,20 @@ winemaker_feat_import_plot.set(xlabel = "Importance", ylabel = "Feature", title 
 plt.show()
 # -
 
+# Export Artifacts
+
+# +
+winemaker_scaler = StandardScaler()
+winemaker_scaler.fit(X_train[["SaleAmount", "OrderVolume"]])
+winemaker_sale_scale, winemaker_sale_mean = winemaker_scaler.scale_[0], winemaker_scaler.mean_[0]
+winemaker_order_scale, winemaker_order_mean = winemaker_scaler.scale_[1], winemaker_scaler.mean_[1]
+
+print(winemaker_sale_scale, winemaker_sale_mean, winemaker_order_scale, winemaker_order_mean)
+# -
+
 joblib.dump(classifier_winemaker, "../model-artifacts/rf_winemaker.pkl", compress=("zlib", 3))
 with open("../model-artifacts/model-metrics.txt", "a") as f:
-    f.write(f"RF Winemaker accuracy: {np.round(accuracy, 4)},\n")
+    f.write(f"RF Winemaker metrics:{np.round(accuracy, 4)};{winemaker_sale_scale};{winemaker_sale_mean};{winemaker_order_scale};{winemaker_order_mean},")
 
 # ##### Newsletter Subscription
 
@@ -514,9 +569,20 @@ newsletter_feat_import_plot.set(xlabel = "Importance", ylabel = "Feature", title
 plt.show()
 # -
 
+# Export Artifacts
+
+# +
+newsletter_scaler = StandardScaler()
+newsletter_scaler.fit(X_train[["SaleAmount", "OrderVolume"]])
+newsletter_sale_scale, newsletter_sale_mean = newsletter_scaler.scale_[0], newsletter_scaler.mean_[0]
+newsletter_order_scale, newsletter_order_mean = newsletter_scaler.scale_[1], newsletter_scaler.mean_[1]
+
+print(newsletter_sale_scale, newsletter_sale_mean, newsletter_order_scale, newsletter_order_mean)
+# -
+
 joblib.dump(classifier_newsletter, "../model-artifacts/rf_newsletter.pkl", compress=("zlib", 3))
 with open("../model-artifacts/model-metrics.txt", "a") as f:
-    f.write(f"RF Newsletter accuracy: {np.round(accuracy, 4)},\n")
+    f.write(f"RF Newsletter metrics:{np.round(accuracy, 4)};{newsletter_sale_scale};{newsletter_sale_mean};{newsletter_order_scale};{newsletter_order_mean},")
 
 # #### Calculate Lift
 

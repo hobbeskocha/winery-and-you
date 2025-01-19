@@ -14,7 +14,7 @@ WINEMAKER_API_URL = GOOGLE_CLOUD_API_URL + "/predict-winemaker"
 
 # Header
 st.title = "Winery Subscription Predictions"
-st.markdown("# Winery Subscription Predictions 🍷")
+st.markdown("# A Winery's Marketing Edge: Predict Subscriptions with AI 🍷")
 header_description = """
 This interface leverages machine learning models to predict whether a customer will subscribe 
 to one of the winery's marketing channels - emails, newsletters, or winemaker calls - 
@@ -30,8 +30,8 @@ st.markdown("######")
 
 ## Email Subscription
 st.markdown("## Email Subscription 📧")
-sale_amount = st.number_input("Total Spending", min_value=0.0, max_value=100_000.0, value=5.0, key="email_sale_amount")
-order_volume = st.number_input("Order Volume", min_value=0, max_value=100_000, value=5, key="email_order_volume")
+sale_amount = st.number_input("Total Spending (in USD)", min_value=0.0, max_value=50_000.0, value=250.0, key="email_sale_amount")
+order_volume = st.number_input("Number of Orders", min_value=0, max_value=25, value=3, key="email_order_volume")
 customer_segment = st.selectbox("Customer Segment", ["High Roller", "Luxury Estate",
                                                       "Wine Enthusiast", "Casual Visitor"], key="email_customer_segment")
 division = st.selectbox("US Division", ["New England", "Middle Atlantic", "East North Central",
@@ -67,8 +67,8 @@ st.markdown("######")
 
 ## Newsletter Subscription
 st.markdown("## Newsletter Subscription 📰")
-sale_amount = st.number_input("Total Spending", min_value=0.0, max_value=100_000.0, value=5.0, key="newsletter_sale_amount")
-order_volume = st.number_input("Order Volume", min_value=0, max_value=100_000, value=5, key="newsletter_order_volume")
+sale_amount = st.number_input("Total Spending (in USD)", min_value=0.0, max_value=50_000.0, value=250.0, key="newsletter_sale_amount")
+order_volume = st.number_input("Number of Orders", min_value=0, max_value=25, value=3, key="newsletter_order_volume")
 customer_segment = st.selectbox("Customer Segment", ["High Roller", "Luxury Estate",
                                                       "Wine Enthusiast", "Casual Visitor"], key="newsletter_customer_segment")
 division = st.selectbox("US Division", ["New England", "Middle Atlantic", "East North Central",
@@ -103,8 +103,8 @@ st.markdown("######")
 
 ## Winemaker Call Subscription
 st.markdown("## Winemaker Call Subscription 📞")
-sale_amount = st.number_input("Total Spending", min_value=0.0, max_value=100_000.0, value=5.0, key="winemaker_sale_amount")
-order_volume = st.number_input("Order Volume", min_value=0, max_value=100_000, value=5, key="winemaker_order_volume")
+sale_amount = st.number_input("Total Spending (in USD)", min_value=0.0, max_value=50_000.0, value=250.0, key="winemaker_sale_amount")
+order_volume = st.number_input("Number of Orders", min_value=0, max_value=25, value=3, key="winemaker_order_volume")
 customer_segment = st.selectbox("Customer Segment", ["High Roller", "Luxury Estate",
                                                       "Wine Enthusiast", "Casual Visitor"], key="winemaker_customer_segment")
 division = st.selectbox("US Division", ["New England", "Middle Atlantic", "East North Central",
