@@ -8,6 +8,8 @@ This is a collaborative personal portfolio project between [Ayush Shrestha](http
 
 For easy version control purposes, the source code is stored as converted Python scripts, but HTML files of the source Python notebooks can be found [here](src/html/). Alternatively, the CLI commands [here](cli-commands-reference.md) can convert the Python scripts back into notebooks.
 
+Additionally, a live demo website has been deployed [here](https://winery-and-you.streamlit.app/), allowing you to input customer details and receive real-time predictions on customers' subscription preferences. The source code can be found [here](src/backend/) for the backend and [here](src/frontend/) for the frontend.
+
 ## Business Problem
 
 In the face of a highly competitive, niche industry, wineries must leverage data-driven strategies to maintain their market position. Failure to do so can lead to reduced customer satisfaction and increased churn as competing wineries gain an edge. Therefore, it is essential for wineries to thoroughly analyze their existing data to gain deeper insights into customer behavior and optimize engagement and loyalty.
@@ -186,6 +188,16 @@ With the following variables having importances at or above the 75th percentile:
 - Sale Amount
 - Winemaker Call Subscriber
 - Email Subscriber
+
+## Model Deployment and Live Demo Website
+
+To improve the usability of the trained models, a live demo website was built using Streamlit for the frontend and FastAPI for the backend.
+
+Making use of Streamlit's intuitive API, an interactive website was created to allow users to input a customer's details and get back predictions on their subscription preferences. This frontend application was then deployed on Streamlit Community Cloud, for easy public access.
+
+Similarly, FastAPI was used to build the backend. It includes logic to pre-process the inputted customer details before they are passed to the trained models, as well as select the most accurate model (between Logistic Regression and Random Forest) to be used for the predictions. The backend was then containerized using Docker and deployed on Google Cloud Platform (GCP), making use of the GCP Container Registry and Cloud Run services.
+
+The trained models themselves were packaged, exported, and uploaded to buckets on GCP Cloud Storage, which the backend downloads and uses in order to make the predictions when API requests come from the frontend.
 
 ## Findings & Recommendations
 
