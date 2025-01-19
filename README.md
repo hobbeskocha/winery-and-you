@@ -191,7 +191,7 @@ With the following variables having importances at or above the 75th percentile:
 
 ## Model Deployment and Live Demo Website
 
-To improve the usability of the trained models, a live demo website was built using Streamlit for the frontend and FastAPI for the backend.
+To improve the usability of the trained models, a live demo website was built using Streamlit for the frontend and FastAPI for the backend. The website can be accessed [here](https://winery-and-you.streamlit.app/).
 
 Making use of Streamlit's intuitive API, an interactive website was created to allow users to input a customer's details and get back predictions on their subscription preferences. This frontend application was then deployed on Streamlit Community Cloud, for easy public access.
 
