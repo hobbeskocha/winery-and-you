@@ -66,7 +66,6 @@ metrics_file.close()
 def model_selector():
 	"""
 	compare model accuracies and return best model and model type as tuple
-	sale: scale mean, order: scale mean
 	"""
 	models = metrics_line.split(",")
 	email_models = [model for model in models if "Email" in model]
@@ -87,6 +86,36 @@ def model_selector():
 	
 	return best_email_model, best_newsletter_model, best_winemaker_model
 
+def get_scaling_factors():
+	# sale scale mean, order scale mean
+	metrics = metrics_line.split(",")
+	email_metrics = [metric for metric in metrics if "Email" in metric]
+	newsletter_metrics = [metric for metric in metrics if "Newsletter" in metric]
+	winemaker_metrics = [metric for metric in metrics if "Winemaker" in metric]
+
+	email_metrics = [metric.split(":")[1] for metric in email_metrics]
+	newsletter_metrics = [metric.split(":")[1] for metric in newsletter_metrics]
+	winemaker_metrics = [metric.split(":")[1] for metric in winemaker_metrics]
+
+	email_metrics = [metric.split(";") for metric in email_metrics]
+	newsletter_metrics = [metric.split(";") for metric in newsletter_metrics]
+	winemaker_metrics = [metric.split(";") for metric in winemaker_metrics]
+
+	email_factors = email_metrics[0][1:]
+	newsletter_factors = newsletter_metrics[0][1:]
+	winemaker_factors = winemaker_metrics[0][1:]
+
+	email_sale_scale, email_sale_mean = float(email_factors[0]), float(email_factors[1])
+	email_order_scale, email_order_mean = float(email_factors[2]), float(email_factors[3])
+	newsletter_sale_scale, newsletter_sale_mean = float(newsletter_factors[0]), float(newsletter_factors[1])
+	newsletter_order_scale, newsletter_order_mean = float(newsletter_factors[2]), float(newsletter_factors[3])
+	winemaker_sale_scale, winemaker_sale_mean = float(winemaker_factors[0]), float(winemaker_factors[1])
+	winemaker_order_scale, winemaker_order_mean = float(winemaker_factors[2]), float(winemaker_factors[3])
+
+	return (email_sale_scale, email_sale_mean, email_order_scale, email_order_mean,
+			newsletter_sale_scale, newsletter_sale_mean, newsletter_order_scale, newsletter_order_mean,
+			winemaker_sale_scale, winemaker_sale_mean, winemaker_order_scale, winemaker_order_mean)
+
 def prepare_input(data: InputData, model_tuple: tuple, channel: str): 
 	# map categorical data for one-hot encoding
 	is_high_roller, is_luxury_estate, is_wine_enthusiast = encode_customer_segment(data.CustomerSegment)
@@ -94,7 +123,6 @@ def prepare_input(data: InputData, model_tuple: tuple, channel: str):
 	  is_new_england, is_pacific, is_south_atlantic,
 		is_west_north_central, is_west_south_central) = encode_division(data.Division)
 
-	# TODO: apply StandardScaler onto OrderVolume and SaleAmount
 	# config input data for model prediction
 	input_data = [[data.OrderVolume, data.SaleAmount, 
 				   is_high_roller, is_luxury_estate, is_wine_enthusiast, 
@@ -103,22 +131,38 @@ def prepare_input(data: InputData, model_tuple: tuple, channel: str):
 					is_west_north_central, is_west_south_central]]
 	
 	model, model_type = model_tuple
-	if model_type == "Logit":
-		input_data[0].insert(0, 1.0)
+	(email_sale_scale, email_sale_mean, email_order_scale, email_order_mean,
+	 newsletter_sale_scale, newsletter_sale_mean, newsletter_order_scale, newsletter_order_mean,
+	 winemaker_sale_scale, winemaker_sale_mean, winemaker_order_scale, winemaker_order_mean) = get_scaling_factors()
 
 	if channel == "Email":
 		input_data[-1].append(data.NewsletterSubscr)
 		input_data[-1].append(data.WinemakerCallSubscr)
+		# scale based on Email training data scale and mean
+		input_data[0][0] = (data.OrderVolume - email_order_mean) / email_order_scale
+		input_data[0][1] = (data.SaleAmount - email_sale_mean) / email_sale_scale
+
 	elif channel == "Newsletter":
 		input_data[-1].append(data.WinemakerCallSubscr)
 		input_data[-1].append(data.EmailSubscr)
+		# scale based on Newsletter training data scale and mean
+		input_data[0][0] = (data.OrderVolume - newsletter_order_mean) / newsletter_order_scale
+		input_data[0][1] = (data.SaleAmount - newsletter_sale_mean) / newsletter_sale_scale
+
 	elif channel == "Winemaker":
 		input_data[-1].append(data.NewsletterSubscr)
 		input_data[-1].append(data.EmailSubscr)
+		# scale based on Winemaker training data scale and mean
+		input_data[0][0] = (data.OrderVolume - winemaker_order_mean) / winemaker_order_scale
+		input_data[0][1] = (data.SaleAmount - winemaker_sale_mean) / winemaker_sale_scale
 	
 	# if model_type == "RF":
 	# 	input_data = pd.DataFrame(input_data, columns=model.feature_names_in_)
+
+	if model_type == "Logit":
+		input_data[0].insert(0, 1.0)
 	
+	print(input_data)
 	return input_data, model, model_type
 
 # -------------------------Backend App-------------------------
