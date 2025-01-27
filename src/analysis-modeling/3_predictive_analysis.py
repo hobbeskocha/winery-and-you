@@ -23,7 +23,7 @@ import statsmodels.api as sm
 import joblib
 
 from sklearn import set_config
-from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
@@ -31,6 +31,7 @@ from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_sc
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
 # -
 
 pd.options.display.max_columns = 25
@@ -66,13 +67,10 @@ customer.dtypes
 # ## Predictive Models
 
 # +
-# TODO: cross-validation? cross_validate() for multiple metrics, KFold class + visualization of metrics
-# TODO: RandomizedSearchCV - hyperparameter tuning
-
-# TODO: Pipeline supports final prediction model, crossvalidation workflow, and processing steps -- make_pipeline()
 # TODO: clustering with customer segment analysis for reclassification -- K-means, t-SNE, PCA?, NMF? + visualization of clusters/data points
 
-#TODO: automate image export for all plots into /artifacts
+# TODO: automate image export for all plots into /artifacts
+# TODO: possibility of wrapper class on Logit that supports coefficients AND CV?
 # -
 
 # ### Binary Classification
@@ -82,6 +80,10 @@ newsletter_test = pd.DataFrame()
 winemaker_test = pd.DataFrame()
 
 # #### Logistic Regression
+
+# Scikit-learn supports cross-validation and hyperparameter tuning, but does not support straightforwardly getting statistical significance for the coefficients. Statsmodels provides statistical significance but not cross-validation and hyperparameter tuning.
+#
+# Since statistical significance is a critical part of the analysis, Statsmodels will solely used without any hyperparameter tuning.
 
 # ##### Email Subscription
 
@@ -94,24 +96,32 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 email_test["EmailSubscr"] = y_test
 
-# +
-number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
-category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
 
-preprocessor = ColumnTransformer(
-    transformers=[
+# -
+
+def pipeline_transform(X_train, X_test, model_type):
+    number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
+    category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
+
+    preprocessor = ColumnTransformer(
+        transformers=[
         ("num", StandardScaler(), number_features),
         ("cat", OneHotEncoder(drop="first", sparse_output=False), category_features)
     ])
 
-pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
-pipeline.fit(X_train)
-X_train_transform = pipeline.transform(X_train)
-X_test_transform = pipeline.transform(X_test)
+    pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
+    pipeline.fit(X_train)
+    X_train_transform = pipeline.transform(X_train)
+    X_test_transform = pipeline.transform(X_test)
 
-X_train_transform_const = sm.add_constant(X_train_transform)
-X_test_transform_const = sm.add_constant(X_test_transform)
-# -
+    if model_type == "Logit":
+        X_train_transform = sm.add_constant(X_train_transform)
+        X_test_transform = sm.add_constant(X_test_transform)
+
+    return X_train_transform, X_test_transform
+
+
+X_train_transform_const, X_test_transform_const = pipeline_transform(X_train, X_test, "Logit")
 
 log_email = sm.Logit(y_train, X_train_transform_const).fit()
 log_email.summary()
@@ -180,25 +190,9 @@ X_train, X_test, y_train, y_test = train_test_split(
     test_size=0.2, random_state=0, stratify=customer.loc[:, "WinemakerCallSubscr"])
 
 winemaker_test["WinemakerCallSubscr"] = y_test
-
-# +
-number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
-category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
-
-preprocessor = ColumnTransformer(
-    transformers=[
-        ("num", StandardScaler(), number_features),
-        ("cat", OneHotEncoder(drop="first", sparse_output=False), category_features)
-    ])
-
-pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
-pipeline.fit(X_train)
-X_train_transform = pipeline.transform(X_train)
-X_test_transform = pipeline.transform(X_test)
-
-X_train_transform_const = sm.add_constant(X_train_transform)
-X_test_transform_const = sm.add_constant(X_test_transform)
 # -
+
+X_train_transform_const, X_test_transform_const = pipeline_transform(X_train, X_test, "Logit")
 
 log_winemaker = sm.Logit(y_train, X_train_transform_const).fit()
 log_winemaker.summary()
@@ -267,25 +261,9 @@ X_train, X_test, y_train, y_test = train_test_split(
     test_size=0.2, random_state=0, stratify=customer.loc[:, "NewsletterSubscr"])
 
 newsletter_test["NewsletterSubscr"] = y_test
-
-# +
-number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
-category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
-
-preprocessor = ColumnTransformer(
-    transformers=[
-        ("num", StandardScaler(), number_features),
-        ("cat", OneHotEncoder(drop="first", sparse_output=False), category_features)
-    ])
-
-pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
-pipeline.fit(X_train)
-X_train_transform = pipeline.transform(X_train)
-X_test_transform = pipeline.transform(X_test)
-
-X_train_transform_const = sm.add_constant(X_train_transform)
-X_test_transform_const = sm.add_constant(X_test_transform)
 # -
+
+X_train_transform_const, X_test_transform_const = pipeline_transform(X_train, X_test, "Logit")
 
 log_newsletter = sm.Logit(y_train, X_train_transform_const).fit()
 log_newsletter.summary()
@@ -355,26 +333,13 @@ X_train, X_test, y_train, y_test = train_test_split(
     test_size=0.2, random_state=0, stratify=customer.loc[:, "EmailSubscr"])
 
 
-# +
-number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
-category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
-
-preprocessor = ColumnTransformer(
-    transformers=[
-        ("num", StandardScaler(), number_features),
-        ("cat", OneHotEncoder(drop="first", sparse_output=False), category_features)
-    ])
-
-pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
-pipeline.fit(X_train)
-X_train_transform = pipeline.transform(X_train)
-X_test_transform = pipeline.transform(X_test)
+X_train_transform, X_test_transform = pipeline_transform(X_train, X_test, "RF")
 
 
-# +
 classifier_email = RandomForestClassifier(random_state=0)
 classifier_email.fit(X_train_transform, y_train)
 
+# +
 predictions_email = classifier_email.predict(X_test_transform)
 predictions_email = np.round(predictions_email)
 feature_importances_email = classifier_email.feature_importances_
@@ -434,20 +399,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     customer.loc[:, "WinemakerCallSubscr"],
     test_size=0.2, random_state=0, stratify=customer.loc[:, "WinemakerCallSubscr"])
 
-# +
-number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
-category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
-
-preprocessor = ColumnTransformer(
-    transformers=[
-        ("num", StandardScaler(), number_features),
-        ("cat", OneHotEncoder(drop="first", sparse_output=False), category_features)
-    ])
-
-pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
-pipeline.fit(X_train)
-X_train_transform = pipeline.transform(X_train)
-X_test_transform = pipeline.transform(X_test)
+X_train_transform, X_test_transform = pipeline_transform(X_train, X_test, "RF")
 
 
 # +
@@ -513,20 +465,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     customer.loc[:, "NewsletterSubscr"],
     test_size=0.2, random_state=0, stratify=customer.loc[:, "NewsletterSubscr"])
 
-# +
-number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
-category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
-
-preprocessor = ColumnTransformer(
-    transformers=[
-        ("num", StandardScaler(), number_features),
-        ("cat", OneHotEncoder(drop="first", sparse_output=False), category_features)
-    ])
-
-pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
-pipeline.fit(X_train)
-X_train_transform = pipeline.transform(X_train)
-X_test_transform = pipeline.transform(X_test)
+X_train_transform, X_test_transform = pipeline_transform(X_train, X_test, "RF")
 
 
 # +
@@ -583,6 +522,8 @@ print(newsletter_sale_scale, newsletter_sale_mean, newsletter_order_scale, newsl
 joblib.dump(classifier_newsletter, "../model-artifacts/rf_newsletter.pkl", compress=("zlib", 3))
 with open("../model-artifacts/model-metrics.txt", "a") as f:
     f.write(f"RF Newsletter metrics:{np.round(accuracy, 4)};{newsletter_sale_scale};{newsletter_sale_mean};{newsletter_order_scale};{newsletter_order_mean},")
+
+# ### Customer Analytics
 
 # #### Calculate Lift
 
