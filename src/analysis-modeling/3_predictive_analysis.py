@@ -336,13 +336,29 @@ X_train, X_test, y_train, y_test = train_test_split(
 X_train_transform, X_test_transform = pipeline_transform(X_train, X_test, "RF")
 
 
-classifier_email = RandomForestClassifier(random_state=0)
-classifier_email.fit(X_train_transform, y_train)
+rf_param_grid = {
+    "n_estimators": np.arange(50, 250, 25),
+    "max_depth": np.arange(5, 25, 5),
+    "min_samples_split": np.arange(2, 20, 2),
+    "min_samples_leaf": np.arange(1, 10, 1),
+    "criterion": ["gini", "entropy"]
+}
 
 # +
-predictions_email = classifier_email.predict(X_test_transform)
+rf_email = RandomForestClassifier(random_state=0)
+email_rcv = RandomizedSearchCV(estimator=rf_email, param_distributions=rf_param_grid,
+                                scoring="accuracy", cv=5, random_state=0, verbose=1)
+email_rcv.fit(X_train_transform, y_train)
+
+print("Best Parameters:", email_rcv.best_params_)
+print("Best Score:", email_rcv.best_score_)
+print("Best Estimator:", email_rcv.best_estimator_)
+
+# +
+rf_email = email_rcv.best_estimator_
+predictions_email = rf_email.predict(X_test_transform)
 predictions_email = np.round(predictions_email)
-feature_importances_email = classifier_email.feature_importances_
+feature_importances_email = rf_email.feature_importances_
 
 print("Feature Importance")
 for feature, importance in zip(X_train_transform.columns, feature_importances_email):
@@ -387,7 +403,7 @@ email_order_scale, email_order_mean = email_scaler.scale_[1], email_scaler.mean_
 print(email_sale_scale, email_sale_mean, email_order_scale, email_order_mean)
 # -
 
-joblib.dump(classifier_email, "../model-artifacts/rf_email.pkl", compress=("zlib", 3))
+joblib.dump(rf_email, "../model-artifacts/rf_email.pkl", compress=("zlib", 3))
 with open("../model-artifacts/model-metrics.txt", "a") as f:
     f.write(f"RF Email metrics:{np.round(accuracy, 4)};{email_sale_scale};{email_sale_mean};{email_order_scale};{email_order_mean},")
 
@@ -403,12 +419,20 @@ X_train_transform, X_test_transform = pipeline_transform(X_train, X_test, "RF")
 
 
 # +
-classifier_winemaker = RandomForestClassifier(random_state=0)
-classifier_winemaker.fit(X_train_transform, y_train)
+rf_winemaker = RandomForestClassifier(random_state=0)
+winemaker_rcv = RandomizedSearchCV(estimator=rf_winemaker, param_distributions=rf_param_grid,
+                                scoring="accuracy", cv=5, random_state=0, verbose=1)
+winemaker_rcv.fit(X_train_transform, y_train)
 
-predictions_winemaker = classifier_winemaker.predict(X_test_transform)
+print("Best Parameters:", winemaker_rcv.best_params_)
+print("Best Score:", winemaker_rcv.best_score_)
+print("Best Estimator:", winemaker_rcv.best_estimator_)
+
+# +
+rf_winemaker = winemaker_rcv.best_estimator_
+predictions_winemaker = rf_winemaker.predict(X_test_transform)
 predictions_winemaker = np.round(predictions_winemaker)
-feature_importances_winemaker = classifier_winemaker.feature_importances_
+feature_importances_winemaker = rf_winemaker.feature_importances_
 
 print("Feature Importance")
 for feature, importance in zip(X_train_transform.columns, feature_importances_winemaker):
@@ -453,7 +477,7 @@ winemaker_order_scale, winemaker_order_mean = winemaker_scaler.scale_[1], winema
 print(winemaker_sale_scale, winemaker_sale_mean, winemaker_order_scale, winemaker_order_mean)
 # -
 
-joblib.dump(classifier_winemaker, "../model-artifacts/rf_winemaker.pkl", compress=("zlib", 3))
+joblib.dump(rf_winemaker, "../model-artifacts/rf_winemaker.pkl", compress=("zlib", 3))
 with open("../model-artifacts/model-metrics.txt", "a") as f:
     f.write(f"RF Winemaker metrics:{np.round(accuracy, 4)};{winemaker_sale_scale};{winemaker_sale_mean};{winemaker_order_scale};{winemaker_order_mean},")
 
@@ -469,12 +493,20 @@ X_train_transform, X_test_transform = pipeline_transform(X_train, X_test, "RF")
 
 
 # +
-classifier_newsletter = RandomForestClassifier(random_state=0)
-classifier_newsletter.fit(X_train_transform, y_train)
+rf_newsletter = RandomForestClassifier(random_state=0)
+newsletter_rcv = RandomizedSearchCV(estimator=rf_newsletter, param_distributions=rf_param_grid,
+                                scoring="accuracy", cv=5, random_state=0, verbose=1)
+newsletter_rcv.fit(X_train_transform, y_train)
 
-predictions_newsletter = classifier_newsletter.predict(X_test_transform)
+print("Best Parameters:", newsletter_rcv.best_params_)
+print("Best Score:", newsletter_rcv.best_score_)
+print("Best Estimator:", newsletter_rcv.best_estimator_)
+
+# +
+rf_newsletter = newsletter_rcv.best_estimator_
+predictions_newsletter = rf_newsletter.predict(X_test_transform)
 predictions_newsletter = np.round(predictions_newsletter)
-feature_importances_newsletter = classifier_newsletter.feature_importances_
+feature_importances_newsletter = rf_newsletter.feature_importances_
 
 print("Feature Importance")
 for feature, importance in zip(X_train_transform.columns, feature_importances_newsletter):
@@ -519,7 +551,7 @@ newsletter_order_scale, newsletter_order_mean = newsletter_scaler.scale_[1], new
 print(newsletter_sale_scale, newsletter_sale_mean, newsletter_order_scale, newsletter_order_mean)
 # -
 
-joblib.dump(classifier_newsletter, "../model-artifacts/rf_newsletter.pkl", compress=("zlib", 3))
+joblib.dump(rf_newsletter, "../model-artifacts/rf_newsletter.pkl", compress=("zlib", 3))
 with open("../model-artifacts/model-metrics.txt", "a") as f:
     f.write(f"RF Newsletter metrics:{np.round(accuracy, 4)};{newsletter_sale_scale};{newsletter_sale_mean};{newsletter_order_scale};{newsletter_order_mean},")
 
