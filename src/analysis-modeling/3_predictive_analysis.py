@@ -31,7 +31,8 @@ from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_sc
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.linear_model import LogisticRegression
+
+from analysis_helpers import *
 # -
 
 pd.options.display.max_columns = 25
@@ -95,31 +96,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     test_size=0.2, random_state=0, stratify=customer.loc[:, "EmailSubscr"])
 
 email_test["EmailSubscr"] = y_test
-
-
 # -
-
-def pipeline_transform(X_train, X_test, model_type):
-    number_features = list(X_train.select_dtypes(include=["int", "float"]).columns)
-    category_features = list(X_train.select_dtypes(include=["category", "bool"]).columns)
-
-    preprocessor = ColumnTransformer(
-        transformers=[
-        ("num", StandardScaler(), number_features),
-        ("cat", OneHotEncoder(drop="first", sparse_output=False), category_features)
-    ])
-
-    pipeline = Pipeline(steps=[("preprocessor", preprocessor)])
-    pipeline.fit(X_train)
-    X_train_transform = pipeline.transform(X_train)
-    X_test_transform = pipeline.transform(X_test)
-
-    if model_type == "Logit":
-        X_train_transform = sm.add_constant(X_train_transform)
-        X_test_transform = sm.add_constant(X_test_transform)
-
-    return X_train_transform, X_test_transform
-
 
 X_train_transform_const, X_test_transform_const = pipeline_transform(X_train, X_test, "Logit")
 
@@ -148,6 +125,7 @@ cm = confusion_matrix(y_test, predictions_email)
 plt.figure(figsize=(10, 6))
 email_heatmap_plot = sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
 email_heatmap_plot.set(xlabel = "Predicted", ylabel = "Actual", title = "Confusion Matrix of Email Subscr")
+plt.savefig("../../artifacts/email-logit-cm.png")
 plt.show()
 
 y_prob = log_email.predict(X_test_transform_const)
@@ -163,6 +141,7 @@ plt.ylabel('True Positive Rate')
 plt.title('Receiver Operating Characteristic (ROC) Curve\nAccuracy: {:.2f}%'.format(
     accuracy * 100))
 plt.legend(loc="lower right")
+plt.savefig("../../artifacts/email-logit-roc.png")
 plt.show()
 
 # Export artifacts
@@ -219,6 +198,7 @@ cm = confusion_matrix(y_test, predictions_winemaker)
 plt.figure(figsize=(10, 6))
 winemaker_heatmap_plot = sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
 winemaker_heatmap_plot.set(xlabel = "Predicted", ylabel = "Actual", title = "Confusion Matrix of Winemaker Subscr")
+plt.savefig("../../artifacts/winemaker-logit-cm.png")
 plt.show()
 
 y_prob = log_winemaker.predict(X_test_transform_const)
@@ -234,6 +214,7 @@ plt.ylabel('True Positive Rate')
 plt.title('Receiver Operating Characteristic (ROC) Curve\nAccuracy: {:.2f}%'.format(
     accuracy * 100))
 plt.legend(loc="lower right")
+plt.savefig("../../artifacts/winemaker-logit-roc.png")
 plt.show()
 
 # Export Artifacts
@@ -290,6 +271,7 @@ cm = confusion_matrix(y_test, predictions_newsletter)
 plt.figure(figsize=(10, 6))
 newsletter_heatmap_plot = sns.heatmap(cm, annot=True, fmt='d', cmap='RdPu', xticklabels=np.unique(y_test), yticklabels=np.unique(y_test))
 newsletter_heatmap_plot.set(xlabel = "Predicted", ylabel = "Actual", title = "Confusion Matrix of Newsletter Subscr")
+plt.savefig("../../artifacts/newsletter-logit-cm.png")
 plt.show()
 
 y_prob = log_newsletter.predict(X_test_transform_const)
@@ -305,6 +287,7 @@ plt.ylabel('True Positive Rate')
 plt.title('Receiver Operating Characteristic (ROC) Curve\nAccuracy: {:.2f}%'.format(
     accuracy * 100))
 plt.legend(loc="lower right")
+plt.savefig("../../artifacts/newsletter-logit-roc.png")
 plt.show()
 
 # Export Artifacts
@@ -389,6 +372,7 @@ df_email_feat_import = df_email_feat_import.sort_values(by="Importance")
 plt.figure(figsize=(8, 6))
 email_feat_import_plot = sns.barplot(x='Importance', y='Feature', data=df_email_feat_import, hue='Feature', palette="colorblind")
 email_feat_import_plot.set(xlabel = "Importance", ylabel = "Feature", title = "Feature Importance for the Email Random Forest Model")
+plt.savefig("../../artifacts/email-rf-fi.png")
 plt.show()
 # -
 
@@ -463,6 +447,7 @@ df_winemaker_feat_import = df_winemaker_feat_import.sort_values(by="Importance")
 plt.figure(figsize=(8, 6))
 winemaker_feat_import_plot = sns.barplot(x='Importance', y='Feature', data=df_winemaker_feat_import, hue='Feature', palette="colorblind")
 winemaker_feat_import_plot.set(xlabel = "Importance", ylabel = "Feature", title = "Feature Importance for the Winemaker Random Forest Model")
+plt.savefig("../../artifacts/winemaker-rf-fi.png")
 plt.show()
 # -
 
@@ -537,6 +522,7 @@ df_newsletter_feat_import = df_newsletter_feat_import.sort_values(by="Importance
 plt.figure(figsize=(8, 6))
 newsletter_feat_import_plot = sns.barplot(x='Importance', y='Feature', data=df_newsletter_feat_import, hue='Feature', palette="colorblind")
 newsletter_feat_import_plot.set(xlabel = "Importance", ylabel = "Feature", title = "Feature Importance for the Newsletter Random Forest Model")
+plt.savefig("../../artifacts/newsletter-rf-fi.png")
 plt.show()
 # -
 
