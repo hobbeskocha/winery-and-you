@@ -372,7 +372,7 @@ df_email_feat_import = df_email_feat_import.sort_values(by="Importance")
 plt.figure(figsize=(8, 6))
 email_feat_import_plot = sns.barplot(x='Importance', y='Feature', data=df_email_feat_import, hue='Feature', palette="colorblind")
 email_feat_import_plot.set(xlabel = "Importance", ylabel = "Feature", title = "Feature Importance for the Email Random Forest Model")
-plt.savefig("../../artifacts/email-rf-fi.png")
+plt.savefig("../../artifacts/email-rf-fi.png", bbox_inches="tight")
 plt.show()
 # -
 
@@ -447,7 +447,7 @@ df_winemaker_feat_import = df_winemaker_feat_import.sort_values(by="Importance")
 plt.figure(figsize=(8, 6))
 winemaker_feat_import_plot = sns.barplot(x='Importance', y='Feature', data=df_winemaker_feat_import, hue='Feature', palette="colorblind")
 winemaker_feat_import_plot.set(xlabel = "Importance", ylabel = "Feature", title = "Feature Importance for the Winemaker Random Forest Model")
-plt.savefig("../../artifacts/winemaker-rf-fi.png")
+plt.savefig("../../artifacts/winemaker-rf-fi.png", bbox_inches="tight")
 plt.show()
 # -
 
@@ -522,7 +522,7 @@ df_newsletter_feat_import = df_newsletter_feat_import.sort_values(by="Importance
 plt.figure(figsize=(8, 6))
 newsletter_feat_import_plot = sns.barplot(x='Importance', y='Feature', data=df_newsletter_feat_import, hue='Feature', palette="colorblind")
 newsletter_feat_import_plot.set(xlabel = "Importance", ylabel = "Feature", title = "Feature Importance for the Newsletter Random Forest Model")
-plt.savefig("../../artifacts/newsletter-rf-fi.png")
+plt.savefig("../../artifacts/newsletter-rf-fi.png", bbox_inches="tight")
 plt.show()
 # -
 
