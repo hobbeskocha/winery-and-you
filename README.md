@@ -76,19 +76,22 @@ The Email logit model generated the following metrics against the validation set
 ![plot1](artifacts/email-logit-cm.png)
 ![plot2](artifacts/email-logit-roc.png)
 
-- Accuracy: 93.83
-- Precision: 87.22
-- Recall: 95.32
-- F1-Score: 91.09
-- AUC: 0.9742
+- Accuracy: 93.86
+- Precision: 86.94 
+- Recall: 95.28
+- F1-Score: 90.92
+- AUC: 0.9745
 
 Additionally, the following features (with coefficients) were statistically significant at the 5% level:
 
 - Order Volume: -0.43
-- High Roller: 2.55
-- Wine Enthusiast: 3.02
-- Newsletter Subscriber: 3.22
-- Winemaker Call Subscriber: 5.05
+- Sale Amount: 0.11 
+- High Roller: 2.49
+- Wine Enthusiast: 3.03
+- Middle Atlantic Division: -0.27
+- West South Central Division: -0.31
+- Newsletter Subscriber: 3.26
+- Winemaker Call Subscriber: 5.07
 
 #### Direct (Winemaker) Call Logit
 
@@ -96,17 +99,18 @@ The Direct Call logit model generated the following metrics against the validati
 ![plot1](artifacts/winemaker-logit-cm.png)
 ![plot2](artifacts/winemaker-logit-roc.png)
 
-- Accuracy: 90.24
-- Precision: 96.16
-- Recall: 78.99
-- F1-Score: 86.73
-- AUC: 0.9033
+- Accuracy: 91.08
+- Precision: 96.50
+- Recall: 80.12
+- F1-Score: 87.55
+- AUC: 0.9100
 
 Additionally, the following features (with coefficients) were statistically significant at the 5% level:
 
 - Order Volume: 0.35
-- Luxury Estate: -0.27
-- Newsletter Subscriber: 0.41
+- Luxury Estate: -0.29
+- West North Central Division: 0.24 
+- Newsletter Subscriber: 0.36
 - Email Subscriber: 5.02
 
 #### Newsletter Logit
@@ -115,18 +119,18 @@ The Newsletter logit model generated the following metrics against the validatio
 ![plot1](artifacts/newsletter-logit-cm.png)
 ![plot2](artifacts/newsletter-logit-roc.png)
 
-- Accuracy: 66.23
-- Precision: 75.57
-- Recall: 73.00
-- F1-Score: 74.26
-- AUC: 0.7393
+- Accuracy: 65.26
+- Precision: 73.86
+- Recall: 73.02
+- F1-Score: 73.44
+- AUC: 0.7282
 
 Additionally, the following features (with coefficients) were statistically significant at the 5% level:
 
-- Sale Amount: -0.07
-- High Roller: -0.22
-- Winemaker Call Subscriber: 0.40
-- Email Subscriber: 3.42
+- Sale Amount: -0.06
+- High Roller: -0.32
+- Winemaker Call Subscriber: 0.38
+- Email Subscriber: 3.48
 
 ### Random Forest (RF)
 
@@ -136,17 +140,17 @@ Similarly, three RF models were trained for the three subscription channels, wit
 
 The Email RF model generated the following metrics against the validation set:
 
-- Accuracy: 93.01
-- Precision: 87.75
-- Recall: 91.67
-- F1-Score: 89.67
+- Accuracy: 95.29
+- Precision: 87.87
+- Recall: 99.08
+- F1-Score: 93.14
 
 Additionally, these are the feature importances of the variables:
 ![plot1](artifacts/email-rf-fi.png)
 
 With the following variables having importances at or above the 75th percentile:
 
-- Sale Amount
+- Order Volume
 - Wine Enthusiast
 - Newsletter Subscriber
 - Winemaker Call Subscriber
@@ -155,17 +159,17 @@ With the following variables having importances at or above the 75th percentile:
 
 The Direct Call RF model generated the following metrics against the validation set:
 
-- Accuracy: 88.33
-- Precision: 90.09
-- Recall: 79.89
-- F1-Score: 84.68
+- Accuracy: 91.79
+- Precision: 99.93
+- Recall: 79.07
+- F1-Score: 88.28
 
 Additionally, these are the feature importances of the variables:
 ![plot1](artifacts/winemaker-rf-fi.png)
 
 With the following variables having importances at or above the 75th percentile:
 
-- Sale Amount
+- Order Volume
 - Wine Enthusiast
 - Newsletter Subscriber
 - Email Subscriber
@@ -174,10 +178,10 @@ With the following variables having importances at or above the 75th percentile:
 
 The Newsletter RF model generated the following metrics against the validation set:
 
-- Accuracy: 67.03
-- Precision: 76.05
-- Recall: 73.85
-- F1-Score: 74.94
+- Accuracy: 66.14
+- Precision: 70.52
+- Recall: 83.40
+- F1-Score: 76.42
 
 Additionally, these are the feature importances of the variables:
 ![plot1](artifacts/newsletter-rf-fi.png)
