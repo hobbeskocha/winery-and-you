@@ -141,7 +141,6 @@ st.markdown("######")
 footer_description = """
 ### Future updates will include:
 1. Refining the UX/UI of this interface e.g., consolidating the 3 prediction sections into 1 section, with the focal prediction being selectable using a dropdown menu
-2. Improving the robustness and accuracy of the underlying models with hyperparameter tuning 
-3. Introducing multinomial classification to predict a customer's segment e.g. High Roller, Wine Enthusiast, etc.
+2. Introducing multinomial classification to predict a customer's segment e.g. High Roller, Wine Enthusiast, etc.
 """
 st.markdown(footer_description)
